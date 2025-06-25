@@ -1,19 +1,19 @@
 import css from "./App.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { refreshUser } from "../redux/auth/operations";
-import Layout from "./Layout/Layout";
+import { refreshUser } from "../../example/redux/auth/operations";
+import Layout from "../../example/components/Layout/Layout";
 import { Toaster } from "react-hot-toast";
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import RegistrationPage from "../pages/RegistrationPage";
-import LoginPage from "../pages/LoginPage";
-import { selectIsRefreshing } from "../redux/auth/selectors";
+import RegistrationPage from "../../example/pages/RegistrationPage";
+import LoginPage from "../../example/pages/LoginPage";
+import { selectIsRefreshing } from "../../example/redux/auth/selectors";
 const ContactsPage = lazy(() => import(`../pages/ContactsPage`));
-const HomePage = lazy(() => import(`../pages/HomePage`));
+const HomePage = lazy(() => import(`../../example/pages/HomePage`));
 const PrivateRoute = lazy(() => import(`./PrivateRoute`));
 const RestrictedRoute = lazy(() => import(`./RestrictedRoute`));
-const NotFoundPage = lazy(() => import(`../pages/NotFoundPage`));
+const NotFoundPage = lazy(() => import(`../../example/pages/NotFoundPage`));
 export default function App() {
   const dispatch = useDispatch();
   const isRefreshing = useSelector(selectIsRefreshing);
