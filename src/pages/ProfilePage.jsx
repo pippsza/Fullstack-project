@@ -1,3 +1,5 @@
+import Container from "../components/container/container.jsx"
+
 export default function ProfilePage() {
-  return <h1>profile page</h1>;
+  return (<Container><h1>Profile page</h1></Container>)
 }
