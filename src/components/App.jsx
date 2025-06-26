@@ -61,10 +61,6 @@ export default function App() {
                   // />
                 }
               />
-              <Route
-                path="profile"
-                element={<Navigate to="/profile/own" replace />}
-              />
 
               <Route path="recipes/:id" element={<RecipeViewPage />} />
 
