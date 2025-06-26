@@ -8,7 +8,7 @@ export default function AppBar() {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   return (
     <header className={css.header}>
       <nav>

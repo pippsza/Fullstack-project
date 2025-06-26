@@ -1,0 +1,5 @@
+.background {
+  background-color: var(--darck-brown);
+  display: flex;
+  color: var(--white);
+}
