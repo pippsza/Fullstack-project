@@ -1,10 +1,10 @@
-import AppBar from "../../../example/components/AppBar/AppBar";
+import Header from "../Header/Header.jsx";
 import css from "./Layout.module.css";
 
 export default function Layout({ children }) {
   return (
     <div className={css.container}>
-      <AppBar />
+      <Header></Header>
       {children}
     </div>
   );
