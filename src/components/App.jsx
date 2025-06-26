@@ -3,6 +3,7 @@ import Layout from "../components/Layout/Layout.jsx";
 import { Toaster } from "react-hot-toast";
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+import MainPage from "../pages/MainPage.jsx";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -27,29 +28,19 @@ export default function App() {
       <div className={css.mainApp}>
         <Suspense fallback={<span className={css.loader}></span>}>
           <Routes>
-            <Route path="/" element={<h1>Homepage</h1>}></Route>
-            <Route
-              path="/auth/:authType"
-              element={
-                <RestrictedRoute
-                  component={<AuthPage></AuthPage>}
-                  redirectTo="/"
-                />
-              }
-            />
-            <Route
-              path="/recipes/:id"
-              element={<RecipeViewPage></RecipeViewPage>}
-            ></Route>
-            <Route
-              path="/add-recipe"
-              element={<AddRecipePage></AddRecipePage>}
-            ></Route>
-            <Route
-              path="/profile/:recipeType"
-              element={<ProfilePage></ProfilePage>}
-            ></Route>
-            <Route path="*" element={<h1>not found</h1>}></Route>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<MainPage />} />
+              <Route
+                path="auth/:authType"
+                element={
+                  <RestrictedRoute component={<AuthPage />} redirectTo="/" />
+                }
+              />
+              <Route path="recipes/:id" element={<RecipeViewPage />} />
+              <Route path="add-recipe" element={<AddRecipePage />} />
+              <Route path="profile/:recipeType" element={<ProfilePage />} />
+              <Route path="*" element={<h1>not found</h1>} />
+            </Route>
           </Routes>
         </Suspense>
       </div>
