@@ -2,18 +2,19 @@ import css from "./App.module.css";
 import Layout from "../components/Layout/Layout.jsx";
 import { Toaster } from "react-hot-toast";
 import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
 const ProfilePage = lazy(() => import(`../pages/ProfilePage.jsx`));
 const RecipeViewPage = lazy(() => import(`../pages/RecipeViewPage.jsx`));
-const RestrictedRoute = lazy(() => import(`./RestrictedRoute`));
+const RestrictedRoute = lazy(() => import(`./RestrictedRoute.jsx`));
+const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
 
 export default function App() {
   return (
-    <Layout>
+    <>
       <Toaster
         toastOptions={{
           duration: 3000,
@@ -30,20 +31,47 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<MainPage />} />
+
               <Route
                 path="auth/:authType"
                 element={
-                  <RestrictedRoute component={<AuthPage />} redirectTo="/" />
+                  <AuthPage />
+                  // <RestrictedRoute component={<AuthPage />} redirectTo="/" />
                 }
               />
+
+              <Route
+                path="add-recipe"
+                element={
+                  <AddRecipePage />
+                  // <PrivateRoute
+                  //   component={<AddRecipePage />}
+                  //   redirectTo="/auth/login"
+                  // />
+                }
+              />
+
+              <Route
+                path="profile/:recipeType"
+                element={
+                  <ProfilePage />
+                  // <PrivateRoute
+                  //   component={<ProfilePage />}
+                  //   redirectTo="/auth/login"
+                  // />
+                }
+              />
+
               <Route path="recipes/:id" element={<RecipeViewPage />} />
-              <Route path="add-recipe" element={<AddRecipePage />} />
-              <Route path="profile/:recipeType" element={<ProfilePage />} />
-              <Route path="*" element={<h1>not found</h1>} />
+
+              <Route
+                path="*"
+                element={<h1 style={{ color: "black" }}>not found</h1>}
+              />
             </Route>
           </Routes>
         </Suspense>
       </div>
-    </Layout>
+    </>
   );
 }
