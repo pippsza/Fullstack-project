@@ -1,4 +1,5 @@
-import style from "./RecipeCard.module.css"
+import style from "./RecipeCard.module.css";
+import sprite from "../../assets/svg/sprite.svg?url";
 
 export default function RecipeCard() {
     return (
@@ -7,15 +8,19 @@ export default function RecipeCard() {
             <div className={style.titleWrapper}>
                 <h2 className={style.title}>Title</h2>
                 <div className={style.svgWrapper}>
-                    <p>svg</p>
-                    <p>m</p>
+                <svg className={style.svg}>
+        <use href={`${sprite}#icon-clock`}></use>
+      </svg>
+                    <p className={style.minutes}>m</p>
                 </div>
             </div>
-            <span className={style.text}>Fluffy pancakes served with maple syrup and fresh berries.<br/> <br/><p>cal</p></span>
-            <div>
-                <button>Learn more</button>
-                <div>
-                <p>s</p>
+            <p className={style.text}>Fluffy pancakes served with maple syrup and fresh berries.</p><p className={style.text1}>~cal</p >
+            <div className={style.btnWrapper}>
+                <button className={style.btn}>Learn more</button>
+                <div className={style.svg1Wrapper}>
+                <svg className={style.svg1}>
+        <use href={`${sprite}#icon-bookmark`}></use>
+      </svg>
                 </div>
             </div>
         </>
