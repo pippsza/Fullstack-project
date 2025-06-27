@@ -2,6 +2,7 @@
 import { NavLink } from "react-router-dom";
 import css from "./UserMenu.module.css";
 import clsx from "clsx";
+import Logout from "../logout/logout.jsx";
 
 export default function UserMenu() {
   const getLinkStyles = ({ isActive }) => {
@@ -24,7 +25,7 @@ export default function UserMenu() {
         </ul>
       </nav>
 
-      <p>profile icon + button exit </p>
+      <Logout />
     </>
   );
 }

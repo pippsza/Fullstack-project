@@ -1,0 +1,10 @@
+.svg {
+  width: 24px;
+  height: 28px;
+  stroke: var(--white);
+  fill: none;
+  &:hover {
+    stroke: var(--light-gray);
+    cursor: pointer;
+  }
+}

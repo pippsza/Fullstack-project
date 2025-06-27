@@ -11,11 +11,11 @@ export default function Header({ openMobile, isOpened }) {
     <header className={css.background}>
       <Container>
         <div className={css.container}>
-          <Logo></Logo>
+          <Logo />
           {isMobile ? (
-            <Burger isOpened={isOpened} openMobile={openMobile}></Burger>
+            <Burger isOpened={isOpened} openMobile={openMobile} />
           ) : (
-            <AppBar></AppBar>
+            <AppBar />
           )}
         </div>
       </Container>

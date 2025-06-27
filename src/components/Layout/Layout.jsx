@@ -16,7 +16,7 @@ export default function Layout() {
         openMobile={mobileMenuHandler}
       ></Header>
       <main>
-        {isMobileMenuOpened ? <MobileMenu></MobileMenu> : null}
+        {isMobileMenuOpened ? <MobileMenu /> : null}
         <Outlet />
       </main>
     </div>
