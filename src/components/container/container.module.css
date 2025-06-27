@@ -11,12 +11,14 @@
   .container {
     padding-left: 32px;
     padding-right: 32px;
-    max-width: 704px;
+    max-width: 768px;
   }
 }
 
 @media (min-width: 1440px) {
   .container {
-    max-width: 1225px;
+    padding-left: 108px;
+      padding-right: 108px;
+    max-width: 1440px;
   }
 }

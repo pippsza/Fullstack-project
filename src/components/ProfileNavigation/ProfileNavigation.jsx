@@ -1,14 +1,19 @@
-import { NavLink } from "react-router";
-import style from './ProfileNavigation.module.css'
+import { NavLink } from "react-router-dom";
+import css from './ProfileNavigation.module.css'
+
+import clsx from "clsx";
 
 export default function ProfileNavigation() {
+    const getLinkStyles = ({ isActive }) => {
+        return clsx(css.link, isActive && css.active);
+      };
     return (<>
         <nav>
-            <ul className={style.list}>
-                <li><NavLink to='/profile/own'>
+            <ul className={css.list}>
+                <li><NavLink className={getLinkStyles} to='/profile/own'>
                 My Recipes
                 </NavLink></li>
-                <li><NavLink to='/profile/favourites'>
+                <li><NavLink className={getLinkStyles} to='/profile/favourite'>
                 Saved Recipes
                 </NavLink></li>
             </ul>
