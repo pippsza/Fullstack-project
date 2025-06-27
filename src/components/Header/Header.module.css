@@ -2,4 +2,15 @@
   background-color: var(--darck-brown);
   display: flex;
   color: var(--white);
+  height: 74px;
+  padding: 14px;
+  box-sizing: border-box;
+}
+.svg {
+  fill: white;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
