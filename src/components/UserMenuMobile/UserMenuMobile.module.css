@@ -11,23 +11,69 @@
   position: absolute;
 }
 
-.link.active {
-  color: #e84a5f;
-}
-.link {
-  display: inline-block;
-  text-decoration: none;
-  padding: 12px;
-  font-weight: 700;
-  color: #2a363b;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.link.active {
-  color: #e84a5f;
+.link {
+  position: relative;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+  transition: color 0.3s ease;
+  box-sizing: border-box;
 }
+
+.active {
+  position: relative;
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  border-radius: 50px;
+  background-color: var(--white);
+  pointer-events: none;
+}
+
+.link:not(.active)::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 1px;
+  width: 0;
+  border-radius: 50px;
+  background-color: var(--white);
+  transition: width 0.3s ease;
+  pointer-events: none;
+}
+
+.link:not(.active):hover {
+  color: var(--light-gray);
+}
+
+.link:not(.active):hover::after {
+  width: 100%;
+}
+
 .list {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-left: 0;
+}
+.addRecepy {
+  background: var(--light-brown);
 }

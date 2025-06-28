@@ -2,15 +2,24 @@ import css from "./logout.module.css";
 import sprite from "../../assets/svg/sprite.svg?url";
 export default function Logout() {
   const userName = "Max";
-  const cutUserName = () => {};
+  const cutUserName = () => {
+    return userName[0];
+  };
+
+  const logoutHandler = () => {
+    console.log("Nothing here for now.");
+  };
+
   return (
     <div className={css.container}>
-      <div>
-        <div className={css.icon}></div>
+      <div className={css.nameWrapper}>
+        <div className={css.icon}>
+          <p className={css.name}>{cutUserName()}</p>
+        </div>
         <p className={css.name}>{userName}</p>
       </div>
       <div className={css.stick}></div>
-      <svg className={css.svg}>
+      <svg className={css.svg} onClick={logoutHandler}>
         <use href={`${sprite}#icon-exit`}></use>
       </svg>
     </div>

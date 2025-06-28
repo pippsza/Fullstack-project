@@ -11,21 +11,17 @@ export default function UserMenuMobile() {
   return (
     <>
       <nav>
-        <ul>
-          <li>
-            <NavLink to="/profile/own" className={getLinkStyles}>
-              My profile
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/add-recipe" className={getLinkStyles}>
-              Add Recepy
-            </NavLink>
-          </li>
-        </ul>
+        <NavLink to="/profile/own" className={getLinkStyles}>
+          My profile
+        </NavLink>
       </nav>
 
       <Logout />
+      <nav>
+        <NavLink to="/add-recipe" className={css.addRecepy}>
+          Add Recepy
+        </NavLink>
+      </nav>
     </>
   );
 }

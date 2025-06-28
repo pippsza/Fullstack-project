@@ -17,9 +17,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: red;
   width: 123px;
   height: 39px;
+  gap: 16px;
 }
 .name {
   font-weight: 600;
@@ -28,6 +28,17 @@
 }
 .icon {
   width: 32px;
+  border-radius: 32px;
   height: 32px;
-  background-color: var(--);
+  background-color: var(--light-brown);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nameWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }

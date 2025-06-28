@@ -9,7 +9,7 @@ export default function MobileMenu() {
   };
   const isLoggedIn = true;
   return (
-    <div>
+    <div className={css.container}>
       <NavLink to="/" className={getLinkStyles}>
         Recipes
       </NavLink>

@@ -5,6 +5,7 @@
   height: 74px;
   padding: 14px;
   box-sizing: border-box;
+  /* position: fixed; */
 }
 .svg {
   fill: white;
