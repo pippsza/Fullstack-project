@@ -28,7 +28,7 @@
   position: relative;
   font-weight: 600;
   font-size: 16px;
-  color: #fff;
+  color: var(--white);
   transition: color 0.3s ease;
   box-sizing: border-box;
 }

@@ -11,14 +11,14 @@ export default function UserMenu() {
   return (
     <>
       <nav>
-        <ul>
+        <ul className={css.list}>
           <li>
             <NavLink to="/profile/own" className={getLinkStyles}>
               My profile
             </NavLink>
           </li>
           <li>
-            <NavLink to="/add-recipe" className={getLinkStyles}>
+            <NavLink to="/add-recipe" className={css.button}>
               Add Recepy
             </NavLink>
           </li>

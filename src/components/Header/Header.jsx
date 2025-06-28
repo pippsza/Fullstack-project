@@ -3,7 +3,7 @@ import css from "./Header.module.css";
 import Container from "../container/container.jsx";
 import Headroom from "react-headroom";
 import Logo from "../logo/logo.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Burger from "../burger/burger.jsx";
 import MobileMenu from "../mobileMenu/MobileMenu.jsx";
 export default function Header({ openMobile, isOpened }) {
@@ -12,6 +12,21 @@ export default function Header({ openMobile, isOpened }) {
   const mobileMenuHandler = () => {
     setIsMobileMenuOpened(!isMobileMenuOpened);
   };
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const handleResize = () => {
+      const isNowMobile = mediaQuery.matches;
+      setIsMobile(isNowMobile);
+      if (!isNowMobile && isMobileMenuOpened) {
+        setIsMobileMenuOpened(false);
+      }
+    };
+    handleResize();
+    mediaQuery.addEventListener("change", handleResize);
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  }, [isMobileMenuOpened]);
   return (
     <>
       <Headroom>
@@ -30,7 +45,9 @@ export default function Header({ openMobile, isOpened }) {
             </div>
           </Container>
         </header>
-        {isMobileMenuOpened ? <MobileMenu /> : null}
+        {isMobileMenuOpened ? (
+          <MobileMenu openMobile={mobileMenuHandler} />
+        ) : null}
       </Headroom>
     </>
   );

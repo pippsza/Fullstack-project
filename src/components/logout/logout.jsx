@@ -1,6 +1,6 @@
 import css from "./logout.module.css";
 import sprite from "../../assets/svg/sprite.svg?url";
-export default function Logout() {
+export default function Logout({ openMobile }) {
   const userName = "Max";
   const cutUserName = () => {
     return userName[0];
@@ -8,6 +8,7 @@ export default function Logout() {
 
   const logoutHandler = () => {
     console.log("Nothing here for now.");
+    openMobile();
   };
 
   return (

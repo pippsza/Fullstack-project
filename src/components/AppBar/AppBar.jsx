@@ -8,9 +8,9 @@ export default function AppBar() {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   return (
-    <header className={css.header}>
+    <div className={css.container}>
       <nav>
         <NavLink to="/" className={getLinkStyles}>
           Recipes
@@ -18,6 +18,6 @@ export default function AppBar() {
       </nav>
 
       {isLoggedIn ? <UserMenu /> : <AuthNav />}
-    </header>
+    </div>
   );
 }
