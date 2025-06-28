@@ -1,117 +1,142 @@
-.img{
-    display: block;
-    background-color: red;
-    max-width:337px;
-    margin-bottom: 16px;
-     height:230px;
-    border-radius: 16px;
+.img {
+  display: block;
+  background-color: red;
+  width: 100%;
+  margin-bottom: 16px;
+  height: 230px;
+  border-radius: 16px;
 }
 .titleWrapper {
-display: flex;
-justify-content: space-between;
-margin-bottom: 17px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 17px;
 }
 .title {
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--black);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--black);
+  height: 58px;
 }
 .svgWrapper {
-    display: flex;
-    align-items: center;
-    background: var(--white);
-    border-radius: 8px;
-        padding: 2px 8px 2px 4px;
-        width: 53px;
-        height: 28px;
-        padding: 4px;
-        gap: 4px;
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border-radius: 8px;
+  padding: 2px 8px 2px 4px;
+  width: 53px;
+  height: 28px;
+  padding: 4px;
+  gap: 4px;
 }
 .svg {
-    width:25px;
-    height: 25px;
-    fill:none;
-    stroke: black;
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: black;
 }
 .minutes {
-    font-weight: 600;
-        font-size: 12px;
-        color: var(--black);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--black);
 }
 .text {
-    font-weight: 400;
-        font-size: 16px;
-        line-height: 1.55;
-        color: var(--black);
-        
+  height: 50px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--black);
+  max-width: 337px;
+  overflow: hidden;
 }
 .text1 {
-    font-weight: 400;
-        font-size: 16px;
-        line-height: 1.55;
-        color: var(--black);
-        margin-top: 8px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--black);
+  margin-top: 8px;
 }
 .btnWrapper {
-    margin-top: 16px;
-    display: flex;
+  margin-top: 16px;
+  display: flex;
 }
-.btn {
-    width: 100%;
-    border: 1px solid var(--black);
-        border-radius: 8px;
-        font-weight: 600;
-            font-size: 16px;
-            color: var(--black);
+.learnMoreBtn {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--black);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--black);
+  align-items: center;
+  justify-content: center;
+  height: 40px;
 }
 .svg1Wrapper {
-    margin-left: 8px;
-    display: flex;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--black);
-        border-radius: 8px;
-        justify-content: center;
-        align-items: center;
+  margin-left: 8px;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--black);
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+}
+.svg1WrapperActive {
+  margin-left: 8px;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--light-brown);
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+  background: var(--light-brown);
 }
 .svg1 {
-    width: 24px;
-    height: 24px;
-    fill: none;
-    stroke: var(--black);
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--black);
 }
-@media (min-width:768px) {
-    
-        .img {
-            width: 315px;
-            border-radius: 8px;
-            
-              }
-        
-        
-        
+.svg1Active {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--white);
 }
-@media (min-width:1440px) {
-    
-                .img {
-                    width: 264px;
-                    height: 178px;
-                    
-                       }
-                       .btn{transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
-                        transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1.0);}
-                        .btn:hover, .btn:focus {
-                            background: var(--light-brown);
-                            cursor: pointer;
-                            box-shadow: 2px 2px 5px var(--black)
-
-                        }
-                        .svg1Wrapper {
-                            transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
-                            cursor: pointer;
-                        }
-                        .svg1Wrapper:hover, .svg1Wrapper:focus {
-                            box-shadow: 2px 2px 5px var(--black)
-                        }
-                
+@media (min-width: 768px) {
+  .img {
+    width: 315px;
+    border-radius: 8px;
+  }
+  .text {
+    max-width: 315px;
+  }
+}
+@media (min-width: 1440px) {
+  .img {
+    width: 264px;
+    height: 178px;
+  }
+  .text {
+    max-width: 264px;
+  }
+  .btn {
+    transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .btn:hover,
+  .btn:focus {
+    background: var(--light-brown);
+    cursor: pointer;
+    box-shadow: 2px 2px 5px var(--black);
+  }
+  .svg1Wrapper {
+    transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    cursor: pointer;
+  }
+  .svg1Wrapper:hover,
+  .svg1Wrapper:focus {
+    box-shadow: 2px 2px 5px var(--black);
+  }
 }
