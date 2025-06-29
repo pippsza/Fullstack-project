@@ -1,95 +1,149 @@
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, ErrorMessage } from "formik";
 import css from "./RegisterForm.module.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import * as Yup from "yup";
 import sprite from "../../assets/svg/sprite.svg?url";
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfimrPassword, setShowConfimrPassword] = useState(false);
 
+  const UserSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(3, "Must be min 3 chars")
+      .max(50, "Must be less then 50 chars")
+      .required("This field is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .min(3, "Must be min 3 chars")
+      .required("This field is required")
+      .max(50, "Must be less then 50 chars"),
+    password: Yup.string()
+      .min(8, "Must be min 8 chars")
+      .required("This field is required")
+      .max(50, "Must be less then 50 chars"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Please confirm your password"),
+  });
+
   return (
     <div className={css.formRegContainer}>
-      <Formik initialValues={{ agree: false }}>
-        <Form className={css.regForm}>
-          <h2 className={css.regHeader}>Register</h2>
-          <p className={css.regText}>
-            Join our community of culinary enthusiasts, save your favorite
-            recipes, and share your cooking creations
-          </p>
-          <label className={css.regLabel}>
-            <span className={css.regSpan}>Enter your name</span>
-            <Field className={css.regField} name="name" placeholder="Max" />
-          </label>
-          <label className={css.regLabel}>
-            <span className={css.regSpan}>Enter your email address</span>
-            <Field
-              className={css.regField}
-              name="email"
-              placeholder="email@gmail.com"
-            />
-          </label>
-          <label className={css.regLabel}>
-            <span className={css.regSpan}>Create a strong password</span>
-            <div className={css.iconContainer}>
+      <Formik
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          agree: false,
+        }}
+        validationSchema={UserSchema}
+        validateOnChange={false}
+        validateOnBlur={false}
+      >
+        {({ values }) => (
+          <Form className={css.regForm}>
+            <h2 className={css.regHeader}>Register</h2>
+            <p className={css.regText}>
+              Join our community of culinary enthusiasts, save your favorite
+              recipes, and share your cooking creations
+            </p>
+            <label className={css.regLabel}>
+              <span className={css.regSpan}>Enter your name</span>
+              <Field className={css.regField} name="name" placeholder="Max" />
+              <ErrorMessage
+                name="name"
+                component="span"
+                className={css.errorMess}
+              />
+            </label>
+            <label className={css.regLabel}>
+              <span className={css.regSpan}>Enter your email address</span>
               <Field
                 className={css.regField}
+                name="email"
+                placeholder="email@gmail.com"
+              />
+              <ErrorMessage
+                name="email"
+                component="span"
+                className={css.errorMess}
+              />
+            </label>
+            <label className={css.regLabel}>
+              <span className={css.regSpan}>Create a strong password</span>
+              <div className={css.iconContainer}>
+                <Field
+                  className={css.regField}
+                  name="password"
+                  placeholder="*********"
+                  type={showPassword ? "text" : "password"}
+                />
+
+                <svg
+                  className={css.regEye}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  <use href={`${sprite}#icon-eye`}></use>
+                </svg>
+              </div>
+              <ErrorMessage
                 name="password"
-                placeholder="*********"
-                type={showPassword ? "text" : "password"}
+                component="span"
+                className={css.errorMess}
               />
-              <svg className={css.regEye}>
-                <use href={`${sprite}#icon-eye`}></use>
-              </svg>
-            </div>
-          </label>
-          <label className={css.regLabel}>
-            <span className={css.regSpan}>Repeat your password</span>
-            <div className={css.iconContainer}>
-              <Field
-                className={css.regField}
+            </label>
+            <label className={css.regLabel}>
+              <span className={css.regSpan}>Repeat your password</span>
+              <div className={css.iconContainer}>
+                <Field
+                  className={css.regField}
+                  name="confirmPassword"
+                  placeholder="*********"
+                  type={showConfimrPassword ? "text" : "password"}
+                />
+
+                <svg
+                  className={css.regEye}
+                  onClick={() => setShowConfimrPassword((prev) => !prev)}
+                >
+                  <use href={`${sprite}#icon-eye`}></use>
+                </svg>
+              </div>
+              <ErrorMessage
                 name="confirmPassword"
-                placeholder="*********"
-                type={showConfimrPassword ? "text" : "password"}
+                component="span"
+                className={css.errorMess}
               />
-              <svg
-                className={css.regEye}
-                width="16"
-                height="14"
-                viewBox="0 0 32 32"
-                onClick={() => setShowConfimrPassword((prev) => !prev)}
-              >
-                <path
-                  d="M19.214 22.65c-1.086 0.504-2.291 0.833-3.56 0.833-4.779 0-8.654-4.655-8.654-5.838 0-0.67 1.245-2.456 3.194-3.878M23.269 19.516c0.662-0.797 1.038-1.502 1.038-1.871 0-1.183-3.874-5.837-8.654-5.837 2.103 0 3.808 1.691 3.808 3.777M15.654 19.362c-2.103 0-3.808-1.691-3.808-3.777M25 11.807c-2.636-2.181-5.713-3.434-9-3.434-1.185 0-2.342 0.163-3.462 0.473M7 11.807c0.244-0.202 0.492-0.396 0.744-0.582M7 7l16.714 16.875"
-                  strokeWidth="1.3333"
-                  strokeMiterlimit="4"
-                  strokeLinecap="round"
-                  strokeLinejoin="miter"
-                ></path>
-              </svg>
-            </div>
-          </label>
-          <label className={css.checkBoxContainer}>
-            <Field
-              className={css.regFieldChekcBox}
-              type="checkbox"
-              name="agree"
-            />
-            <span className={css.checkMark}></span>
-            <span className={css.regTextAgr}>
-              I agree to the Terms of Service and Privacy Policy
-            </span>
-          </label>
-        </Form>
+            </label>
+            <label className={css.checkboxContainer}>
+              <Field className={css.checkbox} type="checkbox" name="agree" />
+              <span className={css.checkmark}>
+                <svg className={css.checkAlternative}>
+                  <use href={`${sprite}#icon-check-alternative`}></use>
+                </svg>
+              </span>
+              <span className={css.regTextAgr}>
+                I agree to the Terms of Service and Privacy Policy
+              </span>
+            </label>
+
+            <button
+              className={css.regButton}
+              type="submit"
+              disabled={!values.agree}
+            >
+              Create account
+            </button>
+            <p className={css.regTextLastChild}>
+              Already have an account? <span> </span>
+              <Link className={css.regLogInLabel} to="/login">
+                Log in
+              </Link>
+            </p>
+          </Form>
+        )}
       </Formik>
-      <button className={css.regButton} type="submit">
-        Create account
-      </button>
-      <p className={css.regTextLastChild}>
-        Already have an account? <span> </span>
-        <Link className={css.regLogInLabel} to="/login">
-          Log in
-        </Link>
-      </p>
     </div>
   );
 }
