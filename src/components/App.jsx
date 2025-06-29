@@ -4,10 +4,12 @@ import { Toaster } from "react-hot-toast";
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
+import ListWrapper from "./ListWrapper/ListWrapper.jsx";
+
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
-const ProfilePage = lazy(() => import(`../pages/ProfilePage.jsx`));
+const ProfilePage = lazy(() => import(`../pages/ProfilePage/ProfilePage.jsx`));
 const RecipeViewPage = lazy(() => import(`../pages/RecipeViewPage.jsx`));
 const RestrictedRoute = lazy(() => import(`./RestrictedRoute.jsx`));
 const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
@@ -52,7 +54,7 @@ export default function App() {
               />
 
               <Route
-                path="profile/:recipeType"
+                path="profile"
                 element={
                   <ProfilePage />
                   // <PrivateRoute
@@ -60,8 +62,10 @@ export default function App() {
                   //   redirectTo="/auth/login"
                   // />
                 }
-              />
-
+              >
+              <Route path=":recipeType" element={<ListWrapper />} />
+              </Route >
+                              
               <Route path="recipes/:id" element={<RecipeViewPage />} />
 
               <Route
