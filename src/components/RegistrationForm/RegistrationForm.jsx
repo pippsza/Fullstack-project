@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 import { register } from '../../redux/auth/operations';
 
@@ -22,7 +23,8 @@ const RegistrationSchema = Yup.object().shape({
 
 const initialValues = { name: '', email: '', password: '' };
 
-export default function RegistrationForm () {
+export default function RegistrationForm() {
+  const navigate = useNavigate();
   const nameFieldId = nanoid();
   const emailFieldId = nanoid();
   const passwordFieldId = nanoid();
@@ -32,13 +34,17 @@ export default function RegistrationForm () {
   const handleSubmit = (values, actions) => {
     dispatch(register(values))
       .unwrap()
-      .catch(error => {
+      .then(() => {
+       navigate("/private");
+      })
+
+      .catch((error) => {
         if (error.response && error.response.data.code === 11000) {
           toast.error(
-            'This email address is already registered. Try another address.'
+            "This email address is already registered. Try another address."
           );
         } else {
-          toast.error('OOPS... Failed to register user. Please try again.');
+          toast.error("OOPS... Failed to register user. Please try again.");
         }
       });
     actions.resetForm();

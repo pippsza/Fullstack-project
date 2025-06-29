@@ -47,6 +47,7 @@ export default function LoginForm() {
       validationSchema={LoginSchema}
     >
       <Form className={css.loginForm}>
+        <h2>LOGIN</h2>
         <label className={css.loginLabel} htmlFor={emailFieldId}>
           Enter your email address
         </label>

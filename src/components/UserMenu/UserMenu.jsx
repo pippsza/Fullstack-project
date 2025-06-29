@@ -53,23 +53,5 @@ export default function UserMenu() {
 //     return clsx(css.link, isActive && css.active);
 //   };
 //   return (
-<>
-  <nav>
-    <ul>
-      <li>
-        <NavLink to="/profile/own" className={getLinkStyles}>
-          My profile
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/add-recipe" className={getLinkStyles}>
-          Add Recepy
-        </NavLink>
-      </li>
-    </ul>
-  </nav>
-
-  <p>profile icon + button exit </p>
-</>;
 //   );
 // }
