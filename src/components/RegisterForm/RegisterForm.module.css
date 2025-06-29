@@ -12,7 +12,7 @@
   }
 }
 
-@media screen and (min-width: 1158px) {
+@media screen and (min-width: 1440px) {
   .formRegContainer {
     width: 420px;
   }
@@ -65,7 +65,7 @@
   }
 }
 
-@media screen and (min-width: 1158px) {
+@media screen and (min-width: 1440px) {
   .regField {
     width: 356px;
   }
@@ -179,7 +179,7 @@
   }
 }
 
-@media screen and (min-width: 1158px) {
+@media screen and (min-width: 1440px) {
   .regButton {
     width: 356px;
   }
