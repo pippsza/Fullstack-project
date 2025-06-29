@@ -1,33 +1,24 @@
 .wrapper {
   display: flex;
+  gap: 16px;
   align-items: center;
-  gap: 12px;
-}
-
-.username {
   font-weight: 700;
-  font-size: 20px;
-  left: 530px;
-  position: absolute;
+  font-size: 28px;
 }
 
-.link.active {
-  color: #e84a5f;
-}
-.link {
-  display: inline-block;
-  text-decoration: none;
-  padding: 12px;
-  font-weight: 700;
-  color: #2a363b;
+.btn {
+  border-radius: 8px;
+  border: none;
+  padding: 12px 18px;
+  font-size: 24px;
+  background-color: #FF6B0A;
+  box-shadow: 10px 10px 14px #00000059;
+  color: #ffffff;
+  cursor: pointer;
+  transition: 250ms ease-in-out;
 }
 
-.link.active {
-  color: #e84a5f;
-}
-.list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-left: 0;
+.btn:hover {
+  transform: scale(0.95);
+  box-shadow: none;
 }

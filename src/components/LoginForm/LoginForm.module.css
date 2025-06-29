@@ -1,0 +1,83 @@
+.loginForm {
+    position: relative;
+    width: 40%;
+    margin: 24px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    padding: 16px;
+}
+
+.loginLabel {
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.loginLabelWithSpace {
+    margin-top: 24px;
+}
+
+.loginInput {
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 8px 8px;
+    font-size: 24px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    outline: #FF6B0A;
+}
+
+.loginInput:hover,
+.loginInput:focus {
+    border-color: #FF6B0A;
+}
+
+.loginBtn {
+    margin: 16px auto 0;
+    border-radius: 8px;
+    border: none;
+    padding: 12px 18px;
+    font-size: 24px;
+    background-color: #FF6B0A;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 10px 10px 14px #00000059;
+    transition: 250ms ease-in-out;
+}
+
+.loginBtn:hover {
+    background-color: #FF6B0A;
+    transform: scale(0.95);
+    box-shadow: none;
+}
+
+.error {
+    position: absolute;
+    top: 18%;
+    left: 27%;
+    z-index: 1;
+    padding: 2px 4px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 4px;
+    border: none;
+    color: #dc0606;
+    font-size: 22px;
+}
+
+.errorPass {
+    position: absolute;
+    top: 55%;
+    left: 24%;
+    z-index: 1;
+    padding: 2px 4px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 4px;
+    border: none;
+    color: #dc0606;
+    font-size: 22px;
+}
