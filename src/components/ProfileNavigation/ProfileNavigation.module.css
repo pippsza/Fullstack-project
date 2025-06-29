@@ -11,6 +11,33 @@
   display: inline-block;
   text-decoration: none;
   margin-right: 38px;
+
+  position: relative;
+  transition: color 0.3s ease;
+  box-sizing: border-box;
+}
+.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  border-radius: 50px;
+  background-color: var(--white);
+  pointer-events: none;
+}
+ink:not(.active)::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 1px;
+  width: 0;
+  border-radius: 50px;
+  background-color: var(--white);
+  transition: width 0.3s ease;
+  pointer-events: none;
 }
 .list:last-child {
   margin-right: 0px;
@@ -27,5 +54,12 @@
 @media (min-width: 1440px) {
   .totalRecipes {
     margin-bottom: 24px;
+  }
+  .link:not(.active):hover {
+    color: var(--light-gray);
+  }
+
+  .link:not(.active):hover::after {
+    width: 100%;
   }
 }

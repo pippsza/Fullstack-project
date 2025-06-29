@@ -18,11 +18,14 @@
 @media (min-width: 1440px) {
   .loadMoreBtn {
     max-width: 289px;
+    transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
     transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
   }
-  .loadMoreBtn:hover,
-  .loadMoreBtn:focus {
+  .loadMoreBtn:hover {
     cursor: pointer;
-    box-shadow: 2px 2px 5px var(--darck-brown);
+    background-color: var(--brown);
+  }
+  .loadMoreBtn:focus {
+    box-shadow: 0 0 0 2px var(--white);
   }
 }

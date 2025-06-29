@@ -121,22 +121,41 @@
   .text {
     max-width: 264px;
   }
-  .btn {
+  .learnMoreBtn {
     transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
-    transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
   }
-  .btn:hover,
-  .btn:focus {
-    background: var(--light-brown);
+  .learnMoreBtn:hover {
+    background: var(--light-gray);
+    border: none;
     cursor: pointer;
-    box-shadow: 2px 2px 5px var(--black);
+  }
+  .learnMoreBtn:focus {
+    border: var(--white);
+    box-shadow: 0 0 0 2px var(--white);
+    background: var(--light-gray);
+    outline: none;
+  }
+  .svg1WrapperActive {
+    transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+    cursor: pointer;
+  }
+  .svg1WrapperActive:hover,
+  .svg1WrapperActive:focus {
+    background-color: var(--brown);
   }
   .svg1Wrapper {
-    transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
-    cursor: pointer;
+    transition: border 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
   }
   .svg1Wrapper:hover,
   .svg1Wrapper:focus {
-    box-shadow: 2px 2px 5px var(--black);
+    border: var(--light-gray);
+  }
+  .svg1 {
+    transition: stroke 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .svg1:hover,
+  .svg1:focus {
+    stroke: var(--light-gray);
   }
 }

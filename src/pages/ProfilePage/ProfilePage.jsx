@@ -7,11 +7,9 @@ import { useState } from "react";
 import style from "./ProfilePage.module.css";
 
 export default function ProfilePage() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const onClose = (e) => {
-    if (e.target === e.currentTarget) {
-      setIsModalOpen(false);
-    }
+    setIsModalOpen(false);
   };
   return (
     <div className={style.wrapper}>

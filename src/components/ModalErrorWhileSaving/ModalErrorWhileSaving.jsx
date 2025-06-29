@@ -18,12 +18,12 @@ export default function ModalErrorWhileSaving({ onClose }) {
           </p>
           <ul className={style.list}>
             <li>
-              <NavLink className={style.link} to="login">
+              <NavLink className={style.link} to="/auth/login" onClick={onClose}>
                 Log in
               </NavLink>
             </li>
             <li>
-              <NavLink className={style.link} to="register">
+              <NavLink className={style.link} to="/auth/register" onClick={onClose}>
                 Register
               </NavLink>
             </li>
