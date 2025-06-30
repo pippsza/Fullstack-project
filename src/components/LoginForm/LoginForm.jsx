@@ -1,5 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from '../../redux/auth/operations';
 
 import css from "./LoginForm.module.css";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -19,6 +20,8 @@ const LoginSchema = Yup.object().shape({
 const initialValues = { email: "", password: "" };
 
 export default function LoginForm() {
+  const isLogged = useSelector(selectIsLoggedIn)
+  console.log(isLogged, "islogged?")
   const navigate = useNavigate();
   const emailFieldId = nanoid();
   const passwordFieldId = nanoid();
@@ -46,7 +49,8 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
       validationSchema={LoginSchema}
     >
-      <Form className={css.loginForm}>
+    
+      <Form className={css.loginForm}> 
         <h2>LOGIN</h2>
         <label className={css.loginLabel} htmlFor={emailFieldId}>
           Enter your email address

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { logout } from "../../redux/auth/operations";
+import { logOut } from "../../redux/auth/operations";
 
 import css from "./UserMenu.module.css";
 import { selectUser } from "../../redux/auth/selectors";
@@ -16,7 +16,7 @@ export default function UserMenu() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
-  const handleLogOut = () => dispatch(logout());
+  const handlelogout = () => dispatch(logOut());
 
   return (
     <div className={css.wrapper}>
@@ -39,7 +39,7 @@ export default function UserMenu() {
         <p>profile icon + button exit </p>
       </>
       {user && <p className={css.username}>Welcome, {user.name}</p>}
-      <button className={css.btn} type="button" onClick={handleLogOut}>
+      <button className={css.btn} type="button" onClick={handlelogout}>
         Log Out
       </button>
     </div>

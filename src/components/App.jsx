@@ -5,7 +5,7 @@ import { lazy, useEffect, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import { refreshUser } from "../redux/auth/operations";
-import { selectIsRefreshing } from "../redux/auth/selectors.js";
+import { selectIsLoading } from "../redux/auth/selectors.js";
 
 import Layout from "../components/Layout/Layout.jsx";
 import MainPage from "../pages/MainPage.jsx";
@@ -29,7 +29,7 @@ const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
 export default function App() {
   const dispatch = useDispatch();
-  const isRefreshing = useSelector(selectIsRefreshing);
+  const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
     dispatch(refreshUser());
@@ -37,7 +37,7 @@ export default function App() {
 
   return (
     <>
-      {isRefreshing ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <Layout>

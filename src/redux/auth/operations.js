@@ -8,7 +8,7 @@ export const authInstance = axios.create({
 export const setAuthHeader = token => {
   authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
-       
+authInstance.defaults.withCredentials = true;
 console.log(setAuthHeader);
 
 export const clearAuthHeader = () => {
@@ -43,7 +43,7 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     const { data } = await authInstance.post("/api/auth/logout");
     clearAuthHeader();
