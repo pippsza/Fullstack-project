@@ -37,6 +37,7 @@ export const login = createAsyncThunk(
       const { data } = await authInstance.post("/auth/login", formData);
       console.log("LOGIN RESPONSE", data);
       setAuthHeader(data.accessToken);
+
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
