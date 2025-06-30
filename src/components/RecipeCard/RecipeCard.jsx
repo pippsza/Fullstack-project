@@ -1,12 +1,11 @@
 import { NavLink, useParams } from "react-router-dom";
 import Svg from "../Svg/svg";
 import style from "./RecipeCard.module.css";
-import sprite from "../../assets/svg/sprite.svg?url";
 
 export default function RecipeCard({ recipeCard }) {
   const { recipeType } = useParams();
   return (
-    <>
+    <div className={style.recipeCardWrapper}>
       <img className={style.img} src={recipeCard.thumb} alt="recipe" />
       <div className={style.titleWrapper}>
         <h2 className={style.title}>{recipeCard.title}</h2>
@@ -15,12 +14,14 @@ export default function RecipeCard({ recipeCard }) {
           <p className={style.minutes}>{recipeCard.time}</p>
         </div>
       </div>
-      <p className={style.text}>{recipeCard.description}</p>
-      {!recipeCard.time ? (
-        <p className={style.text1}>-</p>
-      ) : (
-        <p className={style.text1}>~{recipeCard.time} cal</p>
-      )}
+      <div>
+        <p className={style.text}>{recipeCard.description}</p>
+        {!recipeCard.time ? (
+          <p className={style.text1}>-</p>
+        ) : (
+          <p className={style.text1}>~{recipeCard.time} cal</p>
+        )}
+      </div>
       <div className={style.btnWrapper}>
         <NavLink
           className={style.learnMoreBtn}
@@ -38,6 +39,6 @@ export default function RecipeCard({ recipeCard }) {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

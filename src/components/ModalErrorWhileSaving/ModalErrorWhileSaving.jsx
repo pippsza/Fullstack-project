@@ -1,8 +1,20 @@
 import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
 import Svg from "../Svg/svg";
 import style from "./ModalErrorWhileSaving.module.css";
 
-export default function ModalErrorWhileSaving({ onClose }) {
+export default function ModalErrorWhileSaving({ isModalOpen, onClose }) {
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isModalOpen]);
+
   return (
     <>
       <div className={style.backdrop}>

@@ -13,7 +13,7 @@ export default function ProfilePage() {
   };
   return (
     <div className={style.wrapper}>
-      {isModalOpen && <ModalErrorWhileSaving onClose={onClose} />}
+      {isModalOpen && <ModalErrorWhileSaving onClose={onClose} isModalOpen={isModalOpen} />}
       <Container>
         <h1 className={style.title}>Profile page</h1>
         <ProfileNavigation />

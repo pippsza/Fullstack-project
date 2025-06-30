@@ -1,15 +1,18 @@
+.recipeCardWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 .img {
   display: block;
   background-color: red;
   width: 100%;
-  margin-bottom: 16px;
   height: 230px;
   border-radius: 16px;
 }
 .titleWrapper {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 17px;
 }
 .title {
   flex-grow: 1;
@@ -59,7 +62,6 @@
   margin-top: 8px;
 }
 .btnWrapper {
-  margin-top: 16px;
   display: flex;
 }
 .learnMoreBtn {
