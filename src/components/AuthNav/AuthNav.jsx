@@ -7,20 +7,20 @@ export default function AuthNav() {
   };
   return (
     <>
-      <div>
-        <ul>
+      <nav>
+        <ul className={css.list}>
           <li>
             <NavLink className={getLinkStyles} to="/auth/login">
               Log In
             </NavLink>
           </li>
           <li>
-            <NavLink className={getLinkStyles} to="/auth/register">
+            <NavLink className={css.button} to="/auth/register">
               Register
             </NavLink>
           </li>
         </ul>
-      </div>
+      </nav>
     </>
   );
 }

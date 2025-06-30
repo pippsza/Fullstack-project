@@ -16,11 +16,13 @@ export default function AppBar() {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
+
   const isLoggedIn = useSelector(selectIsLoggedIn);
   
   
+
   return (
-    <header className={css.header}>
+    <div className={css.container}>
       <nav>
         <NavLink to="/" className={getLinkStyles}>
           Recipes
@@ -28,6 +30,8 @@ export default function AppBar() {
         <Navigation />
         {isLoggedIn ? <UserMenu /> : <AuthNav />}
       </nav>
-    </header>
+      {isLoggedIn ? <UserMenu /> : <AuthNav />}
+    </div>
+
   );
 }
