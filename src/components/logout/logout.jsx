@@ -10,9 +10,9 @@ export default function Logout({ openMobile }) {
   };
   const dispatch = useDispatch();
   const logoutHandler = () => {
+    dispatch(logOut());
     console.log("Nothing here for now.");
     openMobile();
-    dispatch(logOut())
   };
 
   return (
