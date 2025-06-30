@@ -3,7 +3,9 @@ import css from "./RegisterForm.module.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import * as Yup from "yup";
-import sprite from "../../assets/svg/sprite.svg?url";
+
+import Svg from "../Svg/svg";
+
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfimrPassword] = useState(false);
@@ -27,6 +29,11 @@ export default function RegisterForm() {
       .required("Please confirm your password"),
   });
 
+  const handleSubmit = (values, actions) => {
+    console.log(values);
+    actions.resetForm();
+  };
+
   return (
     <div className={css.regContainer}>
       <div className={css.formRegContainer}>
@@ -38,6 +45,7 @@ export default function RegisterForm() {
             confirmPassword: "",
             agree: false,
           }}
+          onSubmit={handleSubmit}
           validationSchema={UserSchema}
           validateOnChange={false}
           validateOnBlur={false}
@@ -86,13 +94,11 @@ export default function RegisterForm() {
                     placeholder="*********"
                     type={showPassword ? "text" : "password"}
                   />
-
-                  <svg
-                    className={css.regEye}
+                  <Svg
+                    name="eye"
+                    styles={css.regEye}
                     onClick={() => setShowPassword((prev) => !prev)}
-                  >
-                    <use href={`${sprite}#icon-eye`}></use>
-                  </svg>
+                  />
                 </div>
                 <ErrorMessage
                   name="password"
@@ -111,13 +117,11 @@ export default function RegisterForm() {
                     placeholder="*********"
                     type={showConfirmPassword ? "text" : "password"}
                   />
-
-                  <svg
-                    className={css.regEye}
+                  <Svg
+                    name="eye"
+                    styles={css.regEye}
                     onClick={() => setShowConfimrPassword((prev) => !prev)}
-                  >
-                    <use href={`${sprite}#icon-eye`}></use>
-                  </svg>
+                  />
                 </div>
                 <ErrorMessage
                   name="confirmPassword"
@@ -128,9 +132,7 @@ export default function RegisterForm() {
               <label className={css.checkboxContainer}>
                 <Field className={css.checkbox} type="checkbox" name="agree" />
                 <span className={css.checkmark}>
-                  <svg className={css.checkAlternative}>
-                    <use href={`${sprite}#icon-check-alternative`}></use>
-                  </svg>
+                  <Svg name="check-alternative" styles={css.checkAlternative} />
                 </span>
                 <span className={css.regTextAgr}>
                   I agree to the Terms of Service and Privacy Policy
