@@ -17,7 +17,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 123px;
+  min-width: 123px;
   height: 39px;
   gap: 16px;
 }

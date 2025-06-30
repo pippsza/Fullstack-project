@@ -1,14 +1,18 @@
 import css from "./logout.module.css";
 import Svg from "../Svg/svg.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/selectors.js";
+import { logOut } from "../../redux/auth/operations.js";
 export default function Logout({ openMobile }) {
-  const userName = "Max";
+  const userName = useSelector(selectUser);
   const cutUserName = () => {
     return userName[0];
   };
-
+  const dispatch = useDispatch();
   const logoutHandler = () => {
     console.log("Nothing here for now.");
     openMobile();
+    dispatch(logOut())
   };
 
   return (
@@ -20,7 +24,6 @@ export default function Logout({ openMobile }) {
         <p className={css.name}>{userName}</p>
       </div>
       <div className={css.stick}></div>
-
       <Svg styles={css.svg} onClick={logoutHandler} name="exit"></Svg>
     </div>
   );

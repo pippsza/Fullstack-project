@@ -4,12 +4,14 @@ import AuthNavMobile from "../AuthNavMobile/AuthNavMobile.jsx";
 import UserMenuMobile from "../UserMenuMobile/UserMenuMobile.jsx";
 import clsx from "clsx";
 import Container from "../container/container.jsx";
+import { selectIsLoggedIn } from "../../redux/auth/selectors.js";
+import { useSelector } from "react-redux";
 
 export default function MobileMenu({ openMobile }) {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
-  const isLoggedIn = true;
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   return (
     <div className={css.container}>
       <Container>
