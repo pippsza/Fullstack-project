@@ -72,6 +72,48 @@
   color: var(--white);
   border: none;
 }
+.link {
+  transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.link:hover {
+  cursor: pointer;
+  background: var(--light-gray);
+}
+
+.link:focus {
+  box-shadow: 0 0 0 2px var(--white);
+  background: var(--light-gray);
+  outline: var(--white);
+}
+
+.list li .link:hover {
+  border: none;
+}
+
+.list li .link:focus {
+  border: var(--white);
+}
+
+.list li:last-child .link {
+  transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.list li:last-child .link:hover {
+  background: var(--brown);
+}
+
+.list li:last-child .link:focus {
+  box-shadow: 0 0 0 2px var(--white);
+  outline: var(--white);
+  border: var(--white);
+}
+
+.svg:hover {
+  transform: scale(1.2);
+}
 @media (min-width: 768px) {
   .modal {
     max-width: 420px;
@@ -94,42 +136,5 @@
     height: 36px;
     width: 100%;
     cursor: pointer;
-  }
-}
-@media (min-width: 1440px) {
-  .link {
-    transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
-    transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-  .link:hover {
-    cursor: pointer;
-    background: var(--light-gray);
-  }
-  .link:focus {
-    box-shadow: 0 0 0 2px var(--white);
-    background: var(--light-gray);
-    outline: var(--white);
-  }
-  .list li .link:hover {
-    border: none;
-  }
-  .list li .link:focus {
-    border: var(--white);
-  }
-  .list li:last-child .link {
-    transition: background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
-    transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-  .list li:last-child .link:hover {
-    background: var(--brown);
-  }
-  .list li:last-child .link:focus {
-    box-shadow: 0 0 0 2px var(--white);
-    outline: var(--white);
-    border: var(--white);
-  }
-
-  .svg:hover {
-    transform: scale(1.2);
   }
 }

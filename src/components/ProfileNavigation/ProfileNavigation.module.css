@@ -45,6 +45,13 @@ ink:not(.active)::after {
 .link.active {
   border-bottom: 1px solid var(--black);
 }
+.link:not(.active):hover {
+  color: var(--light-gray);
+}
+
+.link:not(.active):hover::after {
+  width: 100%;
+}
 @media (min-width: 768px) {
   .list {
     font-size: 12px;
@@ -54,12 +61,5 @@ ink:not(.active)::after {
 @media (min-width: 1440px) {
   .totalRecipes {
     margin-bottom: 24px;
-  }
-  .link:not(.active):hover {
-    color: var(--light-gray);
-  }
-
-  .link:not(.active):hover::after {
-    width: 100%;
   }
 }

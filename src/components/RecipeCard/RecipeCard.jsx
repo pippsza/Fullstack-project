@@ -1,4 +1,5 @@
 import { NavLink, useParams } from "react-router-dom";
+import Svg from "../Svg/svg";
 import style from "./RecipeCard.module.css";
 import sprite from "../../assets/svg/sprite.svg?url";
 
@@ -10,9 +11,7 @@ export default function RecipeCard({ recipeCard }) {
       <div className={style.titleWrapper}>
         <h2 className={style.title}>{recipeCard.title}</h2>
         <div className={style.svgWrapper}>
-          <svg className={style.svg}>
-            <use href={`${sprite}#icon-clock`}></use>
-          </svg>
+          <Svg styles={style.svg} name="clock" />
           <p className={style.minutes}>{recipeCard.time}</p>
         </div>
       </div>
@@ -31,15 +30,11 @@ export default function RecipeCard({ recipeCard }) {
         </NavLink>
         {recipeType === "own" ? null : recipeType === "favourites" ? (
           <div className={style.svg1WrapperActive}>
-            <svg className={style.svg1Active}>
-              <use href={`${sprite}#icon-bookmark`}></use>
-            </svg>
+            <Svg styles={style.svg1Active} name="bookmark" />
           </div>
         ) : (
           <div className={style.svg1Wrapper}>
-            <svg className={style.svg1}>
-              <use href={`${sprite}#icon-bookmark`}></use>
-            </svg>
+            <Svg styles={style.svg1} name="bookmark" />
           </div>
         )}
       </div>
