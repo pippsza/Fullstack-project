@@ -1,11 +1,10 @@
 import sprite from "../../assets/svg/sprite.svg?url";
+import Svg from "../Svg/svg.jsx";
 import css from "./logo.module.css";
 export default function Logo() {
   return (
     <a className={css.container} href="/">
-      <svg className={css.svg}>
-        <use href={`${sprite}#icon-logo`}></use>
-      </svg>
+      <Svg styles={css.svg} name={"logo"}></Svg>
       <p className={css.logoName}>Tasteorama </p>
     </a>
   );
