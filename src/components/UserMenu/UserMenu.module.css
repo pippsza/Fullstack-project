@@ -1,14 +1,9 @@
 .wrapper {
   display: flex;
+  gap: 16px;
   align-items: center;
-  gap: 12px;
-}
-
-.username {
   font-weight: 700;
-  font-size: 20px;
-  left: 530px;
-  position: absolute;
+  font-size: 28px;
 }
 
 .link {

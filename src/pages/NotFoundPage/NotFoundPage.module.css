@@ -1,0 +1,9 @@
+.notFoundContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.notFoundImg {
+    max-width: 1440px;
+    max-height: 800px;
+}

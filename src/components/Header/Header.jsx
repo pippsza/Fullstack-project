@@ -1,11 +1,14 @@
 import AppBar from "../AppBar/AppBar.jsx";
+import Logo from "../Logo/Logo.jsx";
 import css from "./Header.module.css";
 import Container from "../container/container.jsx";
+
 import Logo from "../logo/logo.jsx";
 import { useEffect, useState } from "react";
 import Burger from "../burger/burger.jsx";
 import MobileMenu from "../mobileMenu/MobileMenu.jsx";
 import ScrollHeader from "../ScrollHeader/ScrollHeader.jsx";
+
 export default function Header() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
