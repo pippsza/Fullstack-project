@@ -2,13 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const authInstance = axios.create({
-  baseURL: "https://fullstack-recipes-backend-ssa1.onrender.com/",
+  baseURL: "https://fullstack-recipes-backend-ssa1.onrender.com/api",
 });
+authInstance.defaults.withCredentials = true;
 
 export const setAuthHeader = token => {
   authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
-authInstance.defaults.withCredentials = true;
+
 console.log(setAuthHeader);
 
 export const clearAuthHeader = () => {
@@ -19,7 +20,7 @@ export const register = createAsyncThunk(
   'auth/register',
   async (formData, thunkAPI) => {
     try {
-      const { data } = await authInstance.post("/api/auth/register", formData);
+      const { data } = await authInstance.post("/auth/register", formData);
       console.log("REGISTER RESPONSE", data);
       setAuthHeader(data.token);
       return data;
@@ -33,7 +34,7 @@ export const login = createAsyncThunk(
   'auth/login',
   async (formData, thunkAPI) => {
     try {
-      const { data } = await authInstance.post("/api/auth/login", formData);
+      const { data } = await authInstance.post("/auth/login", formData);
       console.log("LOGIN RESPONSE", data);
       setAuthHeader(data.accessToken);
       return data;
@@ -45,7 +46,7 @@ export const login = createAsyncThunk(
 
 export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
-    const { data } = await authInstance.post("/api/auth/logout");
+    const { data } = await authInstance.post("/auth/logout");
     clearAuthHeader();
     return data;
   } catch (error) {
@@ -65,7 +66,7 @@ export const refreshUser = createAsyncThunk(
 
     try {
       setAuthHeader(persistedToken);
-      const { data } = await authInstance.post("/api/auth/refresh");
+      const { data } = await authInstance.post("/auth/refresh");
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

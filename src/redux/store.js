@@ -41,14 +41,3 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-
-store.subscribe(() => {
-  const state = store.getState();
-  console.log("[STORE SUBSCRIBE] state.auth.token:", state.auth.token);
-  try {
-    const persisted = localStorage.getItem('authKey');
-    console.log("[STORE SUBSCRIBE] localStorage[authKey]:", persisted);
-  } catch (e) {
-    console.log("[STORE SUBSCRIBE] localStorage error:", e);
-  }
-});
