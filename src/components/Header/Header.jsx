@@ -41,7 +41,8 @@ export default function Header() {
                   openMobile={mobileMenuHandler}
                 />
               ) : (
-                <AppBar />
+                <AppBar /> 
+            
               )}
             </div>
           </Container>

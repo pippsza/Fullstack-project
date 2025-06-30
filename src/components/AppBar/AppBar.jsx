@@ -27,10 +27,8 @@ export default function AppBar() {
         <NavLink to="/" className={getLinkStyles}>
           Recipes
         </NavLink>
-        <Navigation />
         {isLoggedIn ? <UserMenu /> : <AuthNav />}
       </nav>
-      {isLoggedIn ? <UserMenu /> : <AuthNav />}
     </div>
 
   );
