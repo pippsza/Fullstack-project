@@ -73,7 +73,8 @@
   background: var(--light-brown);
   border-radius: 8px;
   padding: 12px 16px;
-  width: 361px;
+  width: 100%;
+  max-width: 361px;
   text-align: center;
   height: 44px;
 }

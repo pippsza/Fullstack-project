@@ -1,16 +1,16 @@
-import sprite from "../../assets/svg/sprite.svg?url";
+import Svg from "../Svg/svg.jsx";
 import css from "./burger.module.css";
 export default function Burger({ openMobile, isOpened }) {
   return (
     <>
       {isOpened ? (
-        <svg onClick={openMobile} className={css.svgCross}>
-          <use href={`${sprite}#icon-mobileCross`}></use>
-        </svg>
+        <Svg
+          onClick={openMobile}
+          styles={css.svgCross}
+          name="mobileCross"
+        ></Svg>
       ) : (
-        <svg onClick={openMobile} className={css.svg}>
-          <use href={`${sprite}#icon-burger`}></use>
-        </svg>
+        <Svg onClick={openMobile} styles={css.svgCross} name="burger"></Svg>
       )}
     </>
   );

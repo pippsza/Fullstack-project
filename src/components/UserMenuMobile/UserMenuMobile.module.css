@@ -83,6 +83,8 @@
   padding: 12px 16px;
   width: 361px;
   text-align: center;
+  width: 100%;
+  max-width: 361px;
   height: 44px;
 }
 .addRecepy:hover {

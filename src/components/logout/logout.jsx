@@ -1,5 +1,6 @@
 import css from "./logout.module.css";
 import sprite from "../../assets/svg/sprite.svg?url";
+import Svg from "../Svg/svg.jsx";
 export default function Logout({ openMobile }) {
   const userName = "Max";
   const cutUserName = () => {
@@ -20,9 +21,8 @@ export default function Logout({ openMobile }) {
         <p className={css.name}>{userName}</p>
       </div>
       <div className={css.stick}></div>
-      <svg className={css.svg} onClick={logoutHandler}>
-        <use href={`${sprite}#icon-exit`}></use>
-      </svg>
+
+      <Svg styles={css.svg} onClick={logoutHandler} name="exit"></Svg>
     </div>
   );
 }

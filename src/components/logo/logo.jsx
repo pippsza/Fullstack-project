@@ -1,4 +1,3 @@
-import sprite from "../../assets/svg/sprite.svg?url";
 import Svg from "../Svg/svg.jsx";
 import css from "./logo.module.css";
 export default function Logo() {
