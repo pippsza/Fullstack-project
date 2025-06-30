@@ -14,18 +14,23 @@ import { authReducer } from "./auth/slice";
 
 
 
-const authConfig = {
-  key: 'auth',
-  storage,
-  whitelist: ['token'],
-};
+
+
+
+const persistedAuthReducer = persistReducer(
+  {
+    key: "authKey",
+    storage,
+    whitelist: ["token"],
+  },
+  authReducer
+);
 
 export const store = configureStore({
   reducer: {
-    auth: persistReducer(authConfig, authReducer),
+    auth: persistedAuthReducer,
   },
-
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
@@ -34,16 +39,3 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-
-
-// const persistedAuthReducer = persistReducer(
-//   { key: "authKey", storage, whitelist: ['token'] },
-//   authReducer
-// );
-
-// export const store = configureStore({
-//   reducer: {
-//     task: authReducer,
-//     auth: persistedAuthReducer,
-//   },
-// });
