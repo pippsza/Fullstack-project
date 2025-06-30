@@ -20,6 +20,7 @@ export const register = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const { data } = await authInstance.post("/api/auth/register", formData);
+      console.log("REGISTER RESPONSE", data);
       setAuthHeader(data.token);
       return data;
     } catch (error) {
@@ -33,7 +34,8 @@ export const login = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const { data } = await authInstance.post("/api/auth/login", formData);
-      setAuthHeader(data.token);
+      console.log("LOGIN RESPONSE", data);
+      setAuthHeader(data.accessToken);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
