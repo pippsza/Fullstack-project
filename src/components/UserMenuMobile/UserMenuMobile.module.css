@@ -86,6 +86,8 @@
   width: 100%;
   max-width: 361px;
   height: 44px;
+  font-weight: 600;
+  font-size: 16px;
 }
 .addRecepy:hover {
   color: var(--light-gray);

@@ -4,6 +4,7 @@ import AuthNavMobile from "../AuthNavMobile/AuthNavMobile.jsx";
 import UserMenuMobile from "../UserMenuMobile/UserMenuMobile.jsx";
 import clsx from "clsx";
 import Container from "../container/container.jsx";
+
 export default function MobileMenu({ openMobile }) {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);

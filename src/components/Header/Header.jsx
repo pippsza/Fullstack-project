@@ -1,12 +1,12 @@
 import AppBar from "../AppBar/AppBar.jsx";
 import css from "./Header.module.css";
 import Container from "../container/container.jsx";
-import Headroom from "react-headroom";
 import Logo from "../logo/logo.jsx";
 import { useEffect, useState } from "react";
 import Burger from "../burger/burger.jsx";
 import MobileMenu from "../mobileMenu/MobileMenu.jsx";
-export default function Header({ openMobile, isOpened }) {
+import ScrollHeader from "../ScrollHeader/ScrollHeader.jsx";
+export default function Header() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
   const mobileMenuHandler = () => {
@@ -29,7 +29,7 @@ export default function Header({ openMobile, isOpened }) {
   }, [isMobileMenuOpened]);
   return (
     <>
-      <Headroom>
+      <ScrollHeader>
         <header className={css.background}>
           <Container>
             <div className={css.container}>
@@ -48,7 +48,7 @@ export default function Header({ openMobile, isOpened }) {
         {isMobileMenuOpened ? (
           <MobileMenu openMobile={mobileMenuHandler} />
         ) : null}
-      </Headroom>
+      </ScrollHeader>
     </>
   );
 }
