@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import sprite from "../../assets/svg/sprite.svg?url";
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfimrPassword, setShowConfimrPassword] = useState(false);
+  const [showConfirmPassword, setShowConfimrPassword] = useState(false);
 
   const UserSchema = Yup.object().shape({
     name: Yup.string()
@@ -65,7 +65,7 @@ export default function RegisterForm() {
               <label className={css.regLabel}>
                 <span className={css.regSpan}>Enter your email address</span>
                 <Field
-                  className={`${css.regField} ${errors.name ? css.error : ""}`}
+                  className={`${css.regField} ${errors.email ? css.error : ""}`}
                   name="email"
                   placeholder="email@gmail.com"
                 />
@@ -80,7 +80,7 @@ export default function RegisterForm() {
                 <div className={css.iconContainer}>
                   <Field
                     className={`${css.regField} ${
-                      errors.name ? css.error : ""
+                      errors.password ? css.error : ""
                     }`}
                     name="password"
                     placeholder="*********"
@@ -105,11 +105,11 @@ export default function RegisterForm() {
                 <div className={css.iconContainer}>
                   <Field
                     className={`${css.regField} ${
-                      errors.name ? css.error : ""
+                      errors.confirmPassword ? css.error : ""
                     }`}
                     name="confirmPassword"
                     placeholder="*********"
-                    type={showConfimrPassword ? "text" : "password"}
+                    type={showConfirmPassword ? "text" : "password"}
                   />
 
                   <svg
