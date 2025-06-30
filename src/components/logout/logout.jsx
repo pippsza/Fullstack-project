@@ -1,5 +1,4 @@
 import css from "./logout.module.css";
-import sprite from "../../assets/svg/sprite.svg?url";
 import Svg from "../Svg/svg.jsx";
 export default function Logout({ openMobile }) {
   const userName = "Max";
