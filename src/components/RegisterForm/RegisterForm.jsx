@@ -28,122 +28,132 @@ export default function RegisterForm() {
   });
 
   return (
-    <div className={css.formRegContainer}>
-      <Formik
-        initialValues={{
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          agree: false,
-        }}
-        validationSchema={UserSchema}
-        validateOnChange={false}
-        validateOnBlur={false}
-      >
-        {({ values }) => (
-          <Form className={css.regForm}>
-            <h2 className={css.regHeader}>Register</h2>
-            <p className={css.regText}>
-              Join our community of culinary enthusiasts, save your favorite
-              recipes, and share your cooking creations
-            </p>
-            <label className={css.regLabel}>
-              <span className={css.regSpan}>Enter your name</span>
-              <Field className={css.regField} name="name" placeholder="Max" />
-              <ErrorMessage
-                name="name"
-                component="span"
-                className={css.errorMess}
-              />
-            </label>
-            <label className={css.regLabel}>
-              <span className={css.regSpan}>Enter your email address</span>
-              <Field
-                className={css.regField}
-                name="email"
-                placeholder="email@gmail.com"
-              />
-              <ErrorMessage
-                name="email"
-                component="span"
-                className={css.errorMess}
-              />
-            </label>
-            <label className={css.regLabel}>
-              <span className={css.regSpan}>Create a strong password</span>
-              <div className={css.iconContainer}>
+    <div className={css.regContainer}>
+      <div className={css.formRegContainer}>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            agree: false,
+          }}
+          validationSchema={UserSchema}
+          validateOnChange={false}
+          validateOnBlur={false}
+        >
+          {({ values, errors }) => (
+            <Form className={css.regForm}>
+              <h2 className={css.regHeader}>Register</h2>
+              <p className={css.regText}>
+                Join our community of culinary enthusiasts, save your favorite
+                recipes, and share your cooking creations
+              </p>
+              <label className={css.regLabel}>
+                <span className={css.regSpan}>Enter your name</span>
                 <Field
-                  className={css.regField}
+                  className={`${css.regField} ${errors.name ? css.error : ""}`}
+                  name="name"
+                  placeholder="Max"
+                />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className={css.errorMess}
+                />
+              </label>
+              <label className={css.regLabel}>
+                <span className={css.regSpan}>Enter your email address</span>
+                <Field
+                  className={`${css.regField} ${errors.name ? css.error : ""}`}
+                  name="email"
+                  placeholder="email@gmail.com"
+                />
+                <ErrorMessage
+                  name="email"
+                  component="span"
+                  className={css.errorMess}
+                />
+              </label>
+              <label className={css.regLabel}>
+                <span className={css.regSpan}>Create a strong password</span>
+                <div className={css.iconContainer}>
+                  <Field
+                    className={`${css.regField} ${
+                      errors.name ? css.error : ""
+                    }`}
+                    name="password"
+                    placeholder="*********"
+                    type={showPassword ? "text" : "password"}
+                  />
+
+                  <svg
+                    className={css.regEye}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    <use href={`${sprite}#icon-eye`}></use>
+                  </svg>
+                </div>
+                <ErrorMessage
                   name="password"
-                  placeholder="*********"
-                  type={showPassword ? "text" : "password"}
+                  component="span"
+                  className={css.errorMess}
                 />
+              </label>
+              <label className={css.regLabel}>
+                <span className={css.regSpan}>Repeat your password</span>
+                <div className={css.iconContainer}>
+                  <Field
+                    className={`${css.regField} ${
+                      errors.name ? css.error : ""
+                    }`}
+                    name="confirmPassword"
+                    placeholder="*********"
+                    type={showConfimrPassword ? "text" : "password"}
+                  />
 
-                <svg
-                  className={css.regEye}
-                  onClick={() => setShowPassword((prev) => !prev)}
-                >
-                  <use href={`${sprite}#icon-eye`}></use>
-                </svg>
-              </div>
-              <ErrorMessage
-                name="password"
-                component="span"
-                className={css.errorMess}
-              />
-            </label>
-            <label className={css.regLabel}>
-              <span className={css.regSpan}>Repeat your password</span>
-              <div className={css.iconContainer}>
-                <Field
-                  className={css.regField}
+                  <svg
+                    className={css.regEye}
+                    onClick={() => setShowConfimrPassword((prev) => !prev)}
+                  >
+                    <use href={`${sprite}#icon-eye`}></use>
+                  </svg>
+                </div>
+                <ErrorMessage
                   name="confirmPassword"
-                  placeholder="*********"
-                  type={showConfimrPassword ? "text" : "password"}
+                  component="span"
+                  className={css.errorMess}
                 />
+              </label>
+              <label className={css.checkboxContainer}>
+                <Field className={css.checkbox} type="checkbox" name="agree" />
+                <span className={css.checkmark}>
+                  <svg className={css.checkAlternative}>
+                    <use href={`${sprite}#icon-check-alternative`}></use>
+                  </svg>
+                </span>
+                <span className={css.regTextAgr}>
+                  I agree to the Terms of Service and Privacy Policy
+                </span>
+              </label>
 
-                <svg
-                  className={css.regEye}
-                  onClick={() => setShowConfimrPassword((prev) => !prev)}
-                >
-                  <use href={`${sprite}#icon-eye`}></use>
-                </svg>
-              </div>
-              <ErrorMessage
-                name="confirmPassword"
-                component="span"
-                className={css.errorMess}
-              />
-            </label>
-            <label className={css.checkboxContainer}>
-              <Field className={css.checkbox} type="checkbox" name="agree" />
-              <span className={css.checkmark}>
-                <svg className={css.checkAlternative}>
-                  <use href={`${sprite}#icon-check-alternative`}></use>
-                </svg>
-              </span>
-              <span className={css.regTextAgr}>
-                I agree to the Terms of Service and Privacy Policy
-              </span>
-            </label>
-
-            <button
-              className={css.regButton}
-              type="submit"
-              disabled={!values.agree}
-            >
-              Create account
-            </button>
-            <p className={css.regTextLastChild}>
-              Already have an account? <span> </span>
-              <Link className={css.regLogInLabel} to="/login">
-                Log in
-              </Link>
-            </p>
-          </Form>
-        )}
-      </Formik>
+              <button
+                className={css.regButton}
+                type="submit"
+                disabled={!values.agree}
+              >
+                Create account
+              </button>
+              <p className={css.regTextLastChild}>
+                Already have an account? <span> </span>
+                <Link className={css.regLogInLabel} to="/auth/login">
+                  Log in
+                </Link>
+              </p>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 }
