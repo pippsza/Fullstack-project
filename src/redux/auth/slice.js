@@ -22,7 +22,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        console.log("REGISTER FULFILLED PAYLOAD", action.payload.data.accessToken);
+        console.log("REGISTER FULFILLED PAYLOAD", action.payload);
         state.user = action.payload.data.user;
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
@@ -38,7 +38,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log("token:", action.payload.data.accessToken)
+        console.log("LOGIN FULFILLED PAYLOAD", action.payload);
         state.user = action.payload.data.user;
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
@@ -66,14 +66,17 @@ const authSlice = createSlice({
       })
       .addCase(refreshUser.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isLoggedIn = true;
         state.isLoading = false;
+        state.error = null;
       })
-      .addCase(refreshUser.rejected, (state) => {
+      .addCase(refreshUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload.message;
       }),
 });
 

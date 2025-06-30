@@ -1,12 +1,10 @@
 .link {
-
   position: relative;
   font-weight: 600;
   font-size: 12px;
   color: var(--white);
   transition: color 0.3s ease;
   box-sizing: border-box;
-
 }
 
 .active {
@@ -66,4 +64,10 @@
   justify-content: center;
   align-items: center;
   gap: 16px;
+}
+
+@media screen and (min-width: 1440px) {
+  .list {
+    gap: 32px;
+  }
 }
