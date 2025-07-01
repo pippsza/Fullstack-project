@@ -1,3 +1,4 @@
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 export default function RecipeViewPage() {
-  return <h1>RECIPE INGO PAGE</h1>;
+  return <NotFoundPage />;
 }
