@@ -4,13 +4,15 @@ import UserMenu from "../UserMenu/UserMenu.jsx";
 import AuthNav from "../AuthNav/AuthNav.jsx";
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../redux/auth/selectors.js";
 export default function AppBar() {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
-  const isLoggedIn = true;
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   return (
-    <header className={css.header}>
+    <div className={css.container}>
       <nav>
         <NavLink to="/" className={getLinkStyles}>
           Recipes
@@ -18,6 +20,6 @@ export default function AppBar() {
       </nav>
 
       {isLoggedIn ? <UserMenu /> : <AuthNav />}
-    </header>
+    </div>
   );
 }
