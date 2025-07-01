@@ -1,217 +1,4 @@
 
-
-.regHeader {
-    font-weight: 600;
-    font-size: 32px;
-    text-align: center;
-    color: #000;
-    margin-bottom: 20px;
-}
-
-.regText {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 155%;
-    text-align: center;
-    color: #000;
-    margin-bottom: 20px;
-}
-
-.regLabel {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.regSpan {
-    font-weight: 400;
-    font-size: 12px;
-    color: #000;
-    margin-bottom: 4px;
-    height: 100%;
-}
-
-.regField {
-    border: 1px solid #d9d9d9;
-    border-radius: 8px;
-    padding: 8px;
-    width: 100%;
-    height: 41px;
-    background: #fff;
-    margin-bottom: 16px;
-}
-
-.regField:focus {
-    border: 1.5px solid #9b6c43;
-    box-shadow: 0 0 0 4px rgba(78, 70, 180, 0.2);
-    background: #fff;
-}
-
-.errorMess {
-    color: #595d62;
-    font-size: 12px;
-    font-weight: 400;
-    margin-top: -12px;
-}
-
-.regField.error {
-    border: 1.5px solid #c80000;
-}
-
-@media screen and (min-width: 768px) {
-    .regField {
-        width: 458px;
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    .regField {
-        width: 356px;
-    }
-}
-
-.regField::placeholder {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 155%;
-    color: #9f9f9f;
-}
-
-.iconContainer {
-    position: relative;
-    width: 100%;
-    height: 41px;
-    margin-bottom: 16px;
-}
-
-.regEye {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    fill: none;
-    stroke: #000;
-    width: 16px;
-    height: 14px;
-    cursor: pointer;
-}
-
-.checkboxContainer {
-    display: block;
-    position: relative;
-    padding-left: 32px;
-    margin-bottom: 27px;
-    cursor: pointer;
-    width: 100%;
-    max-width: 325px;
-}
-
-.checkboxContainer .checkbox {
-    position: absolute;
-    opacity: 0;
-    height: 0;
-    width: 0;
-}
-
-.checkmark {
-    position: absolute;
-    top: 0px;
-    left: 4px;
-    width: 16px;
-    height: 16px;
-    background-color: #fff;
-    border: 1.5px solid #595d62;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.checkAlternative {
-    position: relative;
-    margin: 0;
-    top: 2px;
-    width: 100%;
-    height: 100%;
-    stroke-width: 1.5px;
-    stroke: #fff;
-    display: none;
-}
-
-.checkboxContainer .checkbox:checked~.checkmark {
-    background-color: #9b6c43;
-}
-
-.checkboxContainer .checkbox:checked~.checkmark .checkAlternative {
-    display: block;
-}
-
-.regTextAgr {
-    font-weight: 400;
-    display: block;
-    font-size: 12px;
-    color: #000;
-    /* width: 325px; */
-    width: 100%;
-}
-
-.regButton {
-    border-radius: 8px;
-    padding: 8px;
-    width: 100%;
-    height: 36px;
-    background: #9b6c43;
-    font-weight: 600;
-    font-size: 16px;
-    color: #fff;
-    margin-bottom: 20px;
-    cursor: pointer;
-}
-
-.regButton:hover {
-    background: #6d554b;
-}
-
-.regButton:focus {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
-}
-
-.regButton:disabled {
-    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
-    background: #9b6c43;
-    opacity: 0.3;
-    cursor: default;
-}
-
-@media screen and (min-width: 768px) {
-    .regButton {
-        width: 458px;
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    .regButton {
-        width: 356px;
-    }
-}
-
-.regTextLastChild {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 155%;
-    text-align: center;
-    color: #000;
-    margin-bottom: 0px;
-}
-
-.regLogInLabel {
-    font-weight: 600;
-    text-decoration: underline;
-    text-decoration-skip-ink: none; }
-
-
-
-
 .loginForm {
     max-width: 362px;
     position: relative;
@@ -259,15 +46,16 @@
 .loginInput:focus {
     border-color: var(--black);
 }
+
 .iconEye {
     position: absolute;
-    right: 10%;
-    top: 55%;
+    right: 11%;
+    top: 57.3%;
     transform: translateY(-50%);
     fill: none;
     stroke: var(--black);
-    width:32px;
-    height: 32px;
+    width:24px;
+    height: 24px;
     cursor: pointer;
 }
 
@@ -304,32 +92,87 @@
 
 .error {
     position: absolute;
-    top: 18%;
-    left: 27%;
+    top: 35.2%;
+    left: 9.5%;
     z-index: 1;
     padding: 2px 4px;
     margin: 0 auto;
-    background: #ffffff;
+    background:var(--white);
     border-radius: 4px;
     border: none;
-    color: #dc0606;
-    font-size: 22px;
+    color: var(--red);
+    font-size: 16px;
 }
 
 .errorPass {
     position: absolute;
-    top: 55%;
-    left: 24%;
+    top: 54%;
+    left: 9.5%;
     z-index: 1;
     padding: 2px 4px;
     margin: 0 auto;
-    background: #ffffff;
+    background:var(--white);
     border-radius: 4px;
     border: none;
-    color: #dc0606;
-    font-size: 22px;
+    color: var(--red);
+    font-size: 16px;
 }
 
+
+@media screen and (min-width: 768px) {
+    .loginForm {
+        min-width: 522px;
+    }
+
+    .loginLabelWithSpace {
+        margin-top: 20px;
+    }
+
+    .iconEye {
+        right: 7%;
+        top: 57.3%;
+
+    }
+    
+    .loginBtn {
+       margin: 20px 0 27px 0;
+    }
+
+    .error {
+        top: 34.4%;
+        left: 7.5%;
+     }
+    
+    .errorPass {
+        top: 54%;
+        left: 7.5%;
+    }
+  }
+
+  @media screen and (min-width: 1158px) {
+    .loginForm {
+        min-width: 420px;
+    }
+
+    .iconEye {
+        right: 9%;
+        top: 57.3%;
+
+    }
+    
+    .loginBtn {
+       margin: 27px 0 20px 0;
+    }
+
+    .error {
+       left: 8%;
+     }
+    
+    .errorPass {
+        top: 53.8%;
+        left: 8%;
+    }
+  }
 
 /* 
 {
@@ -341,13 +184,7 @@
     max-width: 393px;
   }
   
-  @media (min-width: 768px) {
-    .container {
-      padding-left: 32px;
-      padding-right: 32px;
-      max-width: 768px;
-    }
-  }
+
   
   @media (min-width: 1440px) {
     .container {

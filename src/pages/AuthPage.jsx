@@ -5,14 +5,17 @@ import RegistrationForm from "../components/RegistrationForm/RegistrationForm.js
 export default function AuthPage() {
   const { authType } = useParams();
 
-  if (authType === 'login') {
-    return <LoginForm />;
-  }
-  
-  if (authType === 'register') {
-    return <RegistrationForm />;
-  }
+return authType === "login" ? <LoginForm /> : <RegistrationForm />;
 
-  // Якщо authType не login і не register
-  return <div>Invalid auth type</div>;
+
+//   if (authType === 'login') {
+//     return <LoginForm />;
+//   }
+  
+//   if (authType === 'register') {
+//     return <RegistrationForm />;
+//   }
+
+//   // Якщо authType не login і не register
+//   return <div>Invalid auth type</div>;
 }

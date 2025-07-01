@@ -101,7 +101,7 @@ export default function LoginForm() {
         <p className={css.regText}>
           Don`t have an account? &nbsp;
           <Link className={css.regLink} to="/auth/register">
-            Log in
+            Register
           </Link>
         </p>
       </Form>
