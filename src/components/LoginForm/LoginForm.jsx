@@ -1,9 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Svg from '../Svg/svg.jsx'
 
 import { login } from '../../redux/auth/operations';
 
@@ -20,6 +23,11 @@ const LoginSchema = Yup.object().shape({
 const initialValues = { email: "", password: "" };
 
 export default function LoginForm() {
+
+  const [showPassword, setShowPassword] = useState(false);
+
+
+
   const isLogged = useSelector(selectIsLoggedIn)
   console.log(isLogged, "islogged?")
   const navigate = useNavigate();
@@ -49,16 +57,16 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
       validationSchema={LoginSchema}
     >
-    
-      <Form className={css.loginForm}> 
-        <h2>LOGIN</h2>
+      <Form className={css.loginForm}>
+        <h2 className={css.loginText}>Login</h2>
         <label className={css.loginLabel} htmlFor={emailFieldId}>
           Enter your email address
         </label>
         <Field
           className={css.loginInput}
-          type="text"
+          type="email"
           name="email"
+          placeholder="email@gmail.com"
           id={emailFieldId}
         />
         <ErrorMessage className={css.error} name="email" component="span" />
@@ -68,12 +76,20 @@ export default function LoginForm() {
         >
           Enter your password
         </label>
-        <Field
-          className={css.loginInput}
-          type="text"
-          name="password"
-          id={passwordFieldId}
-        />
+        <div>
+          <Field
+            className={css.loginInput}
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;"
+            id={passwordFieldId}
+          />
+          <Svg
+            name={showPassword ? "eye" : "close-eye"}
+            styles={css.iconEye}
+            onClick={() => setShowPassword((prev) => !prev)}
+          />
+        </div>
         <ErrorMessage
           className={css.errorPass}
           name="password"
@@ -82,7 +98,12 @@ export default function LoginForm() {
         <button className={css.loginBtn} type="submit">
           Log In
         </button>
-        <p>Don`t have an account?</p><a href=""> register</a>
+        <p className={css.regText}>
+          Don`t have an account? &nbsp;
+          <Link className={css.regLink} to="/auth/register">
+            Log in
+          </Link>
+        </p>
       </Form>
     </Formik>
   );

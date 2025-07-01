@@ -15,7 +15,7 @@ export default function AuthNav() {
             </NavLink>
           </li>
           <li>
-            <NavLink className={css.button} to="/auth/register">
+            <NavLink className={getLinkStyles} to="/auth/register">
               Register
             </NavLink>
           </li>
