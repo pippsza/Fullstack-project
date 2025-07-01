@@ -1,36 +1,64 @@
-import { Field, Form, Formik, ErrorMessage } from "formik";
 import css from "./RegisterForm.module.css";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import * as Yup from "yup";
-
 import Svg from "../Svg/svg";
 
+import { Field, Form, Formik, ErrorMessage } from "formik";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { register } from "../../redux/auth/operations";
+
+const UserSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(3, "Must be min 3 chars")
+    .max(50, "Must be less then 50 chars")
+    .required("This field is required"),
+  email: Yup.string()
+    .email("Invalid email format")
+    .min(3, "Must be min 3 chars")
+    .required("This field is required")
+    .max(50, "Must be less then 50 chars"),
+  password: Yup.string()
+    .min(8, "Must be min 8 chars")
+    .required("This field is required")
+    .max(50, "Must be less then 50 chars"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Please confirm your password"),
+});
+const initialValues = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  agree: false,
+};
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfimrPassword] = useState(false);
 
-  const UserSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(3, "Must be min 3 chars")
-      .max(50, "Must be less then 50 chars")
-      .required("This field is required"),
-    email: Yup.string()
-      .email("Invalid email format")
-      .min(3, "Must be min 3 chars")
-      .required("This field is required")
-      .max(50, "Must be less then 50 chars"),
-    password: Yup.string()
-      .min(8, "Must be min 8 chars")
-      .required("This field is required")
-      .max(50, "Must be less then 50 chars"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Please confirm your password"),
-  });
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    console.log(values);
+    const { confirmPassword, agree, ...filteredValues } = values;
+    dispatch(register(filteredValues))
+      .unwrap()
+      .then(() => {
+        navigate("/private");
+      })
+
+      .catch((error) => {
+        if (error.response && error.response.data.code === 11000) {
+          toast.error(
+            "This email address is already registered. Try another address."
+          );
+        } else {
+          toast.error("OOPS... Failed to register user. Please try again.");
+        }
+      });
     actions.resetForm();
   };
 
@@ -38,13 +66,7 @@ export default function RegisterForm() {
     <div className={css.regContainer}>
       <div className={css.formRegContainer}>
         <Formik
-          initialValues={{
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            agree: false,
-          }}
+          initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={UserSchema}
           validateOnChange={false}
