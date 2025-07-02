@@ -1,9 +1,11 @@
 import css from "./App.module.css";
 import Layout from "../components/Layout/Layout.jsx";
 import { Toaster } from "react-hot-toast";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
+import { useDispatch } from "react-redux";
+import { session } from "../redux/auth/operations.js";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -13,6 +15,10 @@ const RestrictedRoute = lazy(() => import(`./RestrictedRoute.jsx`));
 const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
 
 export default function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(session());
+  });
   return (
     <>
       <Toaster
