@@ -1,0 +1,43 @@
+.divBtn {
+  padding-bottom: 48px;
+  padding-top: 24px;
+}
+
+.btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 16px;
+  width: 372px;
+  height: 54px;
+  background-color: var(--light-brown);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--white);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+  background-color: #6d554b;
+}
+
+.btn:focus {
+  box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px var(--white);
+}
+
+@media (min-width: 768px) {
+  .btn {
+    width: 344px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .btn {
+    width: 289px;
+  }
+}
