@@ -70,7 +70,7 @@ export default function App() {
 
               <Route path="recipes/:id" element={<RecipeViewPage />} />
 
-              <Route path="*" element={<NotFoundPage></NotFoundPage>} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </Suspense>
