@@ -81,7 +81,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(session.fulfilled, (state, action) => {
-        state.user = action.payload;
         state.isLoggedIn = true;
         state.isLoading = false;
         state.error = null;
@@ -90,6 +89,8 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload.message;
         state.isLoggedIn = false;
+        state.user = { name: null, email: null };
+        state.token = null;
       }),
 });
 

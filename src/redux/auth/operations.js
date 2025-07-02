@@ -85,6 +85,7 @@ export const session = createAsyncThunk(
     try {
       setAuthHeader(persistedToken);
       const { data } = await authInstance.get("/users/session");
+      console.log(data, "DATA FROM SESSION"); 
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

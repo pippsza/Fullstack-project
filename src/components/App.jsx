@@ -6,6 +6,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import { useDispatch } from "react-redux";
 import { session } from "../redux/auth/operations.js";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -41,39 +42,35 @@ export default function App() {
               <Route
                 path="auth/:authType"
                 element={
-                  <AuthPage />
-                  // <RestrictedRoute component={<AuthPage />} redirectTo="/" />
+                  <RestrictedRoute component={<AuthPage />} redirectTo="/" />
                 }
               />
 
               <Route
                 path="add-recipe"
                 element={
-                  <AddRecipePage />
-                  // <PrivateRoute
-                  //   component={<AddRecipePage />}
-                  //   redirectTo="/auth/login"
-                  // />
+                  // <AddRecipePage />
+                  <PrivateRoute
+                    component={<AddRecipePage />}
+                    redirectTo="/auth/login"
+                  />
                 }
               />
 
               <Route
                 path="profile/:recipeType"
                 element={
-                  <ProfilePage />
-                  // <PrivateRoute
-                  //   component={<ProfilePage />}
-                  //   redirectTo="/auth/login"
-                  // />
+                  // <ProfilePage />
+                  <PrivateRoute
+                    component={<ProfilePage />}
+                    redirectTo="/auth/login"
+                  />
                 }
               />
 
               <Route path="recipes/:id" element={<RecipeViewPage />} />
 
-              <Route
-                path="*"
-                element={<h1 style={{ color: "black" }}>not found</h1>}
-              />
+              <Route path="*" element={<NotFoundPage></NotFoundPage>} />
             </Route>
           </Routes>
         </Suspense>
