@@ -1,25 +1,24 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const authInstance = axios.create({
   baseURL: "https://fullstack-recipes-backend-ssa1.onrender.com/api",
 });
 authInstance.defaults.withCredentials = true;
 
-export const setAuthHeader = token => {
+export const setAuthHeader = (token) => {
   authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
 export const clearAuthHeader = () => {
-  authInstance.defaults.headers.common.Authorization = '';
+  authInstance.defaults.headers.common.Authorization = "";
 };
 
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (formData, thunkAPI) => {
     try {
       const { data } = await authInstance.post("/auth/register", formData);
-      console.log("REGISTER RESPONSE", data);
       setAuthHeader(data.token);
       return data;
     } catch (error) {
@@ -29,11 +28,10 @@ export const register = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (formData, thunkAPI) => {
     try {
       const { data } = await authInstance.post("/auth/login", formData);
-      console.log("LOGIN RESPONSE", data);
       setAuthHeader(data.accessToken);
 
       return data;
@@ -43,7 +41,7 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
+export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     const { data } = await authInstance.post("/auth/logout");
     clearAuthHeader();
@@ -53,22 +51,38 @@ export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   }
 });
 
+
+export const refreshToken = createAsyncThunk(
+  "auth/refreshToken",
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await authInstance.post("/auth/refresh");
+        setAuthHeader(data.refreshToken);
+      return data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const refreshUser = createAsyncThunk(
-  'auth/refresh',
+  "auth/refresh",
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
     const persistedToken = state.auth.token;
 
     if (persistedToken === null) {
-      return thunkAPI.rejectWithValue('Unable to fetch user');
+      return thunkAPI.rejectWithValue("Unable to fetch user");
     }
 
     try {
       setAuthHeader(persistedToken);
-      const { data } = await authInstance.post("/auth/refresh");
+      const { data } = await authInstance.get("/auth/refresh");
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
+
+

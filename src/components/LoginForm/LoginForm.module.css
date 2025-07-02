@@ -39,7 +39,7 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 155%;
-    color: var(--gray-3);
+    color: var(--black);
 }
 
 .loginInput:hover,
@@ -174,23 +174,3 @@
     }
   }
 
-/* 
-{
-    width: 100%;
-    margin: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-    box-sizing: border-box;
-    max-width: 393px;
-  }
-  
-
-  
-  @media (min-width: 1440px) {
-    .container {
-      max-width: 1440px;
-      padding-left: 108px;
-      padding-right: 108px;
-    }
-  }
-   */
