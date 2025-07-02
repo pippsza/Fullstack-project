@@ -4,10 +4,11 @@ import { Toaster } from "react-hot-toast";
 import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
-import { useDispatch } from "react-redux";
-import { session } from "../redux/auth/operations.js";
+import { useDispatch, useSelector } from "react-redux";
+import { session, refreshUser } from "../redux/auth/operations.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 import ErrorBoundary from "./ErrorBoundary";
+import { selectIsLoggedIn } from "../redux/auth/selectors";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -18,9 +19,19 @@ const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
 
 export default function App() {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const token = useSelector((state) => state.auth.token);
+
   useEffect(() => {
     dispatch(session());
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (token && !isLoggedIn) {
+      dispatch(refreshUser());
+    }
+  }, [dispatch, token, isLoggedIn]);
+
   return (
     <ErrorBoundary>
       <>

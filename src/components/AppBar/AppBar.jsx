@@ -5,14 +5,18 @@ import AuthNav from "../AuthNav/AuthNav.jsx";
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../redux/auth/selectors.js";
+import {
+  selectIsLoggedIn,
+  selectIsRefreshing
+} from "../../redux/auth/selectors.js";
 
 export default function AppBar() {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  console.log("AppBar isLoggedIn:", isLoggedIn);
+  const isRefreshing = useSelector(selectIsRefreshing);
+  if (isRefreshing) return null; // або loader
   return (
     <div className={css.container}>
       <nav>
