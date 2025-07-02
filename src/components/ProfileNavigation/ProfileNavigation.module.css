@@ -1,17 +1,15 @@
 .list {
   display: flex;
+  gap: 38px;
   margin-top: 16px;
   margin-bottom: 16px;
   font-weight: 600;
   font-size: 18px;
   color: var(--black);
 }
-
 .link {
   display: inline-block;
   text-decoration: none;
-  margin-right: 38px;
-
   position: relative;
   transition: color 0.3s ease;
   box-sizing: border-box;
@@ -38,9 +36,6 @@ ink:not(.active)::after {
   background-color: var(--white);
   transition: width 0.3s ease;
   pointer-events: none;
-}
-.list:last-child {
-  margin-right: 0px;
 }
 .link.active {
   border-bottom: 1px solid var(--black);

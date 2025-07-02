@@ -45,6 +45,11 @@
   font-size: 12px;
   color: var(--black);
 }
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 .text {
   height: 50px;
   font-weight: 400;
@@ -59,7 +64,6 @@
   font-size: 16px;
   line-height: 1.55;
   color: var(--black);
-  margin-top: 8px;
 }
 .btnWrapper {
   display: flex;

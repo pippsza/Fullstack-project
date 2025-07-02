@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
 import Container from "../../components/container/container.jsx";
 import ProfileNavigation from "../../components/ProfileNavigation/ProfileNavigation.jsx";
 import ModalErrorWhileSaving from "../../components/ModalErrorWhileSaving/ModalErrorWhileSaving.jsx";
-import { useState } from "react";
-
 import style from "./ProfilePage.module.css";
+
 
 export default function ProfilePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);

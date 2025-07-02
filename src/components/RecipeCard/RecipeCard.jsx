@@ -14,7 +14,7 @@ export default function RecipeCard({ recipeCard }) {
           <p className={style.minutes}>{recipeCard.time}</p>
         </div>
       </div>
-      <div>
+      <div className={style.textWrapper}>
         <p className={style.text}>{recipeCard.description}</p>
         {!recipeCard.time ? (
           <p className={style.text1}>-</p>
