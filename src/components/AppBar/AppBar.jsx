@@ -7,12 +7,12 @@ import clsx from "clsx";
 import { useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/auth/selectors.js";
 
-
 export default function AppBar() {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  console.log("AppBar isLoggedIn:", isLoggedIn);
   return (
     <div className={css.container}>
       <nav>

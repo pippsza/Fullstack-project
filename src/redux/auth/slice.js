@@ -6,12 +6,12 @@ const authSlice = createSlice({
   initialState: {
     user: {
       name: null,
-      email: null,
+      email: null
     },
     token: null,
     isLoggedIn: false,
     isLoading: false,
-    error: null,
+    error: null
   },
   extraReducers: (builder) =>
     builder
@@ -20,10 +20,13 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        console.log("REGISTER FULFILLED PAYLOAD", action.payload);
-        state.user = action.payload.data.user;
-        state.token = action.payload.data.accessToken;
-        state.isLoggedIn = true;
+        const payload = action.payload.data || action.payload || {};
+        state.user = payload.user || { name: null, email: null };
+        state.token = payload.accessToken || payload.token || null;
+        state.isLoggedIn = !!(
+          payload.user &&
+          (payload.accessToken || payload.token)
+        );
         state.isLoading = false;
         state.error = null;
       })
@@ -36,10 +39,13 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log("LOGIN FULFILLED PAYLOAD", action.payload);
-        state.user = action.payload.data.user;
-        state.token = action.payload.data.accessToken;
-        state.isLoggedIn = true;
+        const payload = action.payload.data || action.payload || {};
+        state.user = payload.user || { name: null, email: null };
+        state.token = payload.accessToken || payload.token || null;
+        state.isLoggedIn = !!(
+          payload.user &&
+          (payload.accessToken || payload.token)
+        );
         state.isLoading = false;
         state.error = null;
       })
@@ -67,8 +73,10 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-        state.isLoggedIn = true;
+        const payload = action.payload.data || action.payload || {};
+        state.user = payload.user || { name: null, email: null };
+        state.token = payload.accessToken || state.token;
+        state.isLoggedIn = !!payload.user;
         state.isLoading = false;
         state.error = null;
       })
@@ -81,7 +89,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(session.fulfilled, (state, action) => {
-        state.isLoggedIn = true;
+        const payload = action.payload.data || action.payload || {};
+        state.user = payload.user || state.user;
+        state.isLoggedIn = !!payload.user;
         state.isLoading = false;
         state.error = null;
       })
@@ -91,7 +101,7 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.user = { name: null, email: null };
         state.token = null;
-      }),
+      })
 });
 
 export const authReducer = authSlice.reducer;

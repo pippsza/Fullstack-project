@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Svg from "../Svg/svg.jsx";
 import { useState } from "react";
 
@@ -38,7 +38,7 @@ export default function RegistrationForm() {
       .unwrap()
       .then(() => {
         toast.success("Registration successful!");
-        navigate("/auth/login");
+        navigate("/");
       })
       .catch((error) => {
         if (error.response && error.response.data.code === 11000) {
@@ -91,7 +91,7 @@ export default function RegistrationForm() {
         >
           Enter your password
         </label>
-        <div>
+        <div style={{ position: "relative" }}>
           <Field
             className={css.loginInput}
             type={showPassword ? "text" : "password"}
@@ -113,12 +113,6 @@ export default function RegistrationForm() {
         <button className={css.loginBtn} type="submit">
           Register
         </button>
-        <p className={css.regText}>
-          Already have an account? &nbsp;
-          <Link className={css.regLink} to="/auth/login">
-            Log In
-          </Link>
-        </p>
       </Form>
     </Formik>
   );

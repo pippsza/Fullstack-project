@@ -13,9 +13,9 @@ const getLinkStyles = ({ isActive }) => {
 };
 
 export default function UserMenu() {
-
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  console.log("UserMenu rendered, user:", user);
 
   const handlelogout = () => dispatch(logOut());
 

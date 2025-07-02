@@ -19,12 +19,11 @@ export const fetchAll = createAsyncThunk(
 );
 
 export const fetchById = createAsyncThunk(
-  "/recipes/:id",
-  async (_, thunkAPI) => {
+  "recipes/fetchById",
+  async (id, thunkAPI) => {
     try {
       console.log("fetching");
-      const res = await axios.get(`/recipes/${"id here later"}`);
-      //   console.log(res.data);
+      const res = await axios.get(`/recipes/${id}`);
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

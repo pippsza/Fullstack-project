@@ -1,35 +1,27 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import Svg from '../Svg/svg.jsx'
+import { useNavigate, Link } from "react-router-dom";
+import Svg from "../Svg/svg.jsx";
+import { useState } from "react";
 
-import { login } from '../../redux/auth/operations';
+import { login } from "../../redux/auth/operations";
 
 import css from "./LoginForm.module.css";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter a valid email")
     .required("Email is required field!"),
-  password: Yup.string().required("Password is required field!"),
+  password: Yup.string().required("Password is required field!")
 });
 
 const initialValues = { email: "", password: "" };
 
 export default function LoginForm() {
-
   const [showPassword, setShowPassword] = useState(false);
-
-
-
-  const isLogged = useSelector(selectIsLoggedIn)
-  console.log(isLogged, "islogged?")
   const navigate = useNavigate();
   const emailFieldId = nanoid();
   const passwordFieldId = nanoid();
@@ -41,7 +33,7 @@ export default function LoginForm() {
       .unwrap()
       .then(() => {
         toast.success("Login successful!");
-        navigate('/');
+        navigate("/");
       })
       .catch(() => {
         toast.error(

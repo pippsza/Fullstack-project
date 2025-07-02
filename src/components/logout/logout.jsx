@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/selectors.js";
 import { logOut } from "../../redux/auth/operations.js";
 export default function Logout({ openMobile }) {
-  const userName = useSelector(selectUser);
+  const user = useSelector(selectUser);
+  let userName = user && user.name ? user.name : "User";
   const cutUserName = () => {
     if (!userName || userName.length === 0) return "";
     return userName[0];
@@ -12,8 +13,9 @@ export default function Logout({ openMobile }) {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(logOut());
-    console.log("Nothing here for now.");
-    openMobile();
+    if (typeof openMobile === "function") {
+      openMobile();
+    }
   };
 
   return (

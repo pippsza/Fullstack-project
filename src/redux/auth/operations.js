@@ -21,7 +21,11 @@ export const register = createAsyncThunk(
       const { data } = await authInstance.post("/auth/register", formData);
       console.log("REGISTER RESPONSE", data);
       setAuthHeader(data.token);
-      return data;
+      return {
+        user: data.user || data.data?.user,
+        accessToken: data.accessToken || data.data?.accessToken || data.token,
+        token: data.token
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -36,7 +40,11 @@ export const login = createAsyncThunk(
       console.log("LOGIN RESPONSE", data);
       setAuthHeader(data.accessToken);
 
-      return data;
+      return {
+        user: data.user || data.data?.user,
+        accessToken: data.accessToken || data.data?.accessToken || data.token,
+        token: data.token
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

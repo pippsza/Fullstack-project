@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { register } from "../../../redux/auth/operations";
 import css from "./RegistrationForm.module.css";
+import { useState } from "react";
 
 const RegistrationSchema = Yup.object().shape({
   name: Yup.string()
@@ -14,8 +15,12 @@ const RegistrationSchema = Yup.object().shape({
     .required("Name is Required field!"),
   email: Yup.string()
     .email("Please enter a valid email")
+    .max(128, "Email is too long!")
     .required("Email is required field!"),
-  password: Yup.string().required("Password is required field!")
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters!")
+    .max(128, "Password is too long!")
+    .required("Password is required field!")
 });
 
 const initialValues = { name: "", email: "", password: "" };
@@ -27,6 +32,7 @@ export default function RegistrationForm() {
   const passwordFieldId = nanoid();
 
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (values, actions) => {
     dispatch(register(values))
@@ -34,15 +40,25 @@ export default function RegistrationForm() {
       .then(() => {
         navigate("/private");
       })
-
       .catch((error) => {
-        if (error.response && error.response.data.code === 11000) {
-          toast.error(
-            "This email address is already registered. Try another address."
-          );
-        } else {
-          toast.error("OOPS... Failed to register user. Please try again.");
+        let message = "OOPS... Failed to register user. Please try again.";
+        if (
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          message = error.response.data.message;
+        } else if (
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.code === 11000
+        ) {
+          message =
+            "This email address is already registered. Try another address.";
         }
+        toast.error(message);
       });
     actions.resetForm();
   };
@@ -85,10 +101,22 @@ export default function RegistrationForm() {
         </label>
         <Field
           className={css.registrationInput}
-          type="text"
+          type={showPassword ? "text" : "password"}
           name="password"
           id={passwordFieldId}
         />
+        <span
+          style={{
+            position: "absolute",
+            right: 16,
+            top: "68%",
+            cursor: "pointer",
+            zIndex: 2
+          }}
+          onClick={() => setShowPassword((prev) => !prev)}
+        >
+          {showPassword ? "🙈" : "👁️"}
+        </span>
         <ErrorMessage
           className={css.errorPass}
           name="password"
