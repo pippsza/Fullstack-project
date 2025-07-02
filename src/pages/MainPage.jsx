@@ -11,7 +11,6 @@ const MainPage = () => {
       <SearchBox />
       <Filters />
       {/* <RecipeList /> */}
-      <LoadMoreBtn />
     </>
   );
 };
