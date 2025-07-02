@@ -1,9 +1,10 @@
 import css from "./App.module.css";
 import Layout from "../components/Layout/Layout.jsx";
-import { Toaster } from "react-hot-toast";
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
+
+import { Toaster } from "react-hot-toast";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -71,6 +72,7 @@ export default function App() {
             </Route>
           </Routes>
         </Suspense>
+        <Toaster />
       </div>
     </>
   );

@@ -1,16 +1,27 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { nanoid } from "@reduxjs/toolkit";
 import * as Yup from "yup";
-import { toast } from "react-toastify";
+
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 import Svg from "../Svg/svg.jsx";
 
 import { login } from "../../redux/auth/operations";
 
 import css from "./LoginForm.module.css";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
+
+export const toastStyle = {
+  position: "top-left",
+  style: {
+    background: "var(--light-brown)",
+    color: "var(--white)",
+    fontSize: "12px",
+    borderRadius: "8px",
+  },
+};
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -28,11 +39,7 @@ const initialValues = { email: "", password: "" };
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-
-  const isLogged = useSelector(selectIsLoggedIn);
-  console.log(isLogged, "islogged?");
-  const emailFieldId = nanoid();
-  const passwordFieldId = nanoid();
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -40,11 +47,13 @@ export default function LoginForm() {
     dispatch(login(values))
       .unwrap()
       .then(() => {
-        toast.success("Login successful!");
+        toast.success("Login successful!", toastStyle);
+        navigate("/private");
       })
       .catch(() => {
         toast.error(
-          "Failed to log in. Please check your email or password and try again."
+          "Failed to log in. Please check your email or password and try again.",
+          toastStyle
         );
       });
     actions.resetForm();
@@ -56,34 +65,28 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
       validationSchema={LoginSchema}
     >
+      {({ errors }) => (
         <Form className={css.loginForm}>
           <h2 className={css.loginText}>Login</h2>
-          <label className={css.loginLabel} htmlFor={emailFieldId}>
-            Enter your email address
-          </label>
+          <label className={css.loginLabel}>Enter your email address</label>
           <div className={css.passwordField}>
             <Field
-              className={css.loginInput}
+              className={`${css.loginInput} ${errors.email ? css.err : ""}`}
               type="email"
               name="email"
               placeholder="email@gmail.com"
-              id={emailFieldId}
             />
             <ErrorMessage className={css.error} name="email" component="span" />
           </div>
-          <label
-            className={`${css.loginLabel} ${css.loginLabelWithSpace}`}
-            htmlFor={passwordFieldId}
-          >
+          <label className={`${css.loginLabel} ${css.loginLabelWithSpace}`}>
             Enter your password
           </label>
           <div className={css.passwordField}>
             <Field
-              className={css.loginInput}
+              className={`${css.loginInput} ${errors.password ? css.err : ""}`}
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;"
-              id={passwordFieldId}
             />
             <Svg
               name={showPassword ? "eye" : "close-eye"}
@@ -106,6 +109,7 @@ export default function LoginForm() {
             </Link>
           </p>
         </Form>
+      )}
     </Formik>
   );
 }

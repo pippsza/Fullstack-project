@@ -42,8 +42,8 @@
     color: var(--black);
 }
 
-.loginInput.error{
-    border: 3px solid var(--red);
+.loginInput.err{
+    border: 1px solid var(--red);
 }
 .loginInput:hover,
 .loginInput:focus {
