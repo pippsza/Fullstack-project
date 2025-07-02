@@ -1,11 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 import Svg from "../Svg/svg.jsx";
 
@@ -13,7 +12,7 @@ import { login } from "../../redux/auth/operations";
 
 import css from "./LoginForm.module.css";
 
-export const toastStyle = {
+const toastStyle = {
   position: "top-left",
   style: {
     background: "var(--light-brown)",
@@ -23,6 +22,8 @@ export const toastStyle = {
   },
 };
 
+// const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8, }$/;
+
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email format")
@@ -30,10 +31,8 @@ const LoginSchema = Yup.object().shape({
     .required("This field is required")
     .max(50, "Must be less then 50 chars"),
   password: Yup.string()
-    .min(8, "Must be min 8 chars")
     .required("This field is required")
-    .max(50, "Must be less then 50 chars"),
-});
+  });
 
 const initialValues = { email: "", password: "" };
 
