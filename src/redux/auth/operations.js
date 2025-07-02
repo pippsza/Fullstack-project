@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const authInstance = axios.create({
-  baseURL: "https://fullstack-recipes-backend-ssa1.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL
 });
 authInstance.defaults.withCredentials = true;
 
@@ -85,7 +85,7 @@ export const session = createAsyncThunk(
     try {
       setAuthHeader(persistedToken);
       const { data } = await authInstance.get("/users/session");
-      console.log(data, "DATA FROM SESSION"); 
+      console.log(data, "DATA FROM SESSION");
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

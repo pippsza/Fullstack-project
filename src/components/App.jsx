@@ -19,7 +19,7 @@ export default function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(session());
-  });
+  }, []);
   return (
     <>
       <Toaster
@@ -29,8 +29,8 @@ export default function App() {
             background: "white",
             color: "black",
             border: "black solid 2px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
-          },
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)"
+          }
         }}
       />
       <div className={css.mainApp}>

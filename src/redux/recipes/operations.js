@@ -1,7 +1,8 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import.meta.env.VITE_API_URL;
 
-axios.defaults.baseURL = "https://fullstack-recipes-backend-ssa1.onrender.com/api";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 export const fetchAll = createAsyncThunk(
   "recipes/fetchAll",
@@ -17,16 +18,19 @@ export const fetchAll = createAsyncThunk(
   }
 );
 
-export const fetchById = createAsyncThunk("/recipes/:id",   async (_, thunkAPI) => {
-  try {
-    console.log("fetching");
-    const res = await axios.get(`/recipes/${"id here later"}`);
-    //   console.log(res.data);
-    return res.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
+export const fetchById = createAsyncThunk(
+  "/recipes/:id",
+  async (_, thunkAPI) => {
+    try {
+      console.log("fetching");
+      const res = await axios.get(`/recipes/${"id here later"}`);
+      //   console.log(res.data);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
-})
+);
 
 export const addRecipe = createAsyncThunk(
   "recipes/addrecipe",
@@ -39,8 +43,6 @@ export const addRecipe = createAsyncThunk(
     }
   }
 );
-
-
 
 //  NO DELETING... FOR NOW!
 // export const deleterecipe = createAsyncThunk(

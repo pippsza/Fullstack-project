@@ -1,53 +1,52 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { useNavigate, Link } from "react-router-dom";
-import Svg from "../Svg/svg.jsx";
-import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import Svg from "../../common/Svg/svg.jsx";
+import { login } from "../../../redux/auth/operations";
 
-import { register } from "../../redux/auth/operations";
+import css from "./LoginForm.module.css";
 
-import css from "../LoginForm/LoginForm.module.css";
-
-const RegistrationSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(3, "Name is too Short!")
-    .max(50, "Name is too Long!")
-    .required("Name is Required field!"),
+const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email("Please enter a valid email")
     .required("Email is required field!"),
   password: Yup.string().required("Password is required field!")
 });
 
-const initialValues = { name: "", email: "", password: "" };
+const initialValues = { email: "", password: "" };
 
-export default function RegistrationForm() {
+export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
-  const nameFieldId = nanoid();
   const emailFieldId = nanoid();
   const passwordFieldId = nanoid();
 
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    dispatch(register(values))
+    dispatch(login(values))
       .unwrap()
       .then(() => {
-        toast.success("Registration successful!");
-        navigate("/auth/login");
+        toast.success("Login successful!");
+        navigate("/");
       })
       .catch((error) => {
-        if (error.response && error.response.data.code === 11000) {
-          toast.error(
-            "This email address is already registered. Try another address."
-          );
-        } else {
-          toast.error("OOPS... Failed to register user. Please try again.");
+        let message =
+          "Failed to log in. Please check your email or password and try again.";
+        if (
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          message = error.response.data.message;
         }
+        toast.error(message);
       });
     actions.resetForm();
   };
@@ -56,25 +55,11 @@ export default function RegistrationForm() {
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      validationSchema={RegistrationSchema}
+      validationSchema={LoginSchema}
     >
       <Form className={css.loginForm}>
-        <h2 className={css.loginText}>Register</h2>
-        <label className={css.loginLabel} htmlFor={nameFieldId}>
-          Enter your name
-        </label>
-        <Field
-          className={css.loginInput}
-          type="text"
-          name="name"
-          placeholder="Your name"
-          id={nameFieldId}
-        />
-        <ErrorMessage className={css.error} name="name" component="span" />
-        <label
-          className={`${css.loginLabel} ${css.loginLabelWithSpace}`}
-          htmlFor={emailFieldId}
-        >
+        <h2 className={css.loginText}>Login</h2>
+        <label className={css.loginLabel} htmlFor={emailFieldId}>
           Enter your email address
         </label>
         <Field
@@ -111,12 +96,12 @@ export default function RegistrationForm() {
           component="span"
         />
         <button className={css.loginBtn} type="submit">
-          Register
+          Log In
         </button>
         <p className={css.regText}>
-          Already have an account? &nbsp;
-          <Link className={css.regLink} to="/auth/login">
-            Log In
+          Don`t have an account? &nbsp;
+          <Link className={css.regLink} to="/auth/register">
+            Register
           </Link>
         </p>
       </Form>

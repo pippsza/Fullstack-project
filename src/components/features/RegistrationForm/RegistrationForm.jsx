@@ -1,15 +1,11 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { useNavigate, Link } from "react-router-dom";
-import Svg from "../Svg/svg.jsx";
-import { useState } from "react";
-
-import { register } from "../../redux/auth/operations";
-
-import css from "../LoginForm/LoginForm.module.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { register } from "../../../redux/auth/operations";
+import css from "./RegistrationForm.module.css";
 
 const RegistrationSchema = Yup.object().shape({
   name: Yup.string()
@@ -25,7 +21,6 @@ const RegistrationSchema = Yup.object().shape({
 const initialValues = { name: "", email: "", password: "" };
 
 export default function RegistrationForm() {
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const nameFieldId = nanoid();
   const emailFieldId = nanoid();
@@ -37,9 +32,9 @@ export default function RegistrationForm() {
     dispatch(register(values))
       .unwrap()
       .then(() => {
-        toast.success("Registration successful!");
-        navigate("/auth/login");
+        navigate("/private");
       })
+
       .catch((error) => {
         if (error.response && error.response.data.code === 11000) {
           toast.error(
@@ -58,67 +53,50 @@ export default function RegistrationForm() {
       onSubmit={handleSubmit}
       validationSchema={RegistrationSchema}
     >
-      <Form className={css.loginForm}>
-        <h2 className={css.loginText}>Register</h2>
-        <label className={css.loginLabel} htmlFor={nameFieldId}>
-          Enter your name
+      <Form className={css.registrationForm}>
+        <label className={css.registrationLabel} htmlFor={nameFieldId}>
+          Name
         </label>
         <Field
-          className={css.loginInput}
+          className={css.registrationInput}
           type="text"
           name="name"
-          placeholder="Your name"
           id={nameFieldId}
         />
         <ErrorMessage className={css.error} name="name" component="span" />
         <label
-          className={`${css.loginLabel} ${css.loginLabelWithSpace}`}
+          className={`${css.registrationLabel} ${css.registrationLabelWithSpace}`}
           htmlFor={emailFieldId}
         >
-          Enter your email address
+          Email
         </label>
         <Field
-          className={css.loginInput}
-          type="email"
+          className={css.registrationInput}
+          type="text"
           name="email"
-          placeholder="email@gmail.com"
           id={emailFieldId}
         />
-        <ErrorMessage className={css.error} name="email" component="span" />
+        <ErrorMessage className={css.errorMail} name="email" component="span" />
         <label
-          className={`${css.loginLabel} ${css.loginLabelWithSpace}`}
+          className={`${css.registrationLabel} ${css.registrationLabelWithSpace}`}
           htmlFor={passwordFieldId}
         >
-          Enter your password
+          Password
         </label>
-        <div>
-          <Field
-            className={css.loginInput}
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;"
-            id={passwordFieldId}
-          />
-          <Svg
-            name={showPassword ? "eye" : "close-eye"}
-            styles={css.iconEye}
-            onClick={() => setShowPassword((prev) => !prev)}
-          />
-        </div>
+        <Field
+          className={css.registrationInput}
+          type="text"
+          name="password"
+          id={passwordFieldId}
+        />
         <ErrorMessage
           className={css.errorPass}
           name="password"
           component="span"
         />
-        <button className={css.loginBtn} type="submit">
+        <button className={css.registrationBtn} type="submit">
           Register
         </button>
-        <p className={css.regText}>
-          Already have an account? &nbsp;
-          <Link className={css.regLink} to="/auth/login">
-            Log In
-          </Link>
-        </p>
       </Form>
     </Formik>
   );
