@@ -3,7 +3,7 @@ import css from "./NotFoundPage.module.css";
 
 export default function NotFound() {
   return (
-    <section>
+    <section className={css.section}>
       <div className={css.container}>
         <div className={css.caption}>
           <div className={css.hatCont}>
