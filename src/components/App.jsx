@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
-import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -63,8 +62,12 @@ export default function App() {
                 }
               />
 
-              <Route path="/recipes/:id" element={<RecipeViewPage />} />
-              <Route path="*" element={<NotFoundPage />} />
+              <Route path="recipes/:id" element={<RecipeViewPage />} />
+
+              <Route
+                path="*"
+                element={<h1 style={{ color: "black" }}>not found</h1>}
+              />
             </Route>
           </Routes>
         </Suspense>

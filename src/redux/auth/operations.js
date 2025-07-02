@@ -10,8 +10,6 @@ export const setAuthHeader = token => {
   authInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
-console.log(setAuthHeader);
-
 export const clearAuthHeader = () => {
   authInstance.defaults.headers.common.Authorization = '';
 };
