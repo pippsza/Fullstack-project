@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { session } from "../redux/auth/operations.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 
+
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
 const ProfilePage = lazy(() => import(`../pages/ProfilePage/ProfilePage.jsx`));
@@ -76,6 +77,7 @@ export default function App() {
               <Route path="*" element={<NotFoundPage></NotFoundPage>} />
             </Route>
           </Routes>
+          
         </Suspense>
       </div>
     </>
