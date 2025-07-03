@@ -2,6 +2,19 @@ import { useForm } from "react-hook-form";
 import IngredientList from "./IngredientList/IngredientList";
 import css from "./AddRecipeForm.module.css";
 
+const dishes = [
+  "Борщ",
+  "Піцца Маргарита",
+  "Суші",
+  "Тако",
+  "Бургер",
+  "Хумус",
+  "Курячі крильця Баффало",
+  "Кіші",
+  "Паста Карбонара",
+  "Шашлик",
+];
+
 export default function AddRecipeForm() {
   const {
     register,
@@ -60,7 +73,12 @@ export default function AddRecipeForm() {
             <div className={css.selectContainer}>
               <p className={css.formList}>Category</p>
               <select className={css.formInput} {...register("Category")}>
-                <option value="1">Soup</option>
+                <option >Soup</option>
+                {dishes.map((dishe, index) => (
+                  <option key={index} value={dishe}>
+                    {dishe}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
