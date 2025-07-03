@@ -1,10 +1,13 @@
 import css from "./App.module.css";
 import Layout from "../components/Layout/Layout.jsx";
 import { Toaster } from "react-hot-toast";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import ListWrapper from "./ListWrapper/ListWrapper.jsx";
+import { useDispatch } from "react-redux";
+import { session } from "../redux/auth/operations.js";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -14,6 +17,10 @@ const RestrictedRoute = lazy(() => import(`./RestrictedRoute.jsx`));
 const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
 
 export default function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(session());
+  });
   return (
     <>
       <Toaster
@@ -36,30 +43,29 @@ export default function App() {
               <Route
                 path="auth/:authType"
                 element={
-                  <AuthPage />
-                  // <RestrictedRoute component={<AuthPage />} redirectTo="/" />
+                  <RestrictedRoute component={<AuthPage />} redirectTo="/" />
                 }
               />
 
               <Route
                 path="add-recipe"
                 element={
-                  <AddRecipePage />
-                  // <PrivateRoute
-                  //   component={<AddRecipePage />}
-                  //   redirectTo="/auth/login"
-                  // />
+                  // <AddRecipePage />
+                  <PrivateRoute
+                    component={<AddRecipePage />}
+                    redirectTo="/auth/login"
+                  />
                 }
               />
 
               <Route
                 path="profile"
                 element={
-                  <ProfilePage />
-                  // <PrivateRoute
-                  //   component={<ProfilePage />}
-                  //   redirectTo="/auth/login"
-                  // />
+                  // <ProfilePage />
+                  <PrivateRoute
+                    component={<ProfilePage />}
+                    redirectTo="/auth/login"
+                  />
                 }
               >
                 <Route path=":recipeType" element={<ListWrapper />} />
@@ -67,10 +73,7 @@ export default function App() {
 
               <Route path="recipes/:id" element={<RecipeViewPage />} />
 
-              <Route
-                path="*"
-                element={<h1 style={{ color: "black" }}>not found</h1>}
-              />
+              <Route path="*" element={<NotFoundPage></NotFoundPage>} />
             </Route>
           </Routes>
         </Suspense>
