@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import IngredientList from "./IngredientList/IngredientList";
 import css from "./AddRecipeForm.module.css";
 
-
 export default function AddRecipeForm() {
   const {
     register,
@@ -19,29 +18,35 @@ export default function AddRecipeForm() {
       </div>
       <div className={css.formSection}>
         <h3 className={css.sectionTitle}>Upload Photo</h3>
-        <div>
-          <h3 className={css.sectionTitle}>General Information</h3>
-          <p className={css.formList}> Recipe Title </p>
-          <input
-            className={css.formInput}
-            type="text"
-            placeholder="Enter the name of your recipe"
-            {...register}
-          />
-          <p className={css.formList}>Recipe Description</p>
-          <textarea
-            className={css.textarea}
-            type="text"
-            placeholder="Enter a brief description of your recipe"
-            {...register}
-          />
-          <p className={css.formList}>Cooking time in minutes</p>
-          <input
-            className={css.formInput}
-            type="number"
-            placeholder="10"
-            {...register}
-          />
+        <div className={css.generalContainer}>
+          <div>
+            <h3 className={css.sectionTitle}>General Information</h3>
+            <p className={css.formList}> Recipe Title </p>
+            <input
+              className={css.formInput}
+              type="text"
+              placeholder="Enter the name of your recipe"
+              {...register}
+            />
+          </div>
+          <div>
+            <p className={css.formList}>Recipe Description</p>
+            <textarea
+              className={css.textarea}
+              type="text"
+              placeholder="Enter a brief description of your recipe"
+              {...register}
+            />
+          </div>
+          <div>
+            <p className={css.formList}>Cooking time in minutes</p>
+            <input
+              className={css.formInput}
+              type="number"
+              placeholder="10"
+              {...register}
+            />
+          </div>
           <div className={css.cookingSection}>
             <div className={css.selectContainer}>
               <p className={css.formList}>Calories</p>
