@@ -6,7 +6,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import ListWrapper from "./ListWrapper/ListWrapper.jsx";
 
-
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
 const ProfilePage = lazy(() => import(`../pages/ProfilePage/ProfilePage.jsx`));
@@ -63,9 +62,9 @@ export default function App() {
                   // />
                 }
               >
-              <Route path=":recipeType" element={<ListWrapper />} />
-              </Route >
-                              
+                <Route path=":recipeType" element={<ListWrapper />} />
+              </Route>
+
               <Route path="recipes/:id" element={<RecipeViewPage />} />
 
               <Route

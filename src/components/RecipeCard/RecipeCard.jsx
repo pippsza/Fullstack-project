@@ -31,11 +31,11 @@ export default function RecipeCard({ recipeCard }) {
         </NavLink>
         {recipeType === "own" ? null : recipeType === "favourites" ? (
           <div className={style.svg1WrapperActive}>
-            <Svg styles={style.svg1Active} name="bookmark" />
+            <Svg styles={style.svg1Active} name="bookmark" onClick={null} />
           </div>
         ) : (
           <div className={style.svg1Wrapper}>
-            <Svg styles={style.svg1} name="bookmark" />
+            <Svg styles={style.svg1} name="bookmark" onClick={null} />
           </div>
         )}
       </div>

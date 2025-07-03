@@ -9,7 +9,7 @@ export default function ListWrapper() {
       <p className={style.totalRecipes}>
         {RecipeList.length > 0 ? RecipeList.length : 0} recipes
       </p>
-      <RecipesList />
+      <RecipesList items={null} />
       <LoadMoreBtn />
     </>
   );
