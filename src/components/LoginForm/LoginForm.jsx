@@ -47,7 +47,7 @@ export default function LoginForm() {
       .unwrap()
       .then(() => {
         toast.success("Login successful!", toastStyle);
-        navigate("/private");
+        navigate("/");
       })
       .catch(() => {
         toast.error(
@@ -67,40 +67,50 @@ export default function LoginForm() {
       {({ errors }) => (
         <Form className={css.loginForm}>
           <h2 className={css.loginText}>Login</h2>
-          <label className={css.loginLabel}>Enter your email address</label>
-          <div className={css.passwordField}>
-            <Field
-              className={`${css.loginInput} ${errors.email ? css.err : ""}`}
-              type="email"
-              name="email"
-              placeholder="email@gmail.com"
-            />
-            <ErrorMessage className={css.error} name="email" component="span" />
+          <div className={css.inputForm}>
+            <div className={css.passwordField}>
+              <label className={css.loginLabel}>Enter your email address</label>
+              <Field
+                className={`${css.loginInput} ${errors.email ? css.err : ""}`}
+                type="email"
+                name="email"
+                placeholder="email@gmail.com"
+              />
+              <ErrorMessage
+                className={css.error}
+                name="email"
+                component="span"
+              />
+            </div>
+            <div className={css.passwordField}>
+              <label className={`${css.loginLabel} ${css.loginLabelWithSpace}`}>
+                Enter your password
+              </label>
+              <Field
+                className={`${css.loginInput} ${
+                  errors.password ? css.err : ""
+                }`}
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;"
+              />
+              <Svg
+                name={showPassword ? "eye" : "close-eye"}
+                styles={css.iconEye}
+                onClick={() => setShowPassword((prev) => !prev)}
+              />
+              <ErrorMessage
+                className={css.errorPass}
+                name="password"
+                component="span"
+              />
+            </div>
           </div>
-          <label className={`${css.loginLabel} ${css.loginLabelWithSpace}`}>
-            Enter your password
-          </label>
-          <div className={css.passwordField}>
-            <Field
-              className={`${css.loginInput} ${errors.password ? css.err : ""}`}
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;"
-            />
-            <Svg
-              name={showPassword ? "eye" : "close-eye"}
-              styles={css.iconEye}
-              onClick={() => setShowPassword((prev) => !prev)}
-            />
-            <ErrorMessage
-              className={css.errorPass}
-              name="password"
-              component="span"
-            />
+          <div className={css.buttonForm}>
+            <button className={css.loginBtn} type="submit">
+              Log In
+            </button>
           </div>
-          <button className={css.loginBtn} type="submit">
-            Log In
-          </button>
           <p className={css.regText}>
             Don`t have an account? &nbsp;
             <Link className={css.regLink} to="/auth/register">
