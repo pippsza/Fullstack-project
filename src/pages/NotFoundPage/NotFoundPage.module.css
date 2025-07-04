@@ -1,11 +1,7 @@
-html {
-  scroll-behavior: smooth;
-}
-
 .container {
   max-width: 360px;
   margin: 0 auto;
-  background-color: var(--light-beige);
+
   color: var(--darck-brown-65-);
   height: 70%;
   width: 90%;
@@ -16,7 +12,10 @@ html {
 }
 
 .sectionNotFound {
+  background-color: var(--light-beige);
+  height: 470px;
   padding: 24px 0;
+  position: relative;
 }
 
 @media screen and (min-width: 768px) {
@@ -24,11 +23,17 @@ html {
     max-width: 768px;
     padding: 0 32px;
   }
+  .sectionNotFound {
+    height: 600px;
+  }
 }
 @media screen and (min-width: 1280px) {
   .container {
     max-width: 1280px;
     padding: 0 107.5px;
+  }
+  .sectionNotFound {
+    height: 700px;
   }
 }
 /* 320 */

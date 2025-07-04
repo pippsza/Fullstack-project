@@ -29,12 +29,6 @@ export default function NotFoundPage() {
           </div>
         </div>
       </div>
-      <p className={css.textBackHome}>
-        Back Home{" "}
-        <Link to="/" className={css.backHome}>
-          click here
-        </Link>
-      </p>
     </section>
   );
 }
