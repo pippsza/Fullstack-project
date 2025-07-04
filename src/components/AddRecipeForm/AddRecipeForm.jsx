@@ -66,7 +66,7 @@ export default function AddRecipeForm() {
               type="text"
               placeholder="Enter the name of your recipe"
               {...register("title", {
-                required: "is required",
+                required: "required field",
               })}
             />
             {errors.title && (
@@ -79,7 +79,7 @@ export default function AddRecipeForm() {
               className={css.textarea}
               placeholder="Enter a brief description of your recipe"
               {...register("description", {
-                required: "is required",
+                required: "required field",
               })}
             />
             {errors.description && (
@@ -93,7 +93,7 @@ export default function AddRecipeForm() {
               type="number"
               placeholder="10"
               {...register("time", {
-                required: "is required",
+                required: "required field",
               })}
             />
             {errors.time && (
@@ -108,7 +108,7 @@ export default function AddRecipeForm() {
                 type="number"
                 placeholder="150 cals"
                 {...register("calories", {
-                  required: "is required",
+                  required: "required field",
                 })}
               />
               {errors.calories && (
@@ -120,7 +120,7 @@ export default function AddRecipeForm() {
               <select
                 className={css.formInput}
                 {...register("category", {
-                  required: "is required",
+                  required: "required field",
                 })}
               >
                 <option value="1">Soup</option>
@@ -182,7 +182,7 @@ export default function AddRecipeForm() {
             className={css.textarea}
             placeholder="Enter instructions"
             {...register("instructions", {
-              required: "is required",
+              required: "required field",
             })}
           />
           {errors.instructions && (
