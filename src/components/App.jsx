@@ -50,7 +50,6 @@ export default function App() {
               <Route
                 path="add-recipe"
                 element={
-                  // <AddRecipePage />
                   <PrivateRoute
                     component={<AddRecipePage />}
                     redirectTo="/auth/login"
@@ -61,7 +60,6 @@ export default function App() {
               <Route
                 path="profile"
                 element={
-                  // <ProfilePage />
                   <PrivateRoute
                     component={<ProfilePage />}
                     redirectTo="/auth/login"
@@ -69,6 +67,7 @@ export default function App() {
                 }
               >
                 <Route path=":recipeType" element={<ListWrapper />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
 
               <Route path="recipes/:id" element={<RecipeViewPage />} />
