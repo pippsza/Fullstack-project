@@ -1,6 +1,8 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
 import css from "./AddRecipeForm.module.css";
+import Svg from "../Svg/svg.jsx";
+import noImage from "../../assets/NoImageAvailable.jpg";
 
 export default function AddRecipeForm() {
   const {
@@ -21,7 +23,7 @@ export default function AddRecipeForm() {
     },
   });
 
-   const {
+  const {
     fields: ingredientFields,
     append: appendIngredient,
     remove: removeIngredient,
@@ -38,21 +40,23 @@ export default function AddRecipeForm() {
       setMeasure("");
     }
   };
-  
+
   const onSubmit = (data) => {
     console.log("Зібрані дані:", data);
-    setIsSubmitted(true);
+    setIsSubmitted(false);
     reset();
   };
-    
 
   return (
     <form className={css.formContainer} onSubmit={handleSubmit(onSubmit)}>
-      <div>
+      <div className={css.formTitleContainer}>
         <h2 className={css.formTitle}>Add Recipe</h2>
       </div>
       <div className={css.formSection}>
-        <h3 className={css.sectionTitle}>Upload Photo</h3>
+        <div>
+          <h3 className={css.sectionTitle}>Upload Photo</h3>
+          <img src={noImage} className={css.noImage} alt="No Image" />
+        </div>
         <div className={css.generalContainer}>
           <div>
             <h3 className={css.sectionTitle}>General Information</h3>
@@ -65,8 +69,8 @@ export default function AddRecipeForm() {
                 required: "is required",
               })}
             />
-            {errors.recipeTitle && (
-              <span className={css.error}>{errors.recipeTitle.message}</span>
+            {errors.title && (
+              <span className={css.error}>{errors.title.message}</span>
             )}
           </div>
           <div>
@@ -78,10 +82,8 @@ export default function AddRecipeForm() {
                 required: "is required",
               })}
             />
-            {errors.recipeDescription && (
-              <span className={css.error}>
-                {errors.recipeDescription.message}
-              </span>
+            {errors.description && (
+              <span className={css.error}>{errors.description.message}</span>
             )}
           </div>
           <div>
@@ -90,8 +92,13 @@ export default function AddRecipeForm() {
               className={css.formInput}
               type="number"
               placeholder="10"
-              {...register("time")}
+              {...register("time", {
+                required: "is required",
+              })}
             />
+            {errors.time && (
+              <span className={css.error}>{errors.time.message}</span>
+            )}
           </div>
           <div className={css.cookingSection}>
             <div className={css.selectContainer}>
@@ -100,55 +107,71 @@ export default function AddRecipeForm() {
                 className={css.formInput}
                 type="number"
                 placeholder="150 cals"
-                {...register("calories")}
+                {...register("calories", {
+                  required: "is required",
+                })}
               />
+              {errors.calories && (
+                <span className={css.error}>{errors.calories.message}</span>
+              )}
             </div>
             <div className={css.selectContainer}>
               <p className={css.formList}>Category</p>
-              <select className={css.formInput} {...register("category")}>
+              <select
+                className={css.formInput}
+                {...register("category", {
+                  required: "is required",
+                })}
+              >
                 <option value="1">Soup</option>
               </select>
+              {errors.category && (
+                <span className={css.error}>{errors.category.message}</span>
+              )}
             </div>
           </div>
         </div>
         <div>
           <h3 className={css.sectionTitle}>Ingredients</h3>
-          <p className={css.formList}>Name</p>
-          <input
-            className={css.formInput}
-            placeholder="Ingredient title"
-            value={ingredient}
-            onChange={(e) => setIngredient(e.target.value)}
-          />
-          <p className={css.formList}>Amount</p>
-          <select
-            className={css.formInput}
-            value={measure}
-            onChange={(e) => setMeasure(e.target.value)}
-          >
-            <option value="">Select amount</option>
-            <option value="100g">100g</option>
-            <option value="200g">200g</option>
-            <option value="1 piece">1 piece</option>
-          </select>
+          <div className={`${css.generalContainer} ${css.tabletContainer}`}>
+            <div className={`${css.formListConasiner} ${css.formListTablet}`}>
+              <p className={css.formList}>Name</p>
+              <input
+                className={`${css.formInput} ${css.formTablet}`}
+                placeholder="Broccoli"
+                value={ingredient}
+                onChange={(event) => setIngredient(event.target.value)}
+              />
+            </div>
+            <div className={`${css.formListConasiner} ${css.formListTablet}`}>
+              <p className={css.formList}>Amount</p>
+              <input
+                className={`${css.formInput} ${css.formInputTablet}`}
+                placeholder="100g"
+                value={measure}
+                onChange={(event) => setMeasure(event.target.value)}
+              />
+            </div>
+          </div>
           <button
-            className={css.button}
+            className={`${css.button} ${css.addButton}`}
             type="button"
             onClick={handleAddIngredient}
             disabled={isSubmitted}
           >
             Add new ingredient
           </button>
+
           {ingredientFields.map((field, index) => (
             <div key={field.id} className={css.ingredientRow}>
-              <span>
-                {field.ingredient}
-                {field.measure}
-              </span>
+              <span className={css.spanIngredient}>{field.ingredient}</span>
+              <span className={css.spanIngredient}>{field.measure}</span>
               {!isSubmitted && (
-                <button type="button" onClick={() => removeIngredient(index)}>
-                  Remove
-                </button>
+                <Svg
+                  name={"trash"}
+                  styles={css.spanIcon}
+                  onClick={() => removeIngredient(index)}
+                />
               )}
             </div>
           ))}
@@ -166,11 +189,11 @@ export default function AddRecipeForm() {
             <span className={css.error}>{errors.instructions.message}</span>
           )}
         </div>
-      </div>
-      <div className={css.bntContainer}>
-        <button className={css.button} type="submit">
-          Publish Recipe
-        </button>
+        <div className={css.bntContainer}>
+          <button className={css.button} type="submit">
+            Publish Recipe
+          </button>
+        </div>
       </div>
     </form>
   );

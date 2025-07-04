@@ -5,6 +5,12 @@
   max-width: 393px;
   background-color: var(--background);
   padding: 0 16px;
+  border: 1px solid var(--light-gray-3);
+}
+.noImage {
+  width: 100%;
+  height: 382px;
+  border-radius: 16px;
 }
 
 .formSection {
@@ -23,7 +29,7 @@
   padding-bottom: 16px;
 }
 
-.generalContainer{
+.generalContainer {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -37,9 +43,10 @@
 .cookingSection {
   display: flex;
   flex-direction: row;
-  gap: 17px
+  gap: 17px;
 }
-.selectContainer{
+
+.selectContainer {
   min-width: 48%;
 }
 .formInput {
@@ -48,7 +55,10 @@
   padding: 12px;
   width: 100%;
   color: var(--black);
-  background-color: var(--white) ;
+  background-color: var(--white);
+}
+.formListConasiner {
+  padding-bottom: 32px;
 }
 
 .textarea {
@@ -58,7 +68,30 @@
   width: 100%;
   height: 144px;
   color: var(--black);
-  background-color: var(--white) ;
+  background-color: var(--white);
+}
+
+.ingredientRow {
+  position: relative;
+  width: 100%;
+  display: flex;
+  border: 1px solid var(--light-gray-3);
+  padding: 16px 0px;
+}
+
+.spanIngredient {
+  width: 50%;
+}
+
+.spanIcon {
+  position: absolute;
+  top: 30%;
+  right: 2%;
+  fill: none;
+  stroke: var(--black);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
 .button {
@@ -76,3 +109,87 @@
   background-color: var(--brown);
   transform: scale(0.95);
 }
+
+.bntContainer {
+  margin-bottom: 48px;
+}
+.error {
+  color: var(--red);
+  font-size: 14px;
+}
+
+@media screen and (min-width: 768px) {
+  .formContainer {
+    max-width: 768px;
+    padding: 0 32px;
+  }
+
+  .noImage {
+    height: 457px;
+  }
+
+  .formSection {
+    gap: 32px;
+  }
+
+  .formTitle {
+    font-size: 48px;
+  }
+
+  .sectionTitle {
+    font-size: 32px;
+    padding-bottom: 24px;
+  }
+
+  .generalContainer {
+    gap: 32px;
+  }
+
+  .cookingSection {
+    display: flex;
+    flex-direction: row;
+    gap: 17px;
+  }
+
+  .tabletContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0;
+  }
+  .formListTablet{
+    padding-bottom: 17px;
+  }
+
+  .formTablet {
+    width: 431px;
+  }
+  .formInputTablet {
+    width: 249px;
+  }
+
+  .ingredientRow {
+    width: 431px;
+    padding: 16px 0px;
+  }
+
+  .spanIngredient {
+    width: 45%;
+  }
+
+  .addButton {
+    margin-left: 455px;
+    width: 249px;
+    padding: 8px;
+  }
+
+  .spanIcon {
+    top: 30%;
+    right: 12%;
+  }
+
+  .button:hover {
+    transform: scale(0.98);
+  }
+}
+@media screen and (min-width: 1158px) {}
