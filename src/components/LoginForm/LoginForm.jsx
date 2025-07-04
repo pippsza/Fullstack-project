@@ -12,16 +12,6 @@ import { login } from "../../redux/auth/operations";
 
 import css from "./LoginForm.module.css";
 
-const toastStyle = {
-  position: "top-left",
-  style: {
-    background: "var(--light-brown)",
-    color: "var(--white)",
-    fontSize: "12px",
-    borderRadius: "8px",
-  },
-};
-
 // const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8, }$/;
 
 const LoginSchema = Yup.object().shape({
@@ -30,9 +20,8 @@ const LoginSchema = Yup.object().shape({
     .min(3, "Must be min 3 chars")
     .required("This field is required")
     .max(50, "Must be less then 50 chars"),
-  password: Yup.string()
-    .required("This field is required")
-  });
+  password: Yup.string().required("This field is required"),
+});
 
 const initialValues = { email: "", password: "" };
 
@@ -47,14 +36,11 @@ export default function LoginForm() {
       .unwrap()
       .then(() => {
         toast.success("Login successful!");
-        navigate('/');
-        toast.success("Login successful!", toastStyle);
         navigate("/");
       })
       .catch(() => {
         toast.error(
-          "Failed to log in. Please check your email or password and try again.",
-          toastStyle
+          "Failed to log in. Please check your email or password and try again."
         );
       });
     actions.resetForm();

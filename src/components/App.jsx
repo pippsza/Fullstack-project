@@ -2,7 +2,7 @@ import css from "./App.module.css";
 import Layout from "../components/Layout/Layout.jsx";
 import { Toaster } from "react-hot-toast";
 import { lazy, Suspense, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import ListWrapper from "./ListWrapper/ListWrapper.jsx";
 import { useDispatch } from "react-redux";
@@ -26,11 +26,12 @@ export default function App() {
       <Toaster
         toastOptions={{
           duration: 3000,
+          position: "top-left",
           style: {
-            background: "white",
-            color: "black",
-            border: "black solid 2px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+            background: "var(--light-brown)",
+            color: "var(--white)",
+            fontSize: "12px",
+            borderRadius: "8px",
           },
         }}
       />
