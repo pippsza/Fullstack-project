@@ -19,7 +19,6 @@ export const register = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const { data } = await authInstance.post("/auth/register", formData);
-      console.log("REGISTER RESPONSE", data);
       setAuthHeader(data.token);
       return data;
     } catch (error) {
@@ -33,7 +32,6 @@ export const login = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const { data } = await authInstance.post("/auth/login", formData);
-      console.log("LOGIN RESPONSE", data);
       setAuthHeader(data.accessToken);
 
       return data;
@@ -53,6 +51,20 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   }
 });
 
+
+export const refreshToken = createAsyncThunk(
+  "auth/refreshToken",
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await authInstance.post("/auth/refresh");
+        setAuthHeader(data.refreshToken);
+      return data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
@@ -65,7 +77,7 @@ export const refreshUser = createAsyncThunk(
 
     try {
       setAuthHeader(persistedToken);
-      const { data } = await authInstance.post("/auth/refresh");
+      const { data } = await authInstance.get("/auth/refresh");
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
