@@ -7,7 +7,7 @@ html {
   margin: 0 auto;
   background-color: var(--light-beige);
   color: var(--darck-brown-65-);
-  height: 60%;
+  height: 70%;
   width: 90%;
   position: absolute;
   top: 60%;
@@ -53,18 +53,18 @@ html {
   text-transform: capitalize;
   color: var(--darck-brown-65-);
   font-family: "Satisfy", cursive;
-  font-size: 50px;
+  font-size: 46px;
   text-align: center;
 }
 
 .panWrapper {
   transform: scale(0.6);
   position: relative;
-  left: 1%;
+  left: 8%;
 }
 .center {
-  height: 300px;
-  width: 300px;
+  height: 200px;
+  width: 200px;
   border-radius: 50%;
   background-color: #8a8f99;
   position: relative;
@@ -74,7 +74,7 @@ html {
 .center,
 .center::after,
 .center::before {
-  font-size: 120px;
+  font-size: 90px;
   font-family: "Satisfy", cursive;
   position: absolute;
   top: 20%;
@@ -89,8 +89,8 @@ html {
   left: -86px;
 }
 .subCenter {
-  height: 270px;
-  width: 270px;
+  height: 190px;
+  width: 190px;
   border-radius: 50%;
   background-color: #232732;
   position: absolute;
@@ -104,9 +104,9 @@ html {
   height: 150px;
   width: 40px;
   position: absolute;
-  left: 263px;
-  top: 280px;
-  transform: rotate(-35deg);
+  left: 202px;
+  top: 172px;
+  transform: rotate(-36deg);
   background-color: #232732;
   z-index: 2;
   border-radius: 2px;
@@ -117,8 +117,8 @@ html {
   content: "";
   display: inline-block;
   position: absolute;
-  left: 220px;
-  top: 260px;
+  left: 170px;
+  top: 165px;
   transform: rotate(-38deg);
   background-color: #8a8f99;
 }
@@ -276,7 +276,7 @@ html {
     font-size: 240px;
     font-family: "Satisfy", cursive;
     position: absolute;
-    top: 20%;
+    top: 0%;
     color: #232732;
   }
   .center::after {
@@ -286,6 +286,40 @@ html {
   .center::before {
     content: "4";
     left: -150px;
+  }
+  .subCenter {
+    height: 260px;
+    width: 260px;
+    border-radius: 50%;
+    background-color: #232732;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    margin: auto;
+  }
+  .handle {
+    height: 150px;
+    width: 40px;
+    position: absolute;
+    left: 270px;
+    top: 288px;
+    transform: rotate(-35deg);
+    background-color: #232732;
+    z-index: 2;
+    border-radius: 2px;
+  }
+  .handleSub {
+    height: 50px;
+    width: 25px;
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: 230px;
+    top: 270px;
+    transform: rotate(-38deg);
+    background-color: #8a8f99;
   }
 }
 
