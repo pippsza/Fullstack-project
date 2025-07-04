@@ -4,6 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 .text {
   font-weight: 400;
@@ -53,5 +55,7 @@
   }
   .footer {
     height: 94px;
+    padding-top: 35px;
+    padding-bottom: 35px;
   }
 }

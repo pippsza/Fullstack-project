@@ -6,6 +6,7 @@ import { logOut } from "../../redux/auth/operations.js";
 export default function Logout({ openMobile }) {
   const userName = useSelector(selectUser);
   const cutUserName = () => {
+    if (!userName || userName.length === 0) return "";
     return userName[0];
   };
   const dispatch = useDispatch();

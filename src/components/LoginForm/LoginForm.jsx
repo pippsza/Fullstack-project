@@ -46,8 +46,10 @@ export default function LoginForm() {
     dispatch(login(values))
       .unwrap()
       .then(() => {
+        toast.success("Login successful!");
+        navigate('/');
         toast.success("Login successful!", toastStyle);
-        navigate("/private");
+        navigate("/");
       })
       .catch(() => {
         toast.error(

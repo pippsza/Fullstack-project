@@ -84,5 +84,23 @@ export const refreshUser = createAsyncThunk(
     }
   }
 );
+export const session = createAsyncThunk(
+  "users/session",
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
 
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue("Unable to fetch user");
+    }
 
+    try {
+      setAuthHeader(persistedToken);
+      const { data } = await authInstance.get("/users/session");
+      console.log(data, "DATA FROM SESSION"); 
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
