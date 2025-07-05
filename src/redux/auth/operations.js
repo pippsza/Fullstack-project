@@ -18,10 +18,12 @@ export const register = createAsyncThunk(
   "auth/register",
   async (formData, thunkAPI) => {
     try {
+      console.log("Register operation - sending data:", formData);
       const { data } = await authInstance.post("/auth/register", formData);
-      setAuthHeader(data.token);
+      console.log("Register operation - received response:", data);
       return data;
     } catch (error) {
+      console.error("Register operation - error:", error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -31,11 +33,12 @@ export const login = createAsyncThunk(
   "auth/login",
   async (formData, thunkAPI) => {
     try {
+      console.log("Login operation - sending data:", formData);
       const { data } = await authInstance.post("/auth/login", formData);
-      setAuthHeader(data.accessToken);
-
+      console.log("Login operation - received response:", data);
       return data;
     } catch (error) {
+      console.error("Login operation - error:", error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -57,7 +60,6 @@ export const refreshToken = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await authInstance.post("/auth/refresh");
-        setAuthHeader(data.refreshToken);
       return data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.message);
@@ -84,22 +86,27 @@ export const refreshUser = createAsyncThunk(
     }
   }
 );
-export const session = createAsyncThunk(
-  "users/session",
+
+export const getUserInfo = createAsyncThunk(
+  "auth/getUserInfo",
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
     const persistedToken = state.auth.token;
+    console.log("GetUserInfo operation - token:", persistedToken);
 
     if (persistedToken === null) {
+      console.error("GetUserInfo operation - no token available");
       return thunkAPI.rejectWithValue("Unable to fetch user");
     }
 
     try {
       setAuthHeader(persistedToken);
-      const { data } = await authInstance.get("/users/session");
-      console.log(data, "DATA FROM SESSION"); 
+      console.log("GetUserInfo operation - making request to /users");
+      const { data } = await authInstance.get("/users");
+      console.log("GetUserInfo operation - received response:", data);
       return data;
     } catch (error) {
+      console.error("GetUserInfo operation - error:", error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

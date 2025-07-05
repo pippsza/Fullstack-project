@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 
 import Svg from "../Svg/svg.jsx";
 
-import { login } from "../../redux/auth/operations";
+import { login, getUserInfo } from "../../redux/auth/operations";
 
 import css from "./LoginForm.module.css";
 
@@ -34,6 +34,9 @@ export default function LoginForm() {
   const handleSubmit = (values, actions) => {
     dispatch(login(values))
       .unwrap()
+      .then(() => {
+        return dispatch(getUserInfo());
+      })
       .then(() => {
         toast.success("Login successful!");
         navigate("/");

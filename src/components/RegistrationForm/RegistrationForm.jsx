@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 
-import { register } from '../../redux/auth/operations';
+import { register, login, getUserInfo } from '../../redux/auth/operations';
 
 import css from './RegistrationForm.module.css';
 
@@ -32,13 +32,24 @@ export default function RegistrationForm() {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
+    console.log("Starting registration with values:", values);
     dispatch(register(values))
       .unwrap()
-      .then(() => {
-       navigate("/private");
+      .then((registerResult) => {
+        console.log("Registration successful:", registerResult);
+        return dispatch(login({ email: values.email, password: values.password }));
       })
-
+      .then((loginResult) => {
+        console.log("Login successful:", loginResult);
+        return dispatch(getUserInfo());
+      })
+      .then((userInfoResult) => {
+        console.log("User info loaded:", userInfoResult);
+        toast.success("Registration and login successful!");
+        navigate("/");
+      })
       .catch((error) => {
+        console.error("Error during registration/login process:", error);
         if (error.response && error.response.data.code === 11000) {
           toast.error(
             "This email address is already registered. Try another address."

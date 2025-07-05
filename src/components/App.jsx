@@ -5,8 +5,9 @@ import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import ListWrapper from "./ListWrapper/ListWrapper.jsx";
-import { useDispatch } from "react-redux";
-import { session } from "../redux/auth/operations.js";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo } from "../redux/auth/operations.js";
+import { selectUserData, selectIsLoggedIn } from "../redux/auth/selectors.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
@@ -18,9 +19,12 @@ const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
 
 export default function App() {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   useEffect(() => {
-    dispatch(session());
-  });
+    if (isLoggedIn) {
+      dispatch(getUserInfo());
+    }
+  }, [dispatch, isLoggedIn]);
   return (
     <>
       <Toaster
