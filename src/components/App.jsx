@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../redux/auth/operations.js";
 import { selectUserData, selectIsLoggedIn } from "../redux/auth/selectors.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
+import TestFetches from "../../TestFetches/TestFetches.jsx";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -39,6 +40,7 @@ export default function App() {
           },
         }}
       />
+      <TestFetches></TestFetches>
       <div className={css.mainApp}>
         <Suspense fallback={<span className={css.loader}></span>}>
           <Routes>

@@ -39,5 +39,7 @@ export const store = configureStore({
       },
     }),
 });
-
+store.subscribe(() => {
+  console.log('GLOBAL STATE:', store.getState());
+});
 export const persistor = persistStore(store);

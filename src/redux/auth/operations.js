@@ -54,7 +54,6 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   }
 });
 
-
 export const refreshToken = createAsyncThunk(
   "auth/refreshToken",
   async (_, thunkAPI) => {
@@ -62,7 +61,7 @@ export const refreshToken = createAsyncThunk(
       const { data } = await authInstance.post("/auth/refresh");
       return data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

@@ -3,11 +3,9 @@ import { createSelector } from "@reduxjs/toolkit";
 
 export const selectRecipes = (state) => state.recipes.items;
 
-export const selectLoading = (state) => state.recipes.loading;
+export const selectRecipesLoading = (state) => state.recipes.loading;
 
-export const selectError = (state) => state.recipes.error;
-
-// ЯК БУДЕ ЕНДПОІНТ НА РЕЦЕПТИ - ДОПИСАТИ ЛОГІКУ ФІЛЬТРУ. ЦЕ НА СЕРГІЯ КВАЧ ЗАЛИШУ :))))))
+export const selectRecipesError = (state) => state.recipes.error;
 
 export const selectFilteredRecipes = createSelector(
   [selectRecipes, selectNameFilter],
@@ -18,3 +16,4 @@ export const selectFilteredRecipes = createSelector(
     );
   }
 );
+export const selectCurrentRecipe = (state) => state.recipes.currentRecipe;
