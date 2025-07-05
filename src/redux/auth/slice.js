@@ -5,8 +5,9 @@ import {
   refreshUser,
   register,
   refreshToken,
-  session
+  getUserInfo
 } from "./operations";
+import { setAuthHeader, clearAuthHeader } from "./operations";
 
 
 
@@ -29,12 +30,11 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        console.log("REGISTER FULFILLED PAYLOAD", action.payload);
-        state.user = action.payload.data.user;
-        state.token = action.payload.data.accessToken;
-        state.isLoggedIn = true;
+        console.log("Register fulfilled - payload:", action.payload);
+        state.user = action.payload.data;
         state.isLoading = false;
         state.error = null;
+        console.log("State after register:", state);
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -45,12 +45,13 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log("LOGIN FULFILLED PAYLOAD", action.payload);
-        state.user = action.payload.data.user;
+        console.log("Login fulfilled - payload:", action.payload);
         state.token = action.payload.data.accessToken;
+        setAuthHeader(action.payload.data.accessToken);
         state.isLoggedIn = true;
         state.isLoading = false;
         state.error = null;
+        console.log("State after login:", state);
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -63,6 +64,7 @@ const authSlice = createSlice({
       .addCase(logOut.fulfilled, (state) => {
         state.user = { name: null, email: null };
         state.token = null;
+        clearAuthHeader();
         state.isLoggedIn = false;
         state.isLoading = false;
         state.error = null;
@@ -77,9 +79,8 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(refreshToken.fulfilled, (state, action) => {
-        console.log("REFRESHTOKEN FULFILLED PAYLOAD", action.payload);
-        state.user = action.payload.data.user;
-        state.token = action.payload.data.refreshTokenToken;
+        state.token = action.payload.data.accessToken;
+        setAuthHeader(action.payload.data.accessToken);
         state.isLoggedIn = true;
         state.isLoading = false;
         state.error = null;
@@ -103,21 +104,24 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload.message;
       })
-      .addCase(session.pending, (state) => {
+      .addCase(getUserInfo.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(session.fulfilled, (state, action) => {
-        state.isLoggedIn = true;
+      .addCase(getUserInfo.fulfilled, (state, action) => {
+        console.log("GetUserInfo fulfilled - payload:", action.payload);
+        state.user = action.payload.data;
         state.isLoading = false;
         state.error = null;
+        console.log("State after getUserInfo:", state);
       })
-      .addCase(session.rejected, (state, action) => {
+      .addCase(getUserInfo.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.message;
         state.isLoggedIn = false;
         state.user = { name: null, email: null };
         state.token = null;
+        clearAuthHeader();
       }),
 });
 
