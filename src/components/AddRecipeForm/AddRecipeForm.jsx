@@ -34,6 +34,8 @@ export default function AddRecipeForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [ingredientNameError, setIngredientNameError] = useState("");
   const [ingredientAmountError, setIngredientAmountError] = useState("");
+  const [photo, setPhoto] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(noImage);
 
   const handleAddIngredient = () => {
     let hasError = false;
@@ -57,6 +59,17 @@ export default function AddRecipeForm() {
   };
 
   const onSubmit = (data) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("time", data.time);
+    formData.append("calories", data.calories);
+    formData.append("category", data.category);
+    formData.append("instructions", data.instructions);
+    formData.append("ingredients", JSON.stringify(data.ingredients));
+    if (photo) {
+      formData.append("photo", photo);
+    }
     console.log("Зібрані дані:", data);
     setIsSubmitted(false);
     reset();
@@ -68,8 +81,20 @@ export default function AddRecipeForm() {
       <div className={css.mainRowContainer}>
         <section className={css.sectionPhoto}>
           <h3 className={css.sectionTitlePhoto}>Upload Photo</h3>
-          <img src={noImage} className={css.noImage} alt="No Image" />
+          <img src={photoPreview} className={css.noImage} alt="Preview" />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                setPhoto(file);
+                setPhotoPreview(URL.createObjectURL(file));
+              }
+            }}
+          />
         </section>
+
         <div className={css.globalContainer}>
           <section className={css.sectionInformation}>
             <h3 className={css.sectionTitle}>General Information</h3>
