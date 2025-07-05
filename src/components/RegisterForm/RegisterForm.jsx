@@ -7,7 +7,7 @@ import { useState } from "react";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
-import { register } from "../../redux/auth/operations";
+import { register, getUserInfo } from "../../redux/auth/operations";
 
 const UserSchema = Yup.object().shape({
   name: Yup.string()
@@ -46,6 +46,9 @@ export default function RegisterForm() {
     const { confirmPassword, agree, ...filteredValues } = values;
     dispatch(register(filteredValues))
       .unwrap()
+      .then(() => {
+        return dispatch(getUserInfo());
+      })
       .then(() => {
         toast.success("Register successful!");
         navigate("/");
