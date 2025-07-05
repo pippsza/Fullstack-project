@@ -19,9 +19,9 @@ import recipesReducer from "./recipes/slice";
 
 const persistedAuthReducer = persistReducer(
   {
-    key: "token",
+    key: "user",
     storage,
-    whitelist: ["token"],
+    whitelist: ["token", "user"],
   },
   authReducer
 );

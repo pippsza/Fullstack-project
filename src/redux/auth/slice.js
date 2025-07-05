@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login, logOut, refreshUser, register } from './operations';
+import {
+  login,
+  logOut,
+  refreshUser,
+  register,
+  refreshToken,
+  session
+} from "./operations";
 
 
 
@@ -64,6 +71,24 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload.message;
       })
+
+      .addCase(refreshToken.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        console.log("REFRESHTOKEN FULFILLED PAYLOAD", action.payload);
+        state.user = action.payload.data.user;
+        state.token = action.payload.data.refreshTokenToken;
+        state.isLoggedIn = true;
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload.message;
+      })
+
       .addCase(refreshUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -77,6 +102,22 @@ const authSlice = createSlice({
       .addCase(refreshUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.message;
+      })
+      .addCase(session.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(session.fulfilled, (state, action) => {
+        state.isLoggedIn = true;
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(session.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload.message;
+        state.isLoggedIn = false;
+        state.user = { name: null, email: null };
+        state.token = null;
       }),
 });
 
