@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { register } from "../../redux/auth/operations";
 
 const UserSchema = Yup.object().shape({
@@ -47,7 +47,8 @@ export default function RegisterForm() {
     dispatch(register(filteredValues))
       .unwrap()
       .then(() => {
-        navigate("/private");
+        toast.success("Register successful!");
+        navigate("/");
       })
 
       .catch((error) => {
@@ -74,106 +75,125 @@ export default function RegisterForm() {
         >
           {({ values, errors }) => (
             <Form className={css.regForm}>
-              <h2 className={css.regHeader}>Register</h2>
-              <p className={css.regText}>
-                Join our community of culinary enthusiasts, save your favorite
-                recipes, and share your cooking creations
-              </p>
-              <label className={css.regLabel}>
-                <span className={css.regSpan}>Enter your name</span>
-                <Field
-                  className={`${css.regField} ${errors.name ? css.error : ""}`}
-                  name="name"
-                  placeholder="Max"
-                />
-                <ErrorMessage
-                  name="name"
-                  component="span"
-                  className={css.errorMess}
-                />
-              </label>
-              <label className={css.regLabel}>
-                <span className={css.regSpan}>Enter your email address</span>
-                <Field
-                  className={`${css.regField} ${errors.email ? css.error : ""}`}
-                  name="email"
-                  placeholder="email@gmail.com"
-                />
-                <ErrorMessage
-                  name="email"
-                  component="span"
-                  className={css.errorMess}
-                />
-              </label>
-              <label className={css.regLabel}>
-                <span className={css.regSpan}>Create a strong password</span>
-                <div className={css.iconContainer}>
-                  <Field
-                    className={`${css.regField} ${
-                      errors.password ? css.error : ""
-                    }`}
-                    name="password"
-                    placeholder="*********"
-                    type={showPassword ? "text" : "password"}
-                  />
-                  <Svg
-                    name="eye"
-                    styles={css.regEye}
-                    onClick={() => setShowPassword((prev) => !prev)}
-                  />
+              <div className={css.newContainer}>
+                {" "}
+                <h2 className={css.regHeader}>Register</h2>
+                <p className={css.regText}>
+                  Join our community of culinary enthusiasts, save your favorite
+                  recipes, and share your cooking creations
+                </p>
+                <div className={css.labelContainer}>
+                  <label className={css.regLabel}>
+                    <span className={css.regSpan}>Enter your name</span>
+                    <Field
+                      className={`${css.regField} ${
+                        errors.name ? css.error : ""
+                      }`}
+                      name="name"
+                      placeholder="Max"
+                    />
+                    <ErrorMessage
+                      name="name"
+                      component="span"
+                      className={css.errorMess}
+                    />
+                  </label>
+                  <label className={css.regLabel}>
+                    <span className={css.regSpan}>
+                      Enter your email address
+                    </span>
+                    <Field
+                      className={`${css.regField} ${
+                        errors.email ? css.error : ""
+                      }`}
+                      name="email"
+                      placeholder="email@gmail.com"
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component="span"
+                      className={css.errorMess}
+                    />
+                  </label>
+                  <label className={css.regLabel}>
+                    <span className={css.regSpan}>
+                      Create a strong password
+                    </span>
+                    <div className={css.iconContainer}>
+                      <Field
+                        className={`${css.regField} ${
+                          errors.password ? css.error : ""
+                        }`}
+                        name="password"
+                        placeholder="*********"
+                        type={showPassword ? "text" : "password"}
+                      />
+                      <Svg
+                        name={showPassword ? "eye" : "close-eye"}
+                        styles={css.regEye}
+                        onClick={() => setShowPassword((prev) => !prev)}
+                      />
+                    </div>
+                    <ErrorMessage
+                      name="password"
+                      component="span"
+                      className={css.errorMess}
+                    />
+                  </label>
+                  <label className={css.regLabel}>
+                    <span className={css.regSpan}>Repeat your password</span>
+                    <div className={css.iconContainer}>
+                      <Field
+                        className={`${css.regField} ${
+                          errors.confirmPassword ? css.error : ""
+                        }`}
+                        name="confirmPassword"
+                        placeholder="*********"
+                        type={showConfirmPassword ? "text" : "password"}
+                      />
+                      <Svg
+                        name={showPassword ? "eye" : "close-eye"}
+                        styles={css.regEye}
+                        onClick={() => setShowConfimrPassword((prev) => !prev)}
+                      />
+                    </div>
+                    <ErrorMessage
+                      name="confirmPassword"
+                      component="span"
+                      className={css.errorMess}
+                    />
+                  </label>
+                  <label className={css.checkboxContainer}>
+                    <Field
+                      className={css.checkbox}
+                      type="checkbox"
+                      name="agree"
+                    />
+                    <span className={css.checkmark}>
+                      <Svg
+                        name="check-alternative"
+                        styles={css.checkAlternative}
+                      />
+                    </span>
+                    <span className={css.regTextAgr}>
+                      I agree to the Terms of Service and Privacy Policy
+                    </span>
+                  </label>
                 </div>
-                <ErrorMessage
-                  name="password"
-                  component="span"
-                  className={css.errorMess}
-                />
-              </label>
-              <label className={css.regLabel}>
-                <span className={css.regSpan}>Repeat your password</span>
-                <div className={css.iconContainer}>
-                  <Field
-                    className={`${css.regField} ${
-                      errors.confirmPassword ? css.error : ""
-                    }`}
-                    name="confirmPassword"
-                    placeholder="*********"
-                    type={showConfirmPassword ? "text" : "password"}
-                  />
-                  <Svg
-                    name="eye"
-                    styles={css.regEye}
-                    onClick={() => setShowConfimrPassword((prev) => !prev)}
-                  />
-                </div>
-                <ErrorMessage
-                  name="confirmPassword"
-                  component="span"
-                  className={css.errorMess}
-                />
-              </label>
-              <label className={css.checkboxContainer}>
-                <Field className={css.checkbox} type="checkbox" name="agree" />
-                <span className={css.checkmark}>
-                  <Svg name="check-alternative" styles={css.checkAlternative} />
-                </span>
-                <span className={css.regTextAgr}>
-                  I agree to the Terms of Service and Privacy Policy
-                </span>
-              </label>
-
-              <button
-                className={css.regButton}
-                type="submit"
-                disabled={!values.agree}
-              >
-                Create account
-              </button>
-              <p className={css.regTextLastChild}>
-                Already have an account? <span> </span>
-                <Link className={css.regLogInLabel} to="/auth/login">
-                  Log in
-                </Link>
-              </p>
+                <button
+                  className={css.regButton}
+                  type="submit"
+                  disabled={!values.agree}
+                >
+                  Create account
+                </button>
+                <p className={css.regTextLastChild}>
+                  Already have an account? <span> </span>
+                  <Link className={css.regLogInLabel} to="/auth/login">
+                    Log in
+                  </Link>
+                </p>
+              </div>
             </Form>
           )}
         </Formik>
