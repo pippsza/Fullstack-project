@@ -78,7 +78,7 @@ export const refreshUser = createAsyncThunk(
 
     try {
       setAuthHeader(persistedToken);
-      const { data } = await authInstance.get("/auth/refresh");
+      const { data } = await authInstance.post("/auth/refresh");
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

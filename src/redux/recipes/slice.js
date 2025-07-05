@@ -1,13 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { fetchByPages, addRecipe, fetchById } from "./operations";
+import {
+  fetchByPages,
+  addRecipe,
+  fetchById,
+  fetchOwnRecipes,
+  fetchFavouriteRecipes,
+} from "./operations";
 
 import { logOut } from "../auth/operations";
 
 const slice = createSlice({
   name: "recipes",
   initialState: {
-    items: [],
+    items: {
+      ownItems: {
+        page: 1,
+        items: [],
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+      allItems: {
+        page: 1,
+        items: [],
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+      favoriteItems: {
+        page: 1,
+        items: [],
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+    },
     currentRecipe: null,
     loading: false,
     error: null,
@@ -20,21 +45,29 @@ const slice = createSlice({
       })
       .addCase(fetchByPages.fulfilled, (state, action) => {
         state.loading = false;
-        // console.log("state", JSON.parse(JSON.stringify(state)));
-
+        // Обновляем allItems
         const newItems = action.payload.data.data;
-        const existingIds = new Set(state.items.map((item) => item._id));
-
+        const page = action.payload.data.page;
+        const hasNextPage = action.payload.data.hasNextPage;
+        const hasPreviousPage = action.payload.data.hasPreviousPage;
+        const existingIds = new Set(
+          state.items.allItems.items.map((item) => item._id)
+        );
         const uniqueNewItems = newItems.filter(
           (item) => !existingIds.has(item._id)
         );
-
-        state.items = [...state.items, ...uniqueNewItems];
+        state.items.allItems.items = [
+          ...state.items.allItems.items,
+          ...uniqueNewItems,
+        ];
+        state.items.allItems.page = page;
+        state.items.allItems.hasNextPage = hasNextPage;
+        state.items.allItems.hasPreviousPage = hasPreviousPage;
       })
       .addCase(fetchByPages.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
-        state.items = [];
+        state.items.allItems.items = [];
       })
       .addCase(addRecipe.pending, (state) => {
         state.loading = true;
@@ -42,7 +75,9 @@ const slice = createSlice({
       })
       .addCase(addRecipe.fulfilled, (state, action) => {
         state.loading = false;
-        state.items.push(action.payload);
+        // Добавляем в ownItems и allItems
+        state.items.ownItems.items.push(action.payload);
+        state.items.allItems.items.push(action.payload);
       })
       .addCase(addRecipe.rejected, (state, action) => {
         state.loading = false;
@@ -63,19 +98,74 @@ const slice = createSlice({
         state.loading = false;
         state.error = action.payload.message;
       })
-      // .addCase(deleteRecipe.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.items = state.items.filter(
-      //     (item) => item.id !== action.payload.id
-      //   );
-      // })
-      // .addCase(deleteRecipe.rejected, (state) => {
-      //   state.loading = false;
-      //   state.error = true;
-      // })
+      .addCase(fetchOwnRecipes.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(fetchOwnRecipes.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = false;
+        // Обновляем ownItems
+        state.items.ownItems.items = action.payload.data.data;
+        state.items.ownItems.page = action.payload.data.page;
+        state.items.ownItems.hasNextPage = action.payload.data.hasNextPage;
+        state.items.ownItems.hasPreviousPage =
+          action.payload.data.hasPreviousPage;
+      })
+      .addCase(fetchOwnRecipes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.items.ownItems.items = [];
+      })
+      .addCase(fetchFavouriteRecipes.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(fetchFavouriteRecipes.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = false;
+        // Обновляем ownItems
+        state.items.favoriteItems.items = action.payload.data.data;
+        state.items.favoriteItems.page = action.payload.data.page;
+        state.items.favoriteItems.hasNextPage = action.payload.data.hasNextPage;
+        state.items.favoriteItems.hasPreviousPage =
+          action.payload.data.hasPreviousPage;
+      })
+      .addCase(fetchFavouriteRecipes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+        state.items.favoriteItems.items = [];
+      })
       .addCase(logOut.fulfilled, (state) => {
-        state.items = [];
+        state.items.ownItems = {
+          page: 1,
+          items: [],
+          hasNextPage: false,
+          hasPreviousPage: false,
+        };
+        state.items.allItems = {
+          page: 1,
+          items: [],
+          hasNextPage: false,
+          hasPreviousPage: false,
+        };
+        state.items.favoriteItems = {
+          page: 1,
+          items: [],
+          hasNextPage: false,
+          hasPreviousPage: false,
+        };
       });
+    // .addCase(deleteRecipe.fulfilled, (state, action) => {
+    //   state.loading = false;
+    //   state.items = state.items.filter(
+    //     (item) => item.id !== action.payload.id
+    //   );
+    // })
+    // .addCase(deleteRecipe.rejected, (state) => {
+    //   state.loading = false;
+    //   state.error = true;
+    // })
   },
 });
 

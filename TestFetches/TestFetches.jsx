@@ -4,6 +4,8 @@ import {
   fetchById,
   fetchByPages,
   addRecipe,
+  fetchOwnRecipes,
+  fetchFavouriteRecipes,
 } from "../src/redux/recipes/operations.js";
 
 export default function TestFetches() {
@@ -20,24 +22,36 @@ export default function TestFetches() {
   const handleAddRecipe = () => {
     dispatch(
       addRecipe({
-        userId: "6462a8f74c3d0ddd28897fcd",
         title: "test",
+        time: "123",
         category: "test",
-        ingredients: ["test"],
+        ingredients: [
+          {
+            id: "640c2dd963a319ea671e366c",
+            measure: "4-5 pound",
+          },
+        ],
         description: "test",
         instructions: "test",
-        file: "test",
-        photo: "test",
       })
     );
   };
+  const handleFetchOwn = () => {
+    dispatch(fetchOwnRecipes({}));
+  };
+  const handlefetchFavorite = () => {
+    dispatch(fetchFavouriteRecipes({}));
+  };
+
   console.log("work!");
   return (
-    <>
+    <div style={{ display: "flex", gap: "40px" }}>
       <button onClick={handleFetch}>Fetch by pages</button>
       <button onClick={handleFetchById}>Fetch by id</button>
       <button onClick={handleAddRecipe}>Add recipe</button>
-    </>
+      <button onClick={handleFetchOwn}>fetch own</button>
+      <button onClick={handlefetchFavorite}>fetch favorites</button>
+    </div>
   );
 }
 // userId *
