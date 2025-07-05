@@ -3,7 +3,11 @@ import Svg from "../Svg/svg.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/selectors.js";
 import { logOut } from "../../redux/auth/operations.js";
-export default function Logout({ openMobile }) {
+export default function Logout({
+  openMobile = () => {
+    return null;
+  },
+}) {
   const userName = useSelector(selectUser);
   const cutUserName = () => {
     if (!userName || userName.length === 0) return "";

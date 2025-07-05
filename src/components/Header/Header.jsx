@@ -7,6 +7,8 @@ import Burger from "../burger/burger.jsx";
 import MobileMenu from "../mobileMenu/MobileMenu.jsx";
 import ScrollHeader from "../ScrollHeader/ScrollHeader.jsx";
 
+// import RefreshToken from '../RefreshToken/RefrehsToken.jsx'
+
 export default function Header() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
@@ -35,7 +37,7 @@ export default function Header() {
           <Container>
             <div className={css.container}>
               <Logo />
-              {isMobile ? (
+                {isMobile ? (
                 <Burger
                   isOpened={isMobileMenuOpened}
                   openMobile={mobileMenuHandler}

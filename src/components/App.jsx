@@ -2,12 +2,18 @@ import css from "./App.module.css";
 import Layout from "../components/Layout/Layout.jsx";
 import { Toaster } from "react-hot-toast";
 import { lazy, Suspense, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import ListWrapper from "./ListWrapper/ListWrapper.jsx";
-import { useDispatch } from "react-redux";
-import { session } from "../redux/auth/operations.js";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo, refreshUser } from "../redux/auth/operations.js";
+import {
+  selectUserData,
+  selectIsLoggedIn,
+  selectToken,
+} from "../redux/auth/selectors.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
+import TestFetches from "../../TestFetches/TestFetches.jsx";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -18,22 +24,33 @@ const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
 
 export default function App() {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const token = useSelector(selectToken);
   useEffect(() => {
-    dispatch(session());
-  });
+    if (isLoggedIn) {
+      dispatch(getUserInfo());
+    }
+  }, [dispatch, isLoggedIn]);
+  useEffect(() => {
+    if (token && !isLoggedIn) {
+      dispatch(refreshUser());
+    }
+  }, [dispatch, token, isLoggedIn]);
   return (
     <>
       <Toaster
         toastOptions={{
           duration: 3000,
+          position: "top-left",
           style: {
-            background: "white",
-            color: "black",
-            border: "black solid 2px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+            background: "var(--light-brown)",
+            color: "var(--white)",
+            fontSize: "12px",
+            borderRadius: "8px",
           },
         }}
       />
+      <TestFetches></TestFetches>
       <div className={css.mainApp}>
         <Suspense fallback={<span className={css.loader}></span>}>
           <Routes>
@@ -50,7 +67,6 @@ export default function App() {
               <Route
                 path="add-recipe"
                 element={
-                  // <AddRecipePage />
                   <PrivateRoute
                     component={<AddRecipePage />}
                     redirectTo="/auth/login"
@@ -61,7 +77,6 @@ export default function App() {
               <Route
                 path="profile"
                 element={
-                  // <ProfilePage />
                   <PrivateRoute
                     component={<ProfilePage />}
                     redirectTo="/auth/login"
@@ -69,11 +84,12 @@ export default function App() {
                 }
               >
                 <Route path=":recipeType" element={<ListWrapper />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
 
               <Route path="recipes/:id" element={<RecipeViewPage />} />
 
-              <Route path="*" element={<NotFoundPage></NotFoundPage>} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </Suspense>

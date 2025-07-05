@@ -7,7 +7,7 @@ import style from "./ProfilePage.module.css";
 import { useState } from "react";
 import Loader from '../../components/Loader/Loader.jsx';
 import { useSelector } from "react-redux";
-import { selectError, selectLoading } from "../../redux/recipes/selectors.js";
+// import { selectError, selectLoading } from "../../redux/recipes/selectors.js";
 
 
 
@@ -17,8 +17,8 @@ export default function ProfilePage() {
   // const onClose = (e) => {
   //   setIsModalOpen(false);
   // };
-  const isLoading = useSelector(selectLoading);
-  const isError = useSelector(selectError);
+  // const isLoading = useSelector(selectLoading);
+  // const isError = useSelector(selectError);
   
   return (
     <div className={style.wrapper}>
@@ -27,8 +27,8 @@ export default function ProfilePage() {
       <Container>
         <h1 className={style.title}>Profile page</h1>
         <ProfileNavigation />
-        {isLoading && <Loader />}
-        {isError && <b>Whoops, there was an error pls reload...</b>}
+        {/* {isLoading && <Loader />}
+        {isError && <b>Whoops, there was an error pls reload...</b>} */}
         <Outlet />
       </Container>
     </div>
