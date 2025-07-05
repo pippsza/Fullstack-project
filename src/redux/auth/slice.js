@@ -1,5 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { login, logOut, refreshUser, register, session } from "./operations";
+import { createSlice } from '@reduxjs/toolkit';
+import {
+  login,
+  logOut,
+  refreshUser,
+  register,
+  refreshToken,
+  session
+} from "./operations";
+
+
 
 const authSlice = createSlice({
   name: "auth",
@@ -62,6 +71,24 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload.message;
       })
+
+      .addCase(refreshToken.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        console.log("REFRESHTOKEN FULFILLED PAYLOAD", action.payload);
+        state.user = action.payload.data.user;
+        state.token = action.payload.data.refreshTokenToken;
+        state.isLoggedIn = true;
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(refreshToken.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload.message;
+      })
+
       .addCase(refreshUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;

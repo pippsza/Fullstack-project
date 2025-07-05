@@ -1,7 +1,5 @@
-
 .loginForm {
     max-width: 362px;
-    position: relative;
     margin: 91px auto;
     display: flex;
     flex-direction: column;
@@ -11,12 +9,21 @@
     background-color: var(--light-beige);
 }
 
+.inputForm{
+    height: 146px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .loginText{
+    display: flex;
+    flex-direction: column;
     font-weight: 600;
     font-size: 32px;
     text-align: center;
     color: var(--black);
-    margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 .loginLabel {
@@ -24,10 +31,6 @@
     font-size: 12px;
     color: var(--black);
   }
-
-.loginLabelWithSpace {
-    margin-top: 16px;
-}
 
 .loginInput {
     border: 1px solid var(--light-gray);
@@ -39,24 +42,38 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 155%;
-    color: var(--gray-3);
+    color: var(--black);
 }
 
+.loginInput.err{
+    border: 1px solid var(--red);
+}
 .loginInput:hover,
 .loginInput:focus {
     border-color: var(--black);
 }
 
+.passwordField{
+    position: relative;
+}
+
 .iconEye {
     position: absolute;
-    right: 11%;
-    top: 57.3%;
-    transform: translateY(-50%);
+    right: 3%;
+    top: 52%;
     fill: none;
     stroke: var(--black);
     width:24px;
     height: 24px;
     cursor: pointer;
+}
+
+.buttonForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 83px;
+    padding-top: 7px;
 }
 
 .loginBtn {
@@ -67,7 +84,6 @@
     font-weight: 600;
     font-size: 16px;
     color: var(--white);
-    margin: 20px 0;
     cursor: pointer;
 }
 
@@ -92,30 +108,28 @@
 
 .error {
     position: absolute;
-    top: 35.2%;
-    left: 9.5%;
+    top: 100%;
+    left: 0%;
     z-index: 1;
     padding: 2px 4px;
-    margin: 0 auto;
-    background:var(--white);
+    background: none;
     border-radius: 4px;
     border: none;
     color: var(--red);
-    font-size: 16px;
+    font-size: 10px;
 }
 
 .errorPass {
     position: absolute;
-    top: 54%;
-    left: 9.5%;
+    top: 100%;
+    left: 0%;
     z-index: 1;
     padding: 2px 4px;
-    margin: 0 auto;
-    background:var(--white);
+    background:none;
     border-radius: 4px;
     border: none;
     color: var(--red);
-    font-size: 16px;
+    font-size: 10px;
 }
 
 
@@ -123,31 +137,13 @@
     .loginForm {
         min-width: 522px;
     }
-
-    .loginLabelWithSpace {
-        margin-top: 20px;
-    }
-
+    
     .iconEye {
-        right: 7%;
-        top: 57.3%;
+        right: 3%;
+        top: 52%;
 
     }
-    
-    .loginBtn {
-       margin: 20px 0 27px 0;
-    }
-
-    .error {
-        top: 34.4%;
-        left: 7.5%;
-     }
-    
-    .errorPass {
-        top: 54%;
-        left: 7.5%;
-    }
-  }
+}
 
   @media screen and (min-width: 1158px) {
     .loginForm {
@@ -155,22 +151,8 @@
     }
 
     .iconEye {
-        right: 9%;
-        top: 57.3%;
-
+        right: 3%;
+        top: 52%;
     }
-    
-    .loginBtn {
-       margin: 27px 0 20px 0;
-    }
-
-    .error {
-       left: 8%;
-     }
-    
-    .errorPass {
-        top: 53.8%;
-        left: 8%;
-    }
-  }
+}
 
