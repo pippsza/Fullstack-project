@@ -1,14 +1,40 @@
 import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import css from "./Filters.module.css";
 import Container from "../container/container";
 import Svg from "../Svg/svg";
 
+import { fetchCategories } from "../../redux/categories/operations";
+import { fetchIngredients } from "../../redux/ingredients/operations";
+import {
+  setCategory,
+  setIngredient,
+  resetFilters,
+} from "../../redux/filters/slice";
+
 const Filters = () => {
+  const dispatch = useDispatch();
+
+  const categories = useSelector((state) => state.categories.items) || [];
+  const ingredients = useSelector((state) => state.ingredients.items) || [];
+
+  const category = useSelector((state) => state.filters.category) || "";
+  const ingredient = useSelector((state) => state.filters.ingredient) || "";
+
+  const [ingredientInput, setIngredientInput] = useState("");
+  const filteredIngredients = ingredients.filter((ingr) =>
+    ingr.name.toLowerCase().includes(ingredientInput.toLowerCase())
+  );
+
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
   const [size, setSize] = useState(window.innerWidth);
-
   const sizeDesktop = 1439;
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   useEffect(() => {
     const resizeHandler = () => setSize(window.innerWidth);
@@ -18,21 +44,35 @@ const Filters = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target)
-      ) {
+      const target = event.target;
+      const tag = target.tagName?.toLowerCase();
+      if (["select", "option", "svg", "path"].includes(tag)) return;
+
+      if (containerRef.current && !containerRef.current.contains(target)) {
         setOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
+  const handleCategoryChange = (e) => {
+    dispatch(setCategory(e.target.value));
+  };
+
+  const handleIngredientChange = (e) => {
+    const value = e.target.value;
+    dispatch(setIngredient(value));
+    setIngredientInput(value);
+  };
+
   const handleReset = () => {
-    console.log("Reset filters");
+    dispatch(resetFilters());
+    setIngredientInput("");
+    setOpen(false);
   };
 
   return (
@@ -48,35 +88,34 @@ const Filters = () => {
                   Reset filters
                 </button>
                 <div className={css.divSelect}>
-                  <select id="category" className={css.selectFilter}>
-                    <option value="" default hidden>
+                  <select
+                    id="category"
+                    className={css.selectFilter}
+                    value={category}
+                    onChange={handleCategoryChange}
+                  >
+                    <option value="" disabled hidden>
                       Category
                     </option>
-                    <option className={css.selectOpt} value="breakfast">
-                      Breakfast
-                    </option>
-                    <option className={css.selectOpt} value="lunch">
-                      Lunch
-                    </option>
-                    <option className={css.selectOpt} value="dinner">
-                      Dinner
-                    </option>
+                    {categories.map((cat) => (
+                      <option key={cat._id} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    ))}
                   </select>
                   <div>
-                    <select id="ingredient" className={css.selectFilter}>
-                      <option value="" default hidden>
-                        Ingredient
-                      </option>
-                      <option className={css.selectOpt} value="eggs">
-                        Eggs
-                      </option>
-                      <option className={css.selectOpt} value="beef">
-                        Beef
-                      </option>
-                      <option className={css.selectOpt} value="vegetables">
-                        Vegetables
-                      </option>
-                    </select>
+                    <input
+                      list="ingredients"
+                      className={css.selectFilter}
+                      placeholder="Ingredient"
+                      value={ingredientInput}
+                      onChange={handleIngredientChange}
+                    />
+                    <datalist id="ingredients">
+                      {filteredIngredients.map((ingr) => (
+                        <option key={ingr._id} value={ingr.name} />
+                      ))}
+                    </datalist>
                   </div>
                 </div>
               </div>
@@ -87,42 +126,43 @@ const Filters = () => {
                   className={css.btnDropdown}
                 >
                   Filters
-                  <Svg styles={css.svg} name={"filter"}></Svg>
+                  <Svg styles={css.svg} name={"filter"} />
                 </button>
 
                 {open && (
                   <div className={css.dropdown}>
-                    <button className={css.btnReset}>Reset filters</button>
-                    <div onClick={handleReset} className={css.divSelect}>
-                      <select id="category" className={css.selectFilter}>
-                        <option value="" default hidden>
+                    <button onClick={handleReset} className={css.btnReset}>
+                      Reset filters
+                    </button>
+                    <div className={css.divSelect}>
+                      <select
+                        id="category"
+                        className={css.selectFilter}
+                        value={category}
+                        onChange={handleCategoryChange}
+                      >
+                        <option value="" disabled hidden>
                           Category
                         </option>
-                        <option className={css.selectOpt} value="breakfast">
-                          Breakfast
-                        </option>
-                        <option className={css.selectOpt} value="lunch">
-                          Lunch
-                        </option>
-                        <option className={css.selectOpt} value="dinner">
-                          Dinner
-                        </option>
+                        {categories.map((cat) => (
+                          <option key={cat._id} value={cat.name}>
+                            {cat.name}
+                          </option>
+                        ))}
                       </select>
                       <div>
-                        <select id="ingredient" className={css.selectFilter}>
-                          <option value="" default hidden>
-                            Ingredient
-                          </option>
-                          <option className={css.selectOpt} value="eggs">
-                            Eggs
-                          </option>
-                          <option className={css.selectOpt} value="beef">
-                            Beef
-                          </option>
-                          <option className={css.selectOpt} value="vegetables">
-                            Vegetables
-                          </option>
-                        </select>
+                        <input
+                          list="ingredients"
+                          className={css.selectFilter}
+                          placeholder="Ingredient"
+                          value={ingredientInput}
+                          onChange={handleIngredientChange}
+                        />
+                        <datalist id="ingredients">
+                          {filteredIngredients.map((ingr) => (
+                            <option key={ingr._id} value={ingr.name} />
+                          ))}
+                        </datalist>
                       </div>
                     </div>
                   </div>

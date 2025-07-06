@@ -12,6 +12,7 @@ export default function TestFetches() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const [data, setData] = useState();
+
   const handleFetch = () => {
     setPage(page + 1);
     dispatch(fetchByPages({ page: page, perPage: 2 }));
@@ -44,6 +45,7 @@ export default function TestFetches() {
   };
 
   console.log("work!");
+
   return (
     <div style={{ display: "flex", gap: "40px" }}>
       <button onClick={handleFetch}>Fetch by pages</button>
