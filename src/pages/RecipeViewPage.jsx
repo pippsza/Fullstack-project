@@ -26,7 +26,9 @@ export default function RecipeViewPage() {
   }, [dispatch, id]);
 
   if (isLoading) return <Loader />;
+
   if (error || !recipe) return <NotFoundPage />;
 
   return <RecipeDetails recipe={recipe} />;
+  // ЗРОБИТИ ТЕРНАРНИЙ БУДЬ ЛАСОЧКА
 }
