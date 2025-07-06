@@ -28,7 +28,7 @@ export default function GeneralInfoRecipe({
 
     try {
       if (isFavourite) {
-        // await dispatch(removeFromFavorites(id)).unwrap();
+        //await dispatch(removeFromFavorites(id)).unwrap();
         toast.success("Recipe added to favorites");
       } else {
         // await dispatch(addToFavourites(id)).unwrap();
@@ -44,21 +44,23 @@ export default function GeneralInfoRecipe({
   return (
     <div className={css.generalBox}>
       <div className={css.generalInfo}>
-        <h2 className={css.recipeTitle}></h2>
+        <h3 className={css.recipeTitle}>General informations</h3>
         <p className={css.infoText}>
           Category:
           <span className={css.text}>{category}</span>
         </p>
         <p className={css.infoText}>
           Cooking time:
-          <span className={css.text}>{time}</span>
+          <span className={css.text}>{time} minutes</span>
         </p>
         <p className={css.infoText}>
           Caloric content:
-          <span className={css.text}>{calories}</span>
+          <span className={css.text}>
+            Approximately {calories || "-"} kcal per serving
+          </span>
         </p>
       </div>
-      <button onClick={handleToggle} disabled={loading}>
+      <button className={css.saveBtn} onClick={handleToggle} disabled={loading}>
         {loading ? "Loading..." : isFavourite ? "Remove" : "Save"}
       </button>
     </div>

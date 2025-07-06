@@ -1,5 +1,4 @@
 // import { useSelector } from "react-redux";
-import Svg from "../Svg/svg.jsx";
 import css from "./RecipeIngredientsList.module.css";
 
 export default function RecipeIngredientsList({ ingredients }) {

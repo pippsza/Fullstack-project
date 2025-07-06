@@ -45,7 +45,7 @@ export default function TestFetches() {
 
   console.log("work!");
   return (
-    <div style={{ display: "flex", gap: "40px" }}>
+    <div style={{ display: "flex", gap: "10px" }}>
       <button onClick={handleFetch}>Fetch by pages</button>
       <button onClick={handleFetchById}>Fetch by id</button>
       <button onClick={handleAddRecipe}>Add recipe</button>

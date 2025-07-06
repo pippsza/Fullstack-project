@@ -17,7 +17,7 @@ export default function RecipeDetails({ recipe }) {
   } = recipe;
 
   return (
-    <section className={css.recipeSection}>
+    <section className={css.section}>
       <div className={css.container}>
         <div className={css.imageBox}>
           <h2 className={css.mainRecipeTitle}>{title}</h2>
@@ -28,13 +28,11 @@ export default function RecipeDetails({ recipe }) {
           />
         </div>
         <div className={css.flexBox}>
-          <div className={css.generalInfo}>
-            <GeneralInfoRecipe
-              category={category}
-              time={time}
-              calories={calories}
-            />
-          </div>
+          <GeneralInfoRecipe
+            category={category}
+            time={time}
+            calories={calories}
+          />
           <div className={css.aboutBox}>
             <AboutRecipe description={description} />
             <RecipeIngredientsList ingredients={ingredients} />
