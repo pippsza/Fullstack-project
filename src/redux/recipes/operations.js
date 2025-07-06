@@ -6,6 +6,22 @@ import { setAuthHeader } from "../auth/operations";
 
 export const fetchByPages = createAsyncThunk(
   "recipes/fetchAll",
+  async ({ page, perPage = 12 }, thunkAPI) => {
+    try {
+      console.log("fetching");
+      const res = await authInstance.get(
+        `/recipes?page=${page}&perPage=${perPage}`
+      );
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchByFilters = createAsyncThunk(
+  "recipes/fetchByFilters",
   async (
     { page, perPage = 12, category = "", ingredient = "", title = "" },
     thunkAPI
