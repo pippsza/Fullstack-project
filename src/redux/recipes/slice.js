@@ -8,6 +8,7 @@ import {
   fetchFavouriteRecipes,
   deleteFavouriteRecipe,
   fetchOwnRecipes,
+  addFavouriteRecipe,
 } from "./operations";
 
 const slice = createSlice({
@@ -147,8 +148,6 @@ const slice = createSlice({
       .addCase(fetchFavouriteRecipes.fulfilled, (state, action) => {
         state.loading = false;
         state.error = false;
-
-        // Проверка на наличие данных
         const payload =
           action.payload && action.payload.data ? action.payload.data : {};
         const newItems = Array.isArray(payload.data) ? payload.data : [];
@@ -181,10 +180,28 @@ const slice = createSlice({
         state.error = action.payload.message;
         state.items.favoriteItems.items = [];
       })
-      .addCase(deleteFavouriteRecipe.pending, (state) => {
-        console.log("deleteFavouriteRecipe.pending");
+      .addCase(addFavouriteRecipe.pending, (state) => {
+        console.log("addFavouriteRecipe.pending");
         state.loading = true;
         state.error = false;
+      })
+      .addCase(addFavouriteRecipe.fulfilled, (state, action) => {
+        console.log("addFavouriteRecipe.fulfilled", action.payload);
+        state.loading = false;
+        state.error = false;
+        const exists = state.items.favoriteItems.items.some(
+          (item) => item._id === action.payload._id
+        );
+        if (!exists) {
+          state.items.favoriteItems.items.push(action.payload);
+          state.items.favoriteItems.totalItems =
+            (state.items.favoriteItems.totalItems || 0) + 1;
+        }
+      })
+      .addCase(addFavouriteRecipe.rejected, (state, action) => {
+        console.log("addFavouriteRecipe.rejected", action.payload);
+        state.loading = false;
+        state.error = action.payload;
       })
       .addCase(deleteFavouriteRecipe.fulfilled, (state, action) => {
         const deletedId = action.meta.arg;
@@ -207,10 +224,10 @@ const slice = createSlice({
         );
         state.loading = false;
       })
-      .addCase(deleteFavouriteRecipe.rejected, (state, action) => {
-        console.log("deleteFavouriteRecipe.rejected", action.payload);
-        state.loading = false;
-        state.error = action.payload;
+      .addCase(deleteFavouriteRecipe.pending, (state) => {
+        console.log("deleteFavouriteRecipe.pending");
+        state.loading = true;
+        state.error = false;
       })
       .addCase(logOut.fulfilled, (state) => {
         state.items.ownItems = {

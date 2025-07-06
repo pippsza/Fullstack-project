@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchById,
   fetchByPages,
@@ -7,12 +7,15 @@ import {
   fetchOwnRecipes,
   fetchFavouriteRecipes,
   deleteFavouriteRecipe,
+  addFavouriteRecipe,
 } from "../src/redux/recipes/operations.js";
+import { selectAllRecipes } from "../src/redux/recipes/selectors";
 
 export default function TestFetches() {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const [data, setData] = useState();
+  const allRecipes = useSelector(selectAllRecipes);
 
   const handleFetch = () => {
     setPage(page + 1);
@@ -47,17 +50,42 @@ export default function TestFetches() {
   const handleDeleteFavorite = () => {
     dispatch(deleteFavouriteRecipe("6462a8f74c3d0ddd28898054"));
   };
+  const handleAddFavorite = (id) => {
+    dispatch(addFavouriteRecipe(id));
+  };
 
   console.log("work!");
 
   return (
-    <div style={{ display: "flex", gap: "40px" }}>
-      <button onClick={handleFetch}>Fetch by pages</button>
-      <button onClick={handleFetchById}>Fetch by id</button>
-      <button onClick={handleAddRecipe}>Add recipe</button>
-      <button onClick={handleFetchOwn}>fetch own</button>
-      <button onClick={handlefetchFavorite}>fetch favorites</button>
-      <button onClick={handleDeleteFavorite}>Delete favorite (test)</button>
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <div style={{ display: "flex", gap: "40px" }}>
+        <button onClick={handleFetch}>Fetch by pages</button>
+        <button onClick={handleFetchById}>Fetch by id</button>
+        <button onClick={handleAddRecipe}>Add recipe</button>
+        <button onClick={handleFetchOwn}>fetch own</button>
+        <button onClick={handlefetchFavorite}>fetch favorites</button>
+        <button onClick={handleDeleteFavorite}>Delete favorite (test)</button>
+      </div>
+      <div>
+        <h3>All Recipes (allItems):</h3>
+        {allRecipes && allRecipes.length > 0 ? (
+          <ul>
+            {allRecipes.map((recipe) => (
+              <li key={recipe._id} style={{ marginBottom: "10px" }}>
+                {recipe.title} (ID: {recipe._id})
+                <button
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => handleAddFavorite(recipe._id)}
+                >
+                  Add to Favorites
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div>No recipes loaded.</div>
+        )}
+      </div>
     </div>
   );
 }
