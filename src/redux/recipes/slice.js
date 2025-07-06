@@ -1,14 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { logOut } from "../auth/operations";
 import {
-  fetchByPages,
   addRecipe,
   fetchById,
-  fetchOwnRecipes,
+  fetchByPages,
   fetchFavouriteRecipes,
-} from "./operations";
-
-import { logOut } from "../auth/operations";
+  fetchOwnRecipes,
+} from "./operations.js";
 
 const slice = createSlice({
   name: "recipes",
