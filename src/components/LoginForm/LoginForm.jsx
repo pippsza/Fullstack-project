@@ -36,7 +36,7 @@ export default function LoginForm() {
         return dispatch(getUserInfo());
       })
       .then(() => {
-        toast.success("Login successful!");
+        toast.success("Login successful!👏");
         navigate("/");
       })
       .catch(() => {
