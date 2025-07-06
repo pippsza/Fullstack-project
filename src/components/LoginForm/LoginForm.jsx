@@ -5,7 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { toast } from "react-hot-toast";
 import Svg from "../Svg/svg.jsx";
-import { login } from "../../redux/auth/operations";
+
+import { login, getUserInfo } from "../../redux/auth/operations";
+
 import css from "./LoginForm.module.css";
 
 // const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8, }$/;
@@ -30,6 +32,9 @@ export default function LoginForm() {
   const handleSubmit = (values, actions) => {
     dispatch(login(values))
       .unwrap()
+      .then(() => {
+        return dispatch(getUserInfo());
+      })
       .then(() => {
         toast.success("Login successful!");
         navigate("/");

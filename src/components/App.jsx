@@ -5,9 +5,17 @@ import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import ListWrapper from "./ListWrapper/ListWrapper.jsx";
-import { useDispatch } from "react-redux";
-import { session } from "../redux/auth/operations.js";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserInfo, refreshUser } from "../redux/auth/operations.js";
+import {
+  selectUserData,
+  selectIsLoggedIn,
+  selectToken,
+} from "../redux/auth/selectors.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
+import TestFetches from "../../TestFetches/TestFetches.jsx";
+import { fetchCategories } from "../redux/categories/operations.js";
+import { fetchIngredients } from "../redux/ingredients/operations.js";
 
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
@@ -19,9 +27,22 @@ const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
 
 export default function App() {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const token = useSelector(selectToken);
   useEffect(() => {
-    dispatch(session());
-  });
+    if (isLoggedIn) {
+      dispatch(getUserInfo());
+    }
+  }, [dispatch, isLoggedIn]);
+  useEffect(() => {
+    if (token && !isLoggedIn) {
+      dispatch(refreshUser());
+    }
+  }, [dispatch, token, isLoggedIn]);
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchIngredients());
+  }, [dispatch]);
   return (
     <>
       <Toaster
@@ -36,6 +57,7 @@ export default function App() {
           },
         }}
       />
+      <TestFetches></TestFetches>
       <div className={css.mainApp}>
         <Suspense fallback={<span className={css.loader}></span>}>
           <Routes>
@@ -79,7 +101,6 @@ export default function App() {
           </Routes>
           
         </Suspense>
-        <Toaster />
       </div>
     </>
   );
