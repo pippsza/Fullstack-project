@@ -1,18 +1,16 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import {
-  fetchCategoriesStart,
-  fetchCategoriesSuccess,
-  fetchCategoriesFailure,
-} from "./slice";
 
-export const fetchCategories = () => async (dispatch) => {
-  dispatch(fetchCategoriesStart());
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_URL}/api/categories`
-    );
-    dispatch(fetchCategoriesSuccess(response.data));
-  } catch (error) {
-    dispatch(fetchCategoriesFailure(error.message));
+export const fetchCategories = createAsyncThunk(
+  "categories/fetchCategories",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        "https://fullstack-recipes-backend-ssa1.onrender.com/api/categories"
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
-};
+);
