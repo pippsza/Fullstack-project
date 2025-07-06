@@ -7,8 +7,10 @@ import Svg from "../Svg/svg";
 import { selectCategories } from "../../redux/categories/selectors";
 import { selectIngredients } from "../../redux/ingredients/selectors";
 import { fetchByFilters } from "../../redux/recipes/operations.js";
+import { selectFilteredRecipes } from "../../redux/recipes/selectors.js";
 
 const Filters = () => {
+  const data = useSelector(selectFilteredRecipes);
   const [filter, setFilter] = useState({
     category: "",
     ingredient: "",
@@ -60,14 +62,18 @@ const Filters = () => {
   };
 
   const handleIngredientChange = (value) => {
+    console.log("value:", value);
     setFilter({ ...filter, ingredient: value._id });
     // dispatch(fetchByFilters(filter));
-    setTimeout(() => {
-      dispatch(fetchByFilters(filter));
-    }, 2000);
+
     console.log("in", value._id);
   };
 
+  useEffect(() => {
+    dispatch(fetchByFilters(filter))
+      .unwrap()
+      .then(console.log("unwrapped data: ", data));
+  }, [filter]);
   const handleReset = () => {
     // dispatch(resetFilters());
     setIngredientInput("");
