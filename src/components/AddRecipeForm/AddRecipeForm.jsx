@@ -1,8 +1,13 @@
 import { useForm, useFieldArray } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import css from "./AddRecipeForm.module.css";
 import Svg from "../Svg/svg.jsx";
 import noImage from "../../assets/NoImageAvailable.jpg";
+// import { fetchCategories } from "../../redux/categories/operations"; 
+// import { selectCategories } from "../../redux/categories/selectors"; 
+
+const categories = [{ "id": 1, "name": "salad" },
+  { "id": 2, "name": "soup" }];
 
 export default function AddRecipeForm() {
   const {
@@ -36,6 +41,13 @@ export default function AddRecipeForm() {
   const [ingredientAmountError, setIngredientAmountError] = useState("");
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(noImage);
+  const fileInputRef = useRef(null);
+  // const dispatch = useDispatch();
+  // const categories = useSelector(selectCategories);
+  
+  // useEffect(() => {
+  //   dispatch(fetchCategories());
+  // }, [dispatch]);
 
   const handleAddIngredient = () => {
     let hasError = false;
@@ -81,12 +93,20 @@ export default function AddRecipeForm() {
       <div className={css.mainRowContainer}>
         <section className={css.sectionPhoto}>
           <h3 className={css.sectionTitlePhoto}>Upload Photo</h3>
-          <img src={photoPreview} className={css.noImage} alt="Preview" />
+          <img
+            src={photoPreview}
+            className={css.noImage}
+            alt="Preview"
+            style={{ cursor: "pointer" }}
+            onClick={() => fileInputRef.current && fileInputRef.current.click()}
+          />
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files[0];
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={(event) => {
+              const file = event.target.files[0];
               if (file) {
                 setPhoto(file);
                 setPhotoPreview(URL.createObjectURL(file));
@@ -171,7 +191,12 @@ export default function AddRecipeForm() {
                       required: "Required field!",
                     })}
                   >
-                    <option value="1">Soup</option>
+                    <option value="">Select category</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.name}>
+                        {category.name}
+                      </option>
+                    ))}
                   </select>
                   {errors.category && (
                     <span className={css.error}>{errors.category.message}</span>
@@ -254,6 +279,7 @@ export default function AddRecipeForm() {
               </div>
             </div>
           </section>
+
           <section className={css.sectionInstructions}>
             <div>
               <h3 className={css.sectionTitle}>Instructions</h3>
@@ -271,6 +297,7 @@ export default function AddRecipeForm() {
               )}
             </div>
           </section>
+
           <div className={css.bntContainer}>
             <button className={css.button} type="submit">
               Publish Recipe

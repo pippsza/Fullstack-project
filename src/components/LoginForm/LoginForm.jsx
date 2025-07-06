@@ -3,13 +3,9 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-
 import { toast } from "react-hot-toast";
-
 import Svg from "../Svg/svg.jsx";
-
 import { login } from "../../redux/auth/operations";
-
 import css from "./LoginForm.module.css";
 
 // const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8, }$/;

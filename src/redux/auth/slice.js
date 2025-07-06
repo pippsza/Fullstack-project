@@ -79,7 +79,7 @@ const authSlice = createSlice({
       .addCase(refreshToken.fulfilled, (state, action) => {
         console.log("REFRESHTOKEN FULFILLED PAYLOAD", action.payload);
         state.user = action.payload.data.user;
-        state.token = action.payload.data.refreshTokenToken;
+        state.token = action.payload.data.refreshToken;
         state.isLoggedIn = true;
         state.isLoading = false;
         state.error = null;
