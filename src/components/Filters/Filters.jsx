@@ -6,7 +6,7 @@ import { CustomSelect } from "../CustomSelect/CustomSelect";
 import Svg from "../Svg/svg";
 import { selectCategories } from "../../redux/categories/selectors";
 import { selectIngredients } from "../../redux/ingredients/selectors";
-import { fetchByPages } from "../../redux/recipes/operations.js";
+import { fetchByFilters } from "../../redux/recipes/operations.js";
 
 const Filters = () => {
   const dispatch = useDispatch();
