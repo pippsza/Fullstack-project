@@ -7,7 +7,7 @@ import RecipeIngredientsList from "../RecipeIngredientsList/RecipeIngredientsLis
 export default function RecipeDetails({ recipe }) {
   const {
     title,
-    photo,
+    thumb,
     category,
     time,
     calories,
@@ -23,7 +23,7 @@ export default function RecipeDetails({ recipe }) {
           <h2 className={css.mainRecipeTitle}>{title}</h2>
           <img
             className={css.recipeImage}
-            src={photo}
+            src={thumb}
             alt={`Photo of ${title}`}
           />
         </div>
