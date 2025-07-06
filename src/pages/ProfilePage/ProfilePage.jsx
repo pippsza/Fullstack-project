@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-// import { useState } from "react";
 import Container from "../../components/container/container.jsx";
 import ProfileNavigation from "../../components/ProfileNavigation/ProfileNavigation.jsx";
 // import ModalErrorWhileSaving from "../../components/ModalErrorWhileSaving/ModalErrorWhileSaving.jsx";
@@ -10,6 +9,7 @@ export default function ProfilePage() {
   // const onClose = (e) => {
   //   setIsModalOpen(false);
   // };
+
   return (
     <div className={style.wrapper}>
       {/* {isModalOpen && <ModalErrorWhileSaving onClose={onClose} isModalOpen={isModalOpen} />} */}

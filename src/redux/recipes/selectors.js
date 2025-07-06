@@ -1,5 +1,5 @@
-import { selectNameFilter } from "../filters/selectors";
-import { createSelector } from "@reduxjs/toolkit";
+// import { selectFilters } from "../filters/selectors";
+// import { createSelector } from "@reduxjs/toolkit";
 
 export const selectRecipes = (state) => state.recipes.items;
 
@@ -34,24 +34,29 @@ export const selectFavoriteRecipesHasNextPage = (state) =>
 export const selectFavoriteRecipesHasPreviousPage = (state) =>
   state.recipes.items.favoriteItems.hasPreviousPage;
 
-export const selectFilteredRecipes = createSelector(
-  [selectRecipes, selectNameFilter],
-  (Recipes, textFilter) => {
-    console.log("selectFilteredRecipes", Date.now());
-    return Recipes.filter((contact) =>
-      contact.name.toLowerCase().includes(textFilter.toLowerCase())
-    );
-  }
-);
+export const selectOwnRecipesTotal = (state) =>
+  state.recipes.items.ownItems.totalItems;
+export const selectFavoriteRecipesTotal = (state) =>
+  state.recipes.items.favoriteItems.totalItems;
 
-export const selectFilteredOwnRecipes = createSelector(
-  [selectOwnRecipes, selectNameFilter],
-  (recipes, textFilter) => {
-    return recipes.filter((recipe) =>
-      recipe.name.toLowerCase().includes(textFilter.toLowerCase())
-    );
-  }
-);
+// export const selectFilteredRecipes = createSelector(
+//   [selectRecipes, selectFilters],
+//   (Recipes, textFilter) => {
+//     console.log("selectFilteredRecipes", Date.now());
+//     return Recipes.filter((contact) =>
+//       contact.name.toLowerCase().includes(textFilter.toLowerCase())
+//     );
+//   }
+// );
+
+// export const selectFilteredOwnRecipes = createSelector(
+//   [selectOwnRecipes, selectFilters],
+//   (recipes, textFilter) => {
+//     return recipes.filter((recipe) =>
+//       recipe.name.toLowerCase().includes(textFilter.toLowerCase())
+//     );
+//   }
+// );
 
 export const selectCurrentRecipe = (state) => state.recipes.currentRecipe;
 
