@@ -1,15 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import {
   login,
   logOut,
   refreshUser,
   register,
-  refreshToken,
-  getUserInfo
+  getUserInfo,
 } from "./operations";
 import { setAuthHeader, clearAuthHeader } from "./operations";
-
-
 
 const authSlice = createSlice({
   name: "auth",
@@ -74,31 +71,17 @@ const authSlice = createSlice({
         state.error = action.payload.message;
       })
 
-      .addCase(refreshToken.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(refreshToken.fulfilled, (state, action) => {
-        state.token = action.payload.data.accessToken;
-        setAuthHeader(action.payload.data.accessToken);
-        state.isLoggedIn = true;
-        state.isLoading = false;
-        state.error = null;
-      })
-      .addCase(refreshToken.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload.message;
-      })
-
       .addCase(refreshUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+        console.log("REFRESH USER PAYLOAD", action.payload);
+        state.user = action.payload.data.user;
         state.isLoggedIn = true;
         state.isLoading = false;
         state.error = null;
+        state.token = action.payload.data.accessToken;
       })
       .addCase(refreshUser.rejected, (state, action) => {
         state.isLoading = false;

@@ -29,15 +29,17 @@ export default function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const token = useSelector(selectToken);
   useEffect(() => {
-    if (isLoggedIn) {
+    if (token && !isLoggedIn) {
+      dispatch(refreshUser()).then((action) => {
+        if (refreshUser.fulfilled.match(action)) {
+          dispatch(getUserInfo());
+        }
+      });
+    } else if (isLoggedIn) {
       dispatch(getUserInfo());
     }
-  }, [dispatch, isLoggedIn]);
-  useEffect(() => {
-    if (token && !isLoggedIn) {
-      dispatch(refreshUser());
-    }
   }, [dispatch, token, isLoggedIn]);
+
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchIngredients());
