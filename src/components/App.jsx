@@ -14,6 +14,8 @@ import {
 } from "../redux/auth/selectors.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 import TestFetches from "../../TestFetches/TestFetches.jsx";
+import { fetchCategories } from "../redux/categories/operations.js";
+import { fetchIngredients } from "../redux/ingredients/operations.js";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -27,15 +29,21 @@ export default function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const token = useSelector(selectToken);
   useEffect(() => {
-    if (isLoggedIn) {
+    if (token && !isLoggedIn) {
+      dispatch(refreshUser()).then((action) => {
+        if (refreshUser.fulfilled.match(action)) {
+          dispatch(getUserInfo());
+        }
+      });
+    } else if (isLoggedIn) {
       dispatch(getUserInfo());
     }
-  }, [dispatch, isLoggedIn]);
-  useEffect(() => {
-    if (token && !isLoggedIn) {
-      dispatch(refreshUser());
-    }
   }, [dispatch, token, isLoggedIn]);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchIngredients());
+  }, [dispatch]);
   return (
     <>
       <Toaster

@@ -6,11 +6,14 @@ import { setAuthHeader } from "../auth/operations";
 
 export const fetchByPages = createAsyncThunk(
   "recipes/fetchAll",
-  async ({ page, perPage = 12 }, thunkAPI) => {
+  async (
+    { page, perPage = 12, category = "", ingredient = "", title = "" },
+    thunkAPI
+  ) => {
     try {
       console.log("fetching");
       const res = await authInstance.get(
-        `/recipes?page=${page}&perPage=${perPage}`
+        `/recipes?page=${page}&perPage=${perPage}&category=${category}&title=${title}&ingredient=${ingredient}`
       );
       console.log(res.data);
       return res.data;
@@ -112,3 +115,39 @@ export const addRecipe = createAsyncThunk(
 //     }
 //   }
 // );
+
+export const addFavouriteRecipe = createAsyncThunk(
+  "recipes/addFavouriteRecipe",
+  async (recipeId, thunkAPI) => {
+    console.log("deleteFavouriteRecipe: called with recipeId", recipeId);
+    try {
+      const res = await authInstance.post(`/recipes/favorite`, { recipeId });
+      console.log("addFavouriteRecipe: response", res);
+      const state = thunkAPI.getState();
+      const page = state.recipes.items.favoriteItems.page || 1;
+      thunkAPI.dispatch(fetchFavouriteRecipes({ page }));
+      return res.data;
+    } catch (error) {
+      console.error("addFavouriteRecipe: error", error);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteFavouriteRecipe = createAsyncThunk(
+  "recipes/deleteFavouriteRecipe",
+  async (recipeId, thunkAPI) => {
+    console.log("deleteFavouriteRecipe: called with recipeId", recipeId);
+    try {
+      const res = await authInstance.delete(`/recipes/favorite/${recipeId}`);
+      console.log("deleteFavouriteRecipe: response", res);
+      const state = thunkAPI.getState();
+      const page = state.recipes.items.favoriteItems.page || 1;
+      thunkAPI.dispatch(fetchFavouriteRecipes({ page }));
+      return res.data;
+    } catch (error) {
+      console.error("deleteFavouriteRecipe: error", error);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
