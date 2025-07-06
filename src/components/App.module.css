@@ -1,7 +1,7 @@
 .mainApp {
   width: 100;
   height: 100%;
-  background-color: #fff;
+  background-color: #fbfcf8;
 }
 .loader {
   width: 48px;
@@ -22,4 +22,3 @@
     transform: rotate(360deg);
   }
 }
-

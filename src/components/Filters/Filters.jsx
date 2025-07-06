@@ -1,14 +1,27 @@
 import { useState, useRef, useEffect } from "react";
 import css from "./Filters.module.css";
 import Container from "../container/container";
+import { CustomSelect } from "../CustomSelect/CustomSelect";
 import Svg from "../Svg/svg";
 
 const Filters = () => {
+  const [categories, setCategories] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedIngredient, setSelectedIngredient] = useState("");
+
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
   const [size, setSize] = useState(window.innerWidth);
 
   const sizeDesktop = 1439;
+
+  useEffect(() => {
+    // Тут ти заміниш на API-запит
+    setCategories(["Breakfast", "Lunch", "Dinner"]);
+    setIngredients(["Eggs", "Beef", "Vegetables"]);
+  }, []);
 
   useEffect(() => {
     const resizeHandler = () => setSize(window.innerWidth);
@@ -32,6 +45,8 @@ const Filters = () => {
   }, []);
 
   const handleReset = () => {
+    setSelectedCategory("");
+    setSelectedIngredient("");
     console.log("Reset filters");
   };
 
@@ -48,36 +63,18 @@ const Filters = () => {
                   Reset filters
                 </button>
                 <div className={css.divSelect}>
-                  <select id="category" className={css.selectFilter}>
-                    <option value="" default hidden>
-                      Category
-                    </option>
-                    <option className={css.selectOpt} value="breakfast">
-                      Breakfast
-                    </option>
-                    <option className={css.selectOpt} value="lunch">
-                      Lunch
-                    </option>
-                    <option className={css.selectOpt} value="dinner">
-                      Dinner
-                    </option>
-                  </select>
-                  <div>
-                    <select id="ingredient" className={css.selectFilter}>
-                      <option value="" default hidden>
-                        Ingredient
-                      </option>
-                      <option className={css.selectOpt} value="eggs">
-                        Eggs
-                      </option>
-                      <option className={css.selectOpt} value="beef">
-                        Beef
-                      </option>
-                      <option className={css.selectOpt} value="vegetables">
-                        Vegetables
-                      </option>
-                    </select>
-                  </div>
+                  <CustomSelect
+                    label="Category"
+                    options={categories}
+                    selected={selectedCategory}
+                    onChange={setSelectedCategory}
+                  />
+                  <CustomSelect
+                    label="Ingredient"
+                    options={ingredients}
+                    selected={selectedIngredient}
+                    onChange={setSelectedIngredient}
+                  />
                 </div>
               </div>
             ) : (
@@ -92,38 +89,22 @@ const Filters = () => {
 
                 {open && (
                   <div className={css.dropdown}>
-                    <button className={css.btnReset}>Reset filters</button>
-                    <div onClick={handleReset} className={css.divSelect}>
-                      <select id="category" className={css.selectFilter}>
-                        <option value="" default hidden>
-                          Category
-                        </option>
-                        <option className={css.selectOpt} value="breakfast">
-                          Breakfast
-                        </option>
-                        <option className={css.selectOpt} value="lunch">
-                          Lunch
-                        </option>
-                        <option className={css.selectOpt} value="dinner">
-                          Dinner
-                        </option>
-                      </select>
-                      <div>
-                        <select id="ingredient" className={css.selectFilter}>
-                          <option value="" default hidden>
-                            Ingredient
-                          </option>
-                          <option className={css.selectOpt} value="eggs">
-                            Eggs
-                          </option>
-                          <option className={css.selectOpt} value="beef">
-                            Beef
-                          </option>
-                          <option className={css.selectOpt} value="vegetables">
-                            Vegetables
-                          </option>
-                        </select>
-                      </div>
+                    <button onClick={handleReset} className={css.btnReset}>
+                      Reset filters
+                    </button>
+                    <div className={css.divSelect}>
+                      <CustomSelect
+                        label="Category"
+                        options={categories}
+                        selected={selectedCategory}
+                        onChange={setSelectedCategory}
+                      />
+                      <CustomSelect
+                        label="Ingredient"
+                        options={ingredients}
+                        selected={selectedIngredient}
+                        onChange={setSelectedIngredient}
+                      />
                     </div>
                   </div>
                 )}
