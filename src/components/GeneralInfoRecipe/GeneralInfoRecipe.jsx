@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Toaster } from "react-hot-toast";
 
 import css from "./GeneralInfoRecipe.module.css";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import toast from "react-hot-toast";
 
 export default function GeneralInfoRecipe({
   category,
@@ -20,7 +20,7 @@ export default function GeneralInfoRecipe({
 
   const handleToggle = async () => {
     if (!isLoggedIn) {
-      Toaster.info("Please login to save recipes");
+      toast.info("Please login to save recipes");
       navigate("/login");
       return;
     }
@@ -28,14 +28,14 @@ export default function GeneralInfoRecipe({
 
     try {
       if (isFavourite) {
-        await dispatch(removeFromFavorites(id)).unwrap();
-        Toaster.success("Recipe added to favorites");
+        // await dispatch(removeFromFavorites(id)).unwrap();
+        toast.success("Recipe added to favorites");
       } else {
-        await dispatch(addToFavourites(id)).unwrap();
-        Toaster.success("Recipe added to favorites");
+        // await dispatch(addToFavourites(id)).unwrap();
+        toast.success("Recipe added to favorites");
       }
     } catch (err) {
-      Toaster.error(err?.message || "Something went wrong");
+      toast.error(err?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
