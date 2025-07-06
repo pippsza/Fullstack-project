@@ -112,14 +112,20 @@ export const addRecipe = createAsyncThunk(
 //     }
 //   }
 // );
+
 export const deleteFavouriteRecipe = createAsyncThunk(
   "recipes/deleteFavouriteRecipe",
   async (recipeId, thunkAPI) => {
+    console.log("deleteFavouriteRecipe: called with recipeId", recipeId);
     try {
       const res = await authInstance.delete(`/recipes/favorite/${recipeId}`);
-      console.log("deleteFavouriteRecipe response:", res);
+      console.log("deleteFavouriteRecipe: response", res);
+      const state = thunkAPI.getState();
+      const page = state.recipes.items.favoriteItems.page || 1;
+      thunkAPI.dispatch(fetchFavouriteRecipes({ page }));
       return res.data;
     } catch (error) {
+      console.error("deleteFavouriteRecipe: error", error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

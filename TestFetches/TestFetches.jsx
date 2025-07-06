@@ -6,6 +6,7 @@ import {
   addRecipe,
   fetchOwnRecipes,
   fetchFavouriteRecipes,
+  deleteFavouriteRecipe,
 } from "../src/redux/recipes/operations.js";
 
 export default function TestFetches() {
@@ -42,6 +43,9 @@ export default function TestFetches() {
   const handlefetchFavorite = () => {
     dispatch(fetchFavouriteRecipes({}));
   };
+  const handleDeleteFavorite = () => {
+    dispatch(deleteFavouriteRecipe("6462a8f74c3d0ddd28898054"));
+  };
 
   console.log("work!");
   return (
@@ -51,6 +55,7 @@ export default function TestFetches() {
       <button onClick={handleAddRecipe}>Add recipe</button>
       <button onClick={handleFetchOwn}>fetch own</button>
       <button onClick={handlefetchFavorite}>fetch favorites</button>
+      <button onClick={handleDeleteFavorite}>Delete favorite (test)</button>
     </div>
   );
 }

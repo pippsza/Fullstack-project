@@ -109,11 +109,14 @@ const slice = createSlice({
         state.loading = false;
         state.error = false;
 
-        const newItems = action.payload.data.data;
-        const page = action.payload.data.page;
-        state.items.ownItems.totalItems = action.payload.data.totalItems;
-        const hasNextPage = action.payload.data.hasNextPage;
-        const hasPreviousPage = action.payload.data.hasPreviousPage;
+        // Проверка на наличие данных
+        const payload =
+          action.payload && action.payload.data ? action.payload.data : {};
+        const newItems = Array.isArray(payload.data) ? payload.data : [];
+        const page = payload.page || 1;
+        state.items.ownItems.totalItems = payload.totalItems || 0;
+        const hasNextPage = payload.hasNextPage || false;
+        const hasPreviousPage = payload.hasPreviousPage || false;
 
         if (page === 1) {
           state.items.ownItems.items = newItems;
@@ -133,14 +136,6 @@ const slice = createSlice({
         state.items.ownItems.page = page;
         state.items.ownItems.hasNextPage = hasNextPage;
         state.items.ownItems.hasPreviousPage = hasPreviousPage;
-        // state.loading = false;
-        // state.error = false;
-
-        // state.items.ownItems.items = action.payload.data.data;
-        // state.items.ownItems.page = action.payload.data.page;
-        // state.items.ownItems.hasNextPage = action.payload.data.hasNextPage;
-        // state.items.ownItems.hasPreviousPage =
-        //   action.payload.data.hasPreviousPage;
       })
       .addCase(fetchOwnRecipes.rejected, (state, action) => {
         state.loading = false;
@@ -152,22 +147,17 @@ const slice = createSlice({
         state.error = false;
       })
       .addCase(fetchFavouriteRecipes.fulfilled, (state, action) => {
-        // state.loading = false;
-        // state.error = false;
-
-        // state.items.favoriteItems.items = action.payload.data.data;
-        // state.items.favoriteItems.page = action.payload.data.page;
-        // state.items.favoriteItems.hasNextPage = action.payload.data.hasNextPage;
-        // state.items.favoriteItems.hasPreviousPage =
-        //   action.payload.data.hasPreviousPage;
         state.loading = false;
         state.error = false;
 
-        const newItems = action.payload.data.data;
-        const page = action.payload.data.page;
-        state.items.favoriteItems.totalItems = action.payload.data.totalItems;
-        const hasNextPage = action.payload.data.hasNextPage;
-        const hasPreviousPage = action.payload.data.hasPreviousPage;
+        // Проверка на наличие данных
+        const payload =
+          action.payload && action.payload.data ? action.payload.data : {};
+        const newItems = Array.isArray(payload.data) ? payload.data : [];
+        const page = payload.page || 1;
+        state.items.favoriteItems.totalItems = payload.totalItems || 0;
+        const hasNextPage = payload.hasNextPage || false;
+        const hasPreviousPage = payload.hasPreviousPage || false;
 
         if (page === 1) {
           state.items.favoriteItems.items = newItems;
@@ -194,17 +184,25 @@ const slice = createSlice({
         state.items.favoriteItems.items = [];
       })
       .addCase(deleteFavouriteRecipe.pending, (state) => {
+        console.log("deleteFavouriteRecipe.pending");
         state.loading = true;
         state.error = false;
       })
       .addCase(deleteFavouriteRecipe.fulfilled, (state, action) => {
         const deletedId = action.meta.arg;
-        console.log(state.items.favoriteItems.items);
+        console.log("deleteFavouriteRecipe.fulfilled, deletedId:", deletedId);
+        console.log(
+          "favoriteItems.items before:",
+          state.items.favoriteItems.items
+        );
         state.items.favoriteItems.items =
           state.items.favoriteItems.items.filter(
             (recipe) => recipe._id !== deletedId
           );
-
+        console.log(
+          "favoriteItems.items after:",
+          state.items.favoriteItems.items
+        );
         state.items.favoriteItems.totalItems = Math.max(
           0,
           state.items.favoriteItems.totalItems - 1
@@ -212,6 +210,7 @@ const slice = createSlice({
         state.loading = false;
       })
       .addCase(deleteFavouriteRecipe.rejected, (state, action) => {
+        console.log("deleteFavouriteRecipe.rejected", action.payload);
         state.loading = false;
         state.error = action.payload;
       })
