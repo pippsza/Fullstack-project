@@ -7,7 +7,7 @@ import { useState } from "react";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
-import { register, getUserInfo } from "../../redux/auth/operations";
+import { register, getUserInfo, login } from "../../redux/auth/operations";
 
 const UserSchema = Yup.object().shape({
   name: Yup.string()
@@ -47,6 +47,14 @@ export default function RegisterForm() {
     dispatch(register(filteredValues))
       .unwrap()
       .then(() => {
+        return dispatch(
+          login({
+            email: filteredValues.email,
+            password: filteredValues.password,
+          })
+        ).unwrap();
+      })
+      .then(() => {
         return dispatch(getUserInfo());
       })
       .then(() => {
@@ -55,12 +63,12 @@ export default function RegisterForm() {
       })
 
       .catch((error) => {
-        if (error.response && error.response.data.code === 11000) {
-          toast.error(
-            "This email address is already registered. Try another address."
-          );
+        console.log("Register error:", error);
+
+        if (typeof error === "string" && error.includes("409")) {
+          toast.error("This email address is already registered.");
         } else {
-          toast.error("OOPS... Failed to register user. Please try again.");
+          toast.error("OOPS... Failed to register user.");
         }
       });
     actions.resetForm();
@@ -155,7 +163,7 @@ export default function RegisterForm() {
                         type={showConfirmPassword ? "text" : "password"}
                       />
                       <Svg
-                        name={showPassword ? "eye" : "close-eye"}
+                        name={showConfirmPassword ? "eye" : "close-eye"}
                         styles={css.regEye}
                         onClick={() => setShowConfimrPassword((prev) => !prev)}
                       />
