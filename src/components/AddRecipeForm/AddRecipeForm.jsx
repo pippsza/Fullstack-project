@@ -1,12 +1,17 @@
 import { useForm, useFieldArray } from "react-hook-form";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 import css from "./AddRecipeForm.module.css";
 import Svg from "../Svg/svg.jsx";
-import categories from '../../assets/json/categories.json'
-import ingredients from "../../assets/json/ingredients.json";
-// import { fetchCategori//es } from "../../redux/categories/operations"; 
-// import { selectCategories } from "../../redux/categories/selectors"; 
 
+import { fetchCategories } from "../../redux/categories/operations";
+import { selectCategories } from "../../redux/categories/selectors";
+
+import { fetchIngredients } from "../../redux/ingredients/operations.js";
+import { selectIngredients } from "../../redux/ingredients/selectors.js";
+
+import { addRecipe } from "../../redux/recipes/operations.js";
 
 export default function AddRecipeForm() {
   const {
@@ -31,6 +36,7 @@ export default function AddRecipeForm() {
     fields: ingredientFields,
     append: appendIngredient,
     remove: removeIngredient,
+    replace: replaceIngredients,
   } = useFieldArray({ control, name: "ingredients" });
 
   const [ingredient, setIngredient] = useState("");
@@ -42,12 +48,18 @@ export default function AddRecipeForm() {
   const [photoPreview, setPhotoPreview] = useState();
   const fileInputRef = useRef(null);
   const [ingredientsError, setIngredientsError] = useState("");
-  // const dispatch = useDispatch();
-  // const categories = useSelector(selectCategories);
-  
-  // useEffect(() => {
-  //   dispatch(fetchCategories());
-  // }, [dispatch]);
+
+  const dispatch = useDispatch();
+  const categories = useSelector(selectCategories);
+  const ingredients = useSelector(selectIngredients);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   const handleAddIngredient = () => {
     let hasError = false;
@@ -65,32 +77,74 @@ export default function AddRecipeForm() {
     }
     if (hasError) return;
 
-    appendIngredient({ ingredient, measure });
+    const selectedIngredient = ingredients.find(
+      (item) => item._id === ingredient
+    );
+    const ingredientName = selectedIngredient
+      ? selectedIngredient.name
+      : ingredient;
+
+    const newIngredient = {
+      ingredientId: ingredient,
+      measure: measure,
+      name: ingredientName,
+    };
+
+    appendIngredient(newIngredient);
     setIngredient("");
     setMeasure("");
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (ingredientFields.length === 0) {
       setIngredientsError("Required field !Add at least one ingredient!");
       return;
     } else {
       setIngredientsError("");
     }
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("time", data.time);
-    formData.append("calories", data.calories);
-    formData.append("category", data.category);
-    formData.append("instructions", data.instructions);
-    formData.append("ingredients", JSON.stringify(data.ingredients));
-    if (photo) {
-      formData.append("photo", photo);
+
+    setIsSubmitted(true);
+
+    const selectedCategory = categories.find((cat) => cat.id === data.category);
+    const categoryName = selectedCategory
+      ? selectedCategory.name
+      : data.category;
+
+    const recipeData = {
+      title: data.title,
+      category: categoryName,
+      instructions: data.instructions,
+      description: data.description,
+      time: String(data.time),
+      ingredients: ingredientFields.map((field) => ({
+        id: String(field.ingredientId),
+        measure: String(field.measure),
+      })),
+      calories: data.calories ? Number(data.calories) : null,
+    };
+
+    try {
+      const result = await dispatch(addRecipe(recipeData));
+
+      if (result.meta.requestStatus === "fulfilled") {
+        toast.success("Recipe created successfully! 🎉");
+
+        reset();
+        replaceIngredients([]);
+        setIngredient("");
+        setMeasure("");
+        setPhoto(null);
+        setPhotoPreview(null);
+      } else if (result.meta.requestStatus === "rejected") {
+        const errorMessage =
+          result.payload?.message || "Failed to create recipe";
+        toast.error(errorMessage);
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitted(false);
     }
-    console.log("Зібрані дані:", data);
-    setIsSubmitted(false);
-    reset();
   };
 
   return (
@@ -187,18 +241,11 @@ export default function AddRecipeForm() {
                 <div className={css.caloriesPart}>
                   <p className={css.titleText}>Calories</p>
                   <input
-                    className={`${css.formInput} ${
-                      errors.calories ? css.err : ""
-                    }`}
+                    className={css.formInput}
                     type="number"
-                    placeholder="150 cals"
-                    {...register("calories", {
-                      required: "Required field!",
-                    })}
+                    placeholder="150 cals (optional)"
+                    {...register("calories")}
                   />
-                  {errors.calories && (
-                    <span className={css.error}>{errors.calories.message}</span>
-                  )}
                 </div>
                 <div className={css.categoryPart}>
                   <p className={css.titleText}>Category</p>
@@ -238,9 +285,9 @@ export default function AddRecipeForm() {
                     value={ingredient}
                     onChange={(e) => setIngredient(e.target.value)}
                   >
-                    <option value="">Broccoli</option>
+                    <option value="">Select ingredient</option>
                     {ingredients.map((item) => (
-                      <option key={item.id} value={item.name}>
+                      <option key={item._id} value={item._id}>
                         {item.name}
                       </option>
                     ))}
@@ -287,9 +334,7 @@ export default function AddRecipeForm() {
                 </div>
                 {ingredientFields.map((field, index) => (
                   <div key={field.id} className={css.ingredientRow}>
-                    <span className={css.spanIngredient}>
-                      {field.ingredient}
-                    </span>
+                    <span className={css.spanIngredient}>{field.name}</span>
                     <span className={css.spanMeasure}>{field.measure}</span>
                     {!isSubmitted && (
                       <Svg
@@ -326,8 +371,8 @@ export default function AddRecipeForm() {
           </section>
 
           <div className={css.bntContainer}>
-            <button className={css.button} type="submit">
-              Publish Recipe
+            <button className={css.button} type="submit" disabled={isSubmitted}>
+              {isSubmitted ? "Publishing..." : "Publish Recipe"}
             </button>
           </div>
         </div>
