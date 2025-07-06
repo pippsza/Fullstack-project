@@ -9,13 +9,15 @@ import { selectIngredients } from "../../redux/ingredients/selectors";
 import { fetchByFilters } from "../../redux/recipes/operations.js";
 
 const Filters = () => {
-  const dispatch = useDispatch();
-  const initValuesDispatch = {
+  const [filter, setFilter] = useState({
     category: "",
     ingredient: "",
     title: "",
     page: 1,
-  };
+  });
+
+  const dispatch = useDispatch();
+
   // dispatch(fetchByPages(initValuesDispatch));
   const categories = useSelector(selectCategories);
   const ingredients = useSelector(selectIngredients);
@@ -58,10 +60,12 @@ const Filters = () => {
   };
 
   const handleIngredientChange = (value) => {
-    // const value = e.target.value;
-    console.log(value);
-    // dispatch(selectIngredient(value));
-    // setIngredientInput(value);
+    setFilter({ ...filter, ingredient: value._id });
+    // dispatch(fetchByFilters(filter));
+    setTimeout(() => {
+      dispatch(fetchByFilters(filter));
+    }, 2000);
+    console.log("in", value._id);
   };
 
   const handleReset = () => {
