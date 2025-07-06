@@ -1,0 +1,44 @@
+.container {
+  min-width: 320px;
+  padding: 0 16px;
+  margin: 0 auto;
+  width: 100%;
+}
+.section {
+  padding: 24px 0;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    min-width: 768px;
+    padding: 0 32px;
+  }
+  .section {
+    padding: 48px 0;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .container {
+    min-width: 1280px;
+    padding: 0 107.5px;
+  }
+  .section {
+    padding: 24px 0;
+  }
+}
+
+.imageBox {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.mainRecipeTitle {
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 1.55;
+}
+.resipeImage {
+  width: 100%;
+}
