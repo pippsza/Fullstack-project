@@ -2,12 +2,11 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useState, useRef } from "react";
 import css from "./AddRecipeForm.module.css";
 import Svg from "../Svg/svg.jsx";
-import noImage from "../../assets/NoImageAvailable.jpg";
-// import { fetchCategories } from "../../redux/categories/operations"; 
+import categories from '../../assets/json/categories.json'
+import ingredients from "../../assets/json/ingredients.json";
+// import { fetchCategori//es } from "../../redux/categories/operations"; 
 // import { selectCategories } from "../../redux/categories/selectors"; 
 
-const categories = [{ "id": 1, "name": "salad" },
-  { "id": 2, "name": "soup" }];
 
 export default function AddRecipeForm() {
   const {
@@ -22,7 +21,7 @@ export default function AddRecipeForm() {
       description: "",
       time: "",
       calories: "",
-      category: "Soup",
+      category: "",
       ingredients: [],
       instructions: "",
     },
@@ -40,8 +39,9 @@ export default function AddRecipeForm() {
   const [ingredientNameError, setIngredientNameError] = useState("");
   const [ingredientAmountError, setIngredientAmountError] = useState("");
   const [photo, setPhoto] = useState(null);
-  const [photoPreview, setPhotoPreview] = useState(noImage);
+  const [photoPreview, setPhotoPreview] = useState();
   const fileInputRef = useRef(null);
+  const [ingredientsError, setIngredientsError] = useState("");
   // const dispatch = useDispatch();
   // const categories = useSelector(selectCategories);
   
@@ -71,6 +71,12 @@ export default function AddRecipeForm() {
   };
 
   const onSubmit = (data) => {
+    if (ingredientFields.length === 0) {
+      setIngredientsError("Required field !Add at least one ingredient!");
+      return;
+    } else {
+      setIngredientsError("");
+    }
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
@@ -93,13 +99,26 @@ export default function AddRecipeForm() {
       <div className={css.mainRowContainer}>
         <section className={css.sectionPhoto}>
           <h3 className={css.sectionTitlePhoto}>Upload Photo</h3>
-          <img
-            src={photoPreview}
+
+          <div
             className={css.noImage}
-            alt="Preview"
-            style={{ cursor: "pointer" }}
             onClick={() => fileInputRef.current && fileInputRef.current.click()}
-          />
+          >
+            {photoPreview ? (
+              <img
+                src={photoPreview}
+                alt="Preview"
+                className={css.photoPreview}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setPhoto(null);
+                  setPhotoPreview(null);
+                }}
+              />
+            ) : (
+              <Svg name="photo" styles={css.iconPhoto} />
+            )}
+          </div>
           <input
             type="file"
             accept="image/*"
@@ -193,7 +212,7 @@ export default function AddRecipeForm() {
                   >
                     <option value="">Select category</option>
                     {categories.map((category) => (
-                      <option key={category.id} value={category.name}>
+                      <option key={category.id} value={category.id}>
                         {category.name}
                       </option>
                     ))}
@@ -212,14 +231,20 @@ export default function AddRecipeForm() {
               <div className={css.titlePartsItem}>
                 <div className={css.itemName}>
                   <p className={css.titleText}>Name</p>
-                  <input
+                  <select
                     className={`${css.formInput} ${
                       ingredientNameError ? css.err : ""
                     }`}
-                    placeholder="Broccoli"
                     value={ingredient}
-                    onChange={(event) => setIngredient(event.target.value)}
-                  />
+                    onChange={(e) => setIngredient(e.target.value)}
+                  >
+                    <option value="">Broccoli</option>
+                    {ingredients.map((item) => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
                   {ingredientNameError && (
                     <span className={css.error}>{ingredientNameError}</span>
                   )}
@@ -260,7 +285,6 @@ export default function AddRecipeForm() {
                   <p className={css.spanIngredientItem}>Name:</p>
                   <p className={css.spanMeasureItem}>Amount:</p>
                 </div>
-
                 {ingredientFields.map((field, index) => (
                   <div key={field.id} className={css.ingredientRow}>
                     <span className={css.spanIngredient}>
@@ -276,6 +300,9 @@ export default function AddRecipeForm() {
                     )}
                   </div>
                 ))}
+                {ingredientsError && (
+                  <span className={css.error}>{ingredientsError}</span>
+                )}
               </div>
             </div>
           </section>
