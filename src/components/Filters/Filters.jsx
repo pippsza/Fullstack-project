@@ -4,8 +4,6 @@ import css from "./Filters.module.css";
 import Container from "../container/container";
 import Svg from "../Svg/svg";
 
-import { fetchCategories } from "../../redux/categories/operations";
-import { fetchIngredients } from "../../redux/ingredients/operations";
 import {
   setCategory,
   setIngredient,
@@ -30,11 +28,6 @@ const Filters = () => {
   const containerRef = useRef(null);
   const [size, setSize] = useState(window.innerWidth);
   const sizeDesktop = 1439;
-
-  useEffect(() => {
-    dispatch(fetchCategories());
-    dispatch(fetchIngredients());
-  }, [dispatch]);
 
   useEffect(() => {
     const resizeHandler = () => setSize(window.innerWidth);

@@ -1,13 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { authInstance } from "../auth/operations";
 
 export const fetchCategories = createAsyncThunk(
   "categories/fetchCategories",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(
-        "https://fullstack-recipes-backend-ssa1.onrender.com/api/categories"
-      );
+      const response = await authInstance.get("/categories");
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
