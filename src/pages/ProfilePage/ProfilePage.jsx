@@ -1,25 +1,15 @@
 import { Outlet } from "react-router-dom";
-// import { useState } from "react";
 import Container from "../../components/container/container.jsx";
 import ProfileNavigation from "../../components/ProfileNavigation/ProfileNavigation.jsx";
 // import ModalErrorWhileSaving from "../../components/ModalErrorWhileSaving/ModalErrorWhileSaving.jsx";
 import style from "./ProfilePage.module.css";
-import { useState } from "react";
-import Loader from '../../components/Loader/Loader.jsx';
-import { useSelector } from "react-redux";
-// import { selectError, selectLoading } from "../../redux/recipes/selectors.js";
-
-
-
 
 export default function ProfilePage() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
   // const onClose = (e) => {
   //   setIsModalOpen(false);
   // };
-  // const isLoading = useSelector(selectLoading);
-  // const isError = useSelector(selectError);
-  
+
   return (
     <div className={style.wrapper}>
       {/* {isModalOpen && <ModalErrorWhileSaving onClose={onClose} isModalOpen={isModalOpen} />} */}
@@ -27,8 +17,6 @@ export default function ProfilePage() {
       <Container>
         <h1 className={style.title}>Profile page</h1>
         <ProfileNavigation />
-        {/* {isLoading && <Loader />}
-        {isError && <b>Whoops, there was an error pls reload...</b>} */}
         <Outlet />
       </Container>
     </div>

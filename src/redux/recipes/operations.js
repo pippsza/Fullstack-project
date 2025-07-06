@@ -116,8 +116,9 @@ export const deleteFavouriteRecipe = createAsyncThunk(
   "recipes/deleteFavouriteRecipe",
   async (recipeId, thunkAPI) => {
     try {
-      const res = await authInstance.delete(`recipes/favorite/${recipeId}`);
-      return recipeId;
+      const res = await authInstance.delete(`/recipes/favorite/${recipeId}`);
+      console.log("deleteFavouriteRecipe response:", res);
+      return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

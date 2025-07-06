@@ -32,8 +32,10 @@ export const selectFavoriteRecipesHasNextPage = (state) =>
 export const selectFavoriteRecipesHasPreviousPage = (state) =>
   state.recipes.items.favoriteItems.hasPreviousPage;
 
-export const selectOwnRecipesTotal = (state) => state.recipes.items.ownItems.totalItems;
-export const selectFavoriteRecipesTotal = (state) => state.recipes.items.favoriteItems.totalItems;
+export const selectOwnRecipesTotal = (state) =>
+  state.recipes.items.ownItems.totalItems;
+export const selectFavoriteRecipesTotal = (state) =>
+  state.recipes.items.favoriteItems.totalItems;
 
 export const selectFilteredRecipes = createSelector(
   [selectRecipes, selectFilters],

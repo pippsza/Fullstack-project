@@ -107,32 +107,35 @@ const slice = createSlice({
       })
       .addCase(fetchOwnRecipes.fulfilled, (state, action) => {
         state.loading = false;
-  state.error = false;
+        state.error = false;
 
-  const newItems = action.payload.data.data;
+        const newItems = action.payload.data.data;
         const page = action.payload.data.page;
         state.items.ownItems.totalItems = action.payload.data.totalItems;
-  const hasNextPage = action.payload.data.hasNextPage;
-  const hasPreviousPage = action.payload.data.hasPreviousPage;
+        const hasNextPage = action.payload.data.hasNextPage;
+        const hasPreviousPage = action.payload.data.hasPreviousPage;
 
-  
-  if (page === 1) {
-    state.items.ownItems.items = newItems;
-  } else {
-    const existingIds = new Set(state.items.ownItems.items.map((i) => i._id));
-    const filteredNewItems = newItems.filter((i) => !existingIds.has(i._id));
-    state.items.ownItems.items = [
-      ...state.items.ownItems.items,
-      ...filteredNewItems,
-    ];
-  }
+        if (page === 1) {
+          state.items.ownItems.items = newItems;
+        } else {
+          const existingIds = new Set(
+            state.items.ownItems.items.map((i) => i._id)
+          );
+          const filteredNewItems = newItems.filter(
+            (i) => !existingIds.has(i._id)
+          );
+          state.items.ownItems.items = [
+            ...state.items.ownItems.items,
+            ...filteredNewItems,
+          ];
+        }
 
-  state.items.ownItems.page = page;
-  state.items.ownItems.hasNextPage = hasNextPage;
-  state.items.ownItems.hasPreviousPage = hasPreviousPage;
+        state.items.ownItems.page = page;
+        state.items.ownItems.hasNextPage = hasNextPage;
+        state.items.ownItems.hasPreviousPage = hasPreviousPage;
         // state.loading = false;
         // state.error = false;
-        
+
         // state.items.ownItems.items = action.payload.data.data;
         // state.items.ownItems.page = action.payload.data.page;
         // state.items.ownItems.hasNextPage = action.payload.data.hasNextPage;
@@ -151,61 +154,66 @@ const slice = createSlice({
       .addCase(fetchFavouriteRecipes.fulfilled, (state, action) => {
         // state.loading = false;
         // state.error = false;
-        
+
         // state.items.favoriteItems.items = action.payload.data.data;
         // state.items.favoriteItems.page = action.payload.data.page;
         // state.items.favoriteItems.hasNextPage = action.payload.data.hasNextPage;
         // state.items.favoriteItems.hasPreviousPage =
         //   action.payload.data.hasPreviousPage;
         state.loading = false;
-  state.error = false;
+        state.error = false;
 
-  const newItems = action.payload.data.data;
+        const newItems = action.payload.data.data;
         const page = action.payload.data.page;
         state.items.favoriteItems.totalItems = action.payload.data.totalItems;
-  const hasNextPage = action.payload.data.hasNextPage;
-  const hasPreviousPage = action.payload.data.hasPreviousPage;
+        const hasNextPage = action.payload.data.hasNextPage;
+        const hasPreviousPage = action.payload.data.hasPreviousPage;
 
-  if (page === 1) {
-    state.items.favoriteItems.items = newItems;
-  } else {
-    const existingIds = new Set(
-      state.items.favoriteItems.items.map((i) => i._id)
-    );
-    const filteredNewItems = newItems.filter((i) => !existingIds.has(i._id));
-    state.items.favoriteItems.items = [
-      ...state.items.favoriteItems.items,
-      ...filteredNewItems,
-    ];
-  }
+        if (page === 1) {
+          state.items.favoriteItems.items = newItems;
+        } else {
+          const existingIds = new Set(
+            state.items.favoriteItems.items.map((i) => i._id)
+          );
+          const filteredNewItems = newItems.filter(
+            (i) => !existingIds.has(i._id)
+          );
+          state.items.favoriteItems.items = [
+            ...state.items.favoriteItems.items,
+            ...filteredNewItems,
+          ];
+        }
 
-  state.items.favoriteItems.page = page;
-  state.items.favoriteItems.hasNextPage = hasNextPage;
-  state.items.favoriteItems.hasPreviousPage = hasPreviousPage;
+        state.items.favoriteItems.page = page;
+        state.items.favoriteItems.hasNextPage = hasNextPage;
+        state.items.favoriteItems.hasPreviousPage = hasPreviousPage;
       })
       .addCase(fetchFavouriteRecipes.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
         state.items.favoriteItems.items = [];
-      }).addCase(deleteFavouriteRecipe.pending, (state) => {
+      })
+      .addCase(deleteFavouriteRecipe.pending, (state) => {
         state.loading = true;
         state.error = false;
-      }).addCase(deleteFavouriteRecipe.fulfilled, (state, action) => {
-        const deletedId =  action.meta.arg;
-      console.log(state.items.favoriteItems.items)
-        state.items.favoriteItems.items = state.items.favoriteItems.items.filter(
-          (recipe) => recipe._id !== deletedId
-            // && recipe._id?.$oid !== deletedId
-        );
-      
+      })
+      .addCase(deleteFavouriteRecipe.fulfilled, (state, action) => {
+        const deletedId = action.meta.arg;
+        console.log(state.items.favoriteItems.items);
+        state.items.favoriteItems.items =
+          state.items.favoriteItems.items.filter(
+            (recipe) => recipe._id !== deletedId
+          );
+
         state.items.favoriteItems.totalItems = Math.max(
           0,
           state.items.favoriteItems.totalItems - 1
         );
-      }).addCase(deleteFavouriteRecipe.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(deleteFavouriteRecipe.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        
       })
       .addCase(logOut.fulfilled, (state) => {
         state.items.ownItems = {

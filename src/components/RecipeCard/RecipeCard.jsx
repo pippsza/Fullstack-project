@@ -13,13 +13,11 @@ export default function RecipeCard({ recipeCard }) {
     console.log("ID to delete:", recipeCard._id);
     try {
       if (recipeCard._id) {
-      await dispatch(deleteFavouriteRecipe(recipeCard._id)).unwrap();
-    }
+        await dispatch(deleteFavouriteRecipe(recipeCard._id)).unwrap();
+      }
     } catch (error) {
-      
-  toast.error("Something went wrong");
+      toast.error("Something went wrong");
     }
-    
   };
   return (
     <div className={style.recipeCardWrapper}>
@@ -48,7 +46,11 @@ export default function RecipeCard({ recipeCard }) {
         </NavLink>
         {recipeType === "own" ? null : recipeType === "favourites" ? (
           <div className={style.svg1WrapperActive}>
-            <Svg styles={style.svg1Active} name="bookmark" onClick={handleDeleteFavourite} />
+            <Svg
+              styles={style.svg1Active}
+              name="bookmark"
+              onClick={handleDeleteFavourite}
+            />
           </div>
         ) : (
           <div className={style.svg1Wrapper}>
