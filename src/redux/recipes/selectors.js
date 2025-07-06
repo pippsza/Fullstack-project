@@ -8,7 +8,9 @@ export const selectRecipesLoading = (state) => state.recipes.loading;
 export const selectRecipesError = (state) => state.recipes.error;
 
 export const selectOwnRecipes = (state) => state.recipes.items.ownItems.items;
+
 export const selectAllRecipes = (state) => state.recipes.items.allItems.items;
+
 export const selectFavoriteRecipes = (state) =>
   state.recipes.items.favoriteItems.items;
 
@@ -54,4 +56,5 @@ export const selectFilteredOwnRecipes = createSelector(
 export const selectCurrentRecipe = (state) => state.recipes.currentRecipe;
 
 export const selectOwnRecipesObject = (state) => state.recipes.items.ownItems;
+
 export const selectAllRecipesObject = (state) => state.recipes.items.allItems;

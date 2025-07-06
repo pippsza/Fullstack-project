@@ -75,7 +75,6 @@ const slice = createSlice({
       })
       .addCase(addRecipe.fulfilled, (state, action) => {
         state.loading = false;
-        // Добавляем в ownItems и allItems
         state.items.ownItems.items.push(action.payload);
         state.items.allItems.items.push(action.payload);
       })
