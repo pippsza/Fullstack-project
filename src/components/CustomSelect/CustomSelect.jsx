@@ -21,9 +21,13 @@ export const CustomSelect = ({ label, options, selected, onChange }) => (
           leaveTo="opacity-0"
         >
           <Listbox.Options className={css.listboxOptions}>
-            {options.map((option, idx) => (
-              <Listbox.Option key={idx} value={option} className={css.option}>
-                {option}
+            {options.map((option) => (
+              <Listbox.Option
+                key={option._id}
+                value={option}
+                className={css.option}
+              >
+                {option.name}
               </Listbox.Option>
             ))}
           </Listbox.Options>

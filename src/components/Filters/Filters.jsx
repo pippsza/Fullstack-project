@@ -4,26 +4,23 @@ import css from "./Filters.module.css";
 import Container from "../container/container";
 import { CustomSelect } from "../CustomSelect/CustomSelect";
 import Svg from "../Svg/svg";
+import { selectCategories } from "../../redux/categories/selectors";
+import { selectIngredients } from "../../redux/ingredients/selectors";
 
 import {
-  setCategory,
-  setIngredient,
-  resetFilters,
-} from "../../redux/filters/slice";
+  selectCategory,
+  selectIngredient,
+  selectQuery,
+} from "../../redux/filters/selectors";
 
 const Filters = () => {
-  const [categories, setCategories] = useState([]);
-  const [ingredients, setIngredients] = useState([]);
-
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedIngredient, setSelectedIngredient] = useState("");
   const dispatch = useDispatch();
 
-  const categories = useSelector((state) => state.categories.items) || [];
-  const ingredients = useSelector((state) => state.ingredients.items) || [];
+  const categories = useSelector(selectCategories);
+  const ingredients = useSelector(selectIngredients);
 
-  const category = useSelector((state) => state.filters.category) || "";
-  const ingredient = useSelector((state) => state.filters.ingredient) || "";
+  const categoryFilter = useSelector(selectCategory);
+  const ingredientFilter = useSelector(selectIngredient);
 
   const [ingredientInput, setIngredientInput] = useState("");
   const filteredIngredients = ingredients.filter((ingr) =>
@@ -34,12 +31,6 @@ const Filters = () => {
   const containerRef = useRef(null);
   const [size, setSize] = useState(window.innerWidth);
   const sizeDesktop = 1439;
-
-  useEffect(() => {
-    // Тут ти заміниш на API-запит
-    setCategories(["Breakfast", "Lunch", "Dinner"]);
-    setIngredients(["Eggs", "Beef", "Vegetables"]);
-  }, []);
 
   useEffect(() => {
     const resizeHandler = () => setSize(window.innerWidth);
@@ -65,19 +56,17 @@ const Filters = () => {
   }, []);
 
   const handleCategoryChange = (e) => {
-    dispatch(setCategory(e.target.value));
+    dispatch(selectCategory(e.target.value));
   };
 
-  const handleIngredientChange = (e) => {
-    const value = e.target.value;
-    dispatch(setIngredient(value));
-    setIngredientInput(value);
+  const handleIngredientChange = (value) => {
+    // const value = e.target.value;
+    console.log(value);
+    // dispatch(selectIngredient(value));
+    // setIngredientInput(value);
   };
 
   const handleReset = () => {
-    setSelectedCategory("");
-    setSelectedIngredient("");
-    console.log("Reset filters");
     dispatch(resetFilters());
     setIngredientInput("");
     setOpen(false);
@@ -99,19 +88,19 @@ const Filters = () => {
                   <CustomSelect
                     label="Category"
                     options={categories}
-                    selected={selectedCategory}
-                    onChange={setSelectedCategory}
+                    selected={categoryFilter}
+                    onChange={handleCategoryChange}
                   />
                   <CustomSelect
                     label="Ingredient"
                     options={ingredients}
-                    selected={selectedIngredient}
-                    onChange={setSelectedIngredient}
+                    selected={ingredientFilter}
+                    onChange={handleIngredientChange}
                   />
                   <select
                     id="category"
                     className={css.selectFilter}
-                    value={category}
+                    value={categoryFilter}
                     onChange={handleCategoryChange}
                   >
                     <option value="" disabled hidden>
@@ -158,19 +147,19 @@ const Filters = () => {
                       <CustomSelect
                         label="Category"
                         options={categories}
-                        selected={selectedCategory}
-                        onChange={setSelectedCategory}
+                        selected={categoryFilter}
+                        onChange={handleCategoryChange}
                       />
                       <CustomSelect
                         label="Ingredient"
                         options={ingredients}
-                        selected={selectedIngredient}
-                        onChange={setSelectedIngredient}
+                        selected={ingredientFilter}
+                        onChange={handleIngredientChange}
                       />
                       <select
                         id="category"
                         className={css.selectFilter}
-                        value={category}
+                        value={categoryFilter}
                         onChange={handleCategoryChange}
                       >
                         <option value="" disabled hidden>
