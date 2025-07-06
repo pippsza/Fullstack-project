@@ -5,8 +5,10 @@ import { selectAllRecipes } from "../../redux/recipes/selectors";
 
 export default function RecipesList() {
   const recipes = useSelector(selectAllRecipes);
-  console.log("good", recipes);
 
+  setTimeout(() => {
+    console.log("good", recipes);
+  }, 2000);
   return (
     <ul className={style.list}>
       {recipes &&

@@ -6,21 +6,19 @@ import { CustomSelect } from "../CustomSelect/CustomSelect";
 import Svg from "../Svg/svg";
 import { selectCategories } from "../../redux/categories/selectors";
 import { selectIngredients } from "../../redux/ingredients/selectors";
-
-import {
-  selectCategory,
-  selectIngredient,
-  selectQuery,
-} from "../../redux/filters/selectors";
+import { fetchByPages } from "../../redux/recipes/operations.js";
 
 const Filters = () => {
   const dispatch = useDispatch();
-
+  const initValuesDispatch = {
+    category: "",
+    ingredient: "",
+    title: "",
+    page: 1,
+  };
+  // dispatch(fetchByPages(initValuesDispatch));
   const categories = useSelector(selectCategories);
   const ingredients = useSelector(selectIngredients);
-
-  const categoryFilter = useSelector(selectCategory);
-  const ingredientFilter = useSelector(selectIngredient);
 
   const [ingredientInput, setIngredientInput] = useState("");
   const filteredIngredients = ingredients.filter((ingr) =>
@@ -56,7 +54,7 @@ const Filters = () => {
   }, []);
 
   const handleCategoryChange = (e) => {
-    dispatch(selectCategory(e.target.value));
+    // dispatch(selectCategory(e.target.value));
   };
 
   const handleIngredientChange = (value) => {
@@ -67,7 +65,7 @@ const Filters = () => {
   };
 
   const handleReset = () => {
-    dispatch(resetFilters());
+    // dispatch(resetFilters());
     setIngredientInput("");
     setOpen(false);
   };
@@ -88,19 +86,19 @@ const Filters = () => {
                   <CustomSelect
                     label="Category"
                     options={categories}
-                    selected={categoryFilter}
+                    selected={null}
                     onChange={handleCategoryChange}
                   />
                   <CustomSelect
                     label="Ingredient"
                     options={ingredients}
-                    selected={ingredientFilter}
+                    selected={null}
                     onChange={handleIngredientChange}
                   />
                   <select
                     id="category"
                     className={css.selectFilter}
-                    value={categoryFilter}
+                    value={null}
                     onChange={handleCategoryChange}
                   >
                     <option value="" disabled hidden>
@@ -147,19 +145,19 @@ const Filters = () => {
                       <CustomSelect
                         label="Category"
                         options={categories}
-                        selected={categoryFilter}
+                        selected={null}
                         onChange={handleCategoryChange}
                       />
                       <CustomSelect
                         label="Ingredient"
                         options={ingredients}
-                        selected={ingredientFilter}
+                        selected={null}
                         onChange={handleIngredientChange}
                       />
                       <select
                         id="category"
                         className={css.selectFilter}
-                        value={categoryFilter}
+                        value={null}
                         onChange={handleCategoryChange}
                       >
                         <option value="" disabled hidden>
