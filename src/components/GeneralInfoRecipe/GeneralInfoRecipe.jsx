@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 import css from "./GeneralInfoRecipe.module.css";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
-import toast from "react-hot-toast";
+import { deleteFavouriteRecipe } from "../../redux/recipes/operations";
+import { addFavouriteRecipe } from "../../redux/recipes/operations";
 
 export default function GeneralInfoRecipe({
   category,
@@ -28,10 +30,10 @@ export default function GeneralInfoRecipe({
 
     try {
       if (isFavourite) {
-        //await dispatch(removeFromFavorites(id)).unwrap();
+        await dispatch(deleteFavouriteRecipe(id)).unwrap();
         toast.success("Recipe added to favorites");
       } else {
-        // await dispatch(addToFavourites(id)).unwrap();
+        await dispatch(addFavouriteRecipe(id)).unwrap();
         toast.success("Recipe added to favorites");
       }
     } catch (err) {

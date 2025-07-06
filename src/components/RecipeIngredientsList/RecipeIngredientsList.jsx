@@ -1,10 +1,10 @@
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+
 import css from "./RecipeIngredientsList.module.css";
+import { fetchIngredients } from "../../redux/ingredients/operations";
 
 export default function RecipeIngredientsList({ ingredients }) {
-  // const allIngredients = useSelector(selectIngredientsList);
-  const allIngredients = ingredients;
-  console.log("allIngr:", allIngredients);
+  const allIngredients = useSelector(fetchIngredients);
   return (
     <div className={css.ingredientsBox}>
       <h3 className={css.ingredientsTitle}>Ingredients:</h3>
