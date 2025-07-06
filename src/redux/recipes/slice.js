@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { logOut } from "../auth/operations";
 import {
-  fetchByPages,
   addRecipe,
   fetchById,
-  fetchOwnRecipes,
+  fetchByPages,
   fetchFavouriteRecipes,
   deleteFavouriteRecipe,
+  fetchOwnRecipes,
 } from "./operations";
-
-import { logOut } from "../auth/operations";
 
 const slice = createSlice({
   name: "recipes",
@@ -78,7 +77,6 @@ const slice = createSlice({
       })
       .addCase(addRecipe.fulfilled, (state, action) => {
         state.loading = false;
-        // Добавляем в ownItems и allItems
         state.items.ownItems.items.push(action.payload);
         state.items.allItems.items.push(action.payload);
       })
