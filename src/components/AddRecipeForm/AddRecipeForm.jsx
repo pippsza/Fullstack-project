@@ -1,387 +1,382 @@
-import { useState, useEffect } from "react";
-import { useFormik, FieldArray } from "formik";
-import * as Yup from "yup";
-import axios from "axios";
-import styles from "./AddRecipeForm.module.css";
+import { useForm, useFieldArray } from "react-hook-form";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+import css from "./AddRecipeForm.module.css";
+import Svg from "../Svg/svg.jsx";
 
-const availableIngredients = [
-  "Sugar",
-  "Salt",
-  "Flour",
-  "Milk",
-  "Butter",
-  "Eggs",
-  "Oil",
-  "Pepper",
-  "Garlic",
- 
-];
+import { fetchCategories } from "../../redux/categories/operations";
+import { selectCategories } from "../../redux/categories/selectors";
 
-const initialValues = {
-  title: "",
-  shortDescription: "",
-  cookingTime: "",
-  calories: "",
-  category: "",
-  instruction: "",
-  ingredients: [],
-  newIngredientName: "",
-  newIngredientAmount: "",
-};
+import { fetchIngredients } from "../../redux/ingredients/operations.js";
+import { selectIngredients } from "../../redux/ingredients/selectors.js";
 
-const validationSchema = Yup.object({
-  title: Yup.string().required("Recipe Title is required"),
-  shortDescription: Yup.string().required("Description is required"),
-  cookingTime: Yup.number()
-    .typeError("Must be a number")
-    .required("Cooking time is required"),
-  calories: Yup.number().nullable(),
-  category: Yup.string().required("Category is required"),
-  instruction: Yup.string().required("Instructions are required"),
-  ingredients: Yup.array()
-    .of(
-      Yup.object({
-        name: Yup.string().required("Name required"),
-        amount: Yup.string().required("Amount required"),
-      })
-    )
-    .min(1, "At least one ingredient required"),
-});
+import { addRecipe } from "../../redux/recipes/operations.js";
 
 export default function AddRecipeForm() {
-  const [photo, setPhoto] = useState(null);
-  const [photoPreview, setPhotoPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const backendURL = "https://your-backend-api.com/api/recipes"; 
-
-  useEffect(() => {
-    if (!photo) {
-      setPhotoPreview(null);
-      return;
-    }
-    const objectUrl = URL.createObjectURL(photo);
-    setPhotoPreview(objectUrl);
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [photo]);
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      if (!photo) {
-        alert("Please upload a photo");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("shortDescription", values.shortDescription);
-      formData.append("cookingTime", values.cookingTime);
-      formData.append("calories", values.calories || "");
-      formData.append("category", values.category);
-      formData.append("instruction", values.instruction);
-      formData.append("photo", photo);
-      formData.append("ingredients", JSON.stringify(values.ingredients));
-
-      try {
-        setLoading(true);
-        await axios.post(backendURL, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        alert("✅ Recipe successfully submitted!");
-        resetForm();
-        setPhoto(null);
-      } catch (error) {
-        console.error("❌ Error submitting recipe:", error);
-        alert("❌ Something went wrong. Try again.");
-      } finally {
-        setLoading(false);
-      }
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: "",
+      description: "",
+      time: "",
+      calories: "",
+      category: "",
+      ingredients: [],
+      instructions: "",
     },
   });
 
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.size < 2 * 1024 * 1024) {
-      setPhoto(file);
+  const {
+    fields: ingredientFields,
+    append: appendIngredient,
+    remove: removeIngredient,
+    replace: replaceIngredients,
+  } = useFieldArray({ control, name: "ingredients" });
+
+  const [ingredient, setIngredient] = useState("");
+  const [measure, setMeasure] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [ingredientNameError, setIngredientNameError] = useState("");
+  const [ingredientAmountError, setIngredientAmountError] = useState("");
+  const [photo, setPhoto] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState();
+  const fileInputRef = useRef(null);
+  const [ingredientsError, setIngredientsError] = useState("");
+
+  const dispatch = useDispatch();
+  const categories = useSelector(selectCategories);
+  const ingredients = useSelector(selectIngredients);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
+
+  const handleAddIngredient = () => {
+    let hasError = false;
+    if (!ingredient.trim()) {
+      setIngredientNameError("Required field!");
+      hasError = true;
     } else {
-      alert("Image must be under 2MB");
+      setIngredientNameError("");
+    }
+    if (!measure.trim()) {
+      setIngredientAmountError("Required field!");
+      hasError = true;
+    } else {
+      setIngredientAmountError("");
+    }
+    if (hasError) return;
+
+    const selectedIngredient = ingredients.find(
+      (item) => item._id === ingredient
+    );
+    const ingredientName = selectedIngredient
+      ? selectedIngredient.name
+      : ingredient;
+
+    const newIngredient = {
+      ingredientId: ingredient,
+      measure: measure,
+      name: ingredientName,
+    };
+
+    appendIngredient(newIngredient);
+    setIngredient("");
+    setMeasure("");
+  };
+
+  const onSubmit = async (data) => {
+    if (ingredientFields.length === 0) {
+      setIngredientsError("Required field !Add at least one ingredient!");
+      return;
+    } else {
+      setIngredientsError("");
+    }
+
+    setIsSubmitted(true);
+
+    const selectedCategory = categories.find((cat) => cat.id === data.category);
+    const categoryName = selectedCategory
+      ? selectedCategory.name
+      : data.category;
+
+    const recipeData = {
+      title: data.title,
+      category: categoryName,
+      instructions: data.instructions,
+      description: data.description,
+      time: String(data.time),
+      ingredients: ingredientFields.map((field) => ({
+        id: String(field.ingredientId),
+        measure: String(field.measure),
+      })),
+      calories: data.calories ? Number(data.calories) : null,
+    };
+
+    try {
+      const result = await dispatch(addRecipe(recipeData));
+
+      if (result.meta.requestStatus === "fulfilled") {
+        toast.success("Recipe created successfully! 🎉");
+
+        reset();
+        replaceIngredients([]);
+        setIngredient("");
+        setMeasure("");
+        setPhoto(null);
+        setPhotoPreview(null);
+      } else if (result.meta.requestStatus === "rejected") {
+        const errorMessage =
+          result.payload?.message || "Failed to create recipe";
+        toast.error(errorMessage);
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitted(false);
     }
   };
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={formik.handleSubmit} className={styles.form}>
-      
-        <div className={styles.left}>
-          <h1 className={styles.addRecipeTitle}>Add Recipe</h1>
-          <p className={styles.generalInformation}>General Information</p>
+    <form className={css.formContainer} onSubmit={handleSubmit(onSubmit)}>
+      <h2 className={css.formTitle}>Add Recipe</h2>
+      <div className={css.mainRowContainer}>
+        <section className={css.sectionPhoto}>
+          <h3 className={css.sectionTitlePhoto}>Upload Photo</h3>
 
-          <div className={styles.fieldGroup}>
-            <label htmlFor="title" className={styles.recipeTitleLabel}>
-              Recipe Title
-            </label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              placeholder="Enter the name of your recipe"
-              className={styles.input}
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.title && formik.errors.title && (
-              <div className={styles.error}>{formik.errors.title}</div>
-            )}
-          </div>
-
-          <div className={styles.fieldGroup}>
-            <label htmlFor="shortDescription" className={styles.label}>
-              Recipe Description
-            </label>
-            <textarea
-              id="shortDescription"
-              name="shortDescription"
-              placeholder="Enter a brief description of your recipe"
-              className={styles.textarea}
-              value={formik.values.shortDescription}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.shortDescription && formik.errors.shortDescription && (
-              <div className={styles.error}>{formik.errors.shortDescription}</div>
-            )}
-          </div>
-
-          <div className={styles.cookingTimeWrapper}>
-            <div className={styles.fieldGroup}>
-              <label htmlFor="cookingTime" className={styles.label}>
-                Cooking time in minutes
-              </label>
-              <input
-                id="cookingTime"
-                name="cookingTime"
-                type="number"
-                className={styles.input}
-                value={formik.values.cookingTime}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.cookingTime && formik.errors.cookingTime && (
-                <div className={styles.error}>{formik.errors.cookingTime}</div>
-              )}
-            </div>
-
-            <div className={styles.caloriesCategoryRow}>
-              <div className={styles.fieldGroup}>
-                <label htmlFor="calories" className={styles.label}>
-                  Calories
-                </label>
-                <input
-                  id="calories"
-                  name="calories"
-                  type="number"
-                  placeholder="Optional"
-                  className={styles.input}
-                  value={formik.values.calories}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.calories && formik.errors.calories && (
-                  <div className={styles.error}>{formik.errors.calories}</div>
-                )}
-              </div>
-
-              <div className={styles.fieldGroup}>
-                <label htmlFor="category" className={styles.label}>
-                  Category
-                </label>
-                <select
-                  id="category"
-                  name="category"
-                  className={styles.select}
-                  value={formik.values.category}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="">Select</option>
-                  <option value="Soup">Soup</option>
-                  <option value="Salad">Salad</option>
-                  <option value="Dessert">Dessert</option>
-                </select>
-                {formik.touched.category && formik.errors.category && (
-                  <div className={styles.error}>{formik.errors.category}</div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.ingredients}>
-            <label className={styles.ingredientsLabel}>Ingredients</label>
-
-            <div className={styles.ingredientsLabelsRow}>
-              <span className={styles.labelName}>Name</span>
-              <span className={styles.labelAmount}>Amount</span>
-              <span style={{ width: "20px" }}></span>
-            </div>
-
-            <FieldArray
-              name="ingredients"
-              render={(arrayHelpers) => (
-                <>
-                  {formik.values.ingredients.map((item, index) => (
-                    <div key={index} className={styles.ingredientRow}>
-                      <select
-                        name={`ingredients.${index}.name`}
-                        value={item.name}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={styles.ingredientNameSelect}
-                      >
-                        <option value="">Select ingredient</option>
-                        {availableIngredients.map((ingr) => (
-                          <option key={ingr} value={ingr}>
-                            {ingr}
-                          </option>
-                        ))}
-                      </select>
-
-                      <input
-                        name={`ingredients.${index}.amount`}
-                        value={item.amount}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className={styles.ingredientAmountInput}
-                        placeholder="Amount"
-                      />
-
-                      <button
-                        type="button"
-                        onClick={() => arrayHelpers.remove(index)}
-                        className={styles.removeBtn}
-                        title="Remove ingredient"
-                      >
-                        ❌
-                      </button>
-                    </div>
-                  ))}
-
-                  <div className={styles.newIngredientInputs}>
-                    <select
-                      value={formik.values.newIngredientName}
-                      onChange={(e) =>
-                        formik.setFieldValue("newIngredientName", e.target.value)
-                      }
-                      className={styles.input}
-                    >
-                      <option value="">Select ingredient</option>
-                      {availableIngredients.map((ingr) => (
-                        <option key={ingr} value={ingr}>
-                          {ingr}
-                        </option>
-                      ))}
-                    </select>
-
-                    <div className={styles.amountAndButton}>
-                      <input
-                        value={formik.values.newIngredientAmount}
-                        onChange={(e) =>
-                          formik.setFieldValue("newIngredientAmount", e.target.value)
-                        }
-                        placeholder="Amount"
-                        className={styles.input}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const name = formik.values.newIngredientName.trim();
-                          const amount = formik.values.newIngredientAmount.trim();
-                          if (name && amount) {
-                            arrayHelpers.push({ name, amount });
-                            formik.setFieldValue("newIngredientName", "");
-                            formik.setFieldValue("newIngredientAmount", "");
-                          }
-                        }}
-                        className={styles.addIngredientBtn}
-                      >
-                        Add new Ingredient
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
-            />
-            {formik.errors.ingredients && (
-              <div className={styles.error}>{formik.errors.ingredients}</div>
-            )}
-          </div>
-
-          <div className={styles.fieldGroup}>
-            <label htmlFor="instruction" className={styles.instructionsLabel}>
-              Instructions
-            </label>
-            <textarea
-              id="instruction"
-              name="instruction"
-              placeholder="Enter a text"
-              className={styles.instructionsTextarea}
-              value={formik.values.instruction}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.instruction && formik.errors.instruction && (
-              <div className={styles.error}>{formik.errors.instruction}</div>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className={styles.publishRecipeBtn}
+          <div
+            className={css.noImage}
+            onClick={() => fileInputRef.current && fileInputRef.current.click()}
           >
-            {loading ? "Submitting..." : "Publish Recipe"}
-          </button>
-        </div>
-
-        <div className={styles.uploadContainer}>
-          <label htmlFor="photoInput" className={styles.photoLabel}>
-            Upload photo
-
-            <div className={styles.photoBox}>
-              {photoPreview ? (
-                <img
-                  src={photoPreview}
-                  alt="Preview"
-                  className={styles.previewImage}
-                />
-              ) : (
-                <>
-                  <svg
-                    className={styles.uploadIcon}
-                    aria-hidden="true"
-                    width="161.79"
-                    height="136"
-                    style={{ position: "absolute", top: 119, left: 114.6 }}
-                    role="img"
-                  >
-                    <use xlinkHref="#icon-photo" />
-                  </svg>
-                  <span className={styles.photoPlaceholder}>Click to upload</span>
-                </>
-              )}
-            </div>
-          </label>
+            {photoPreview ? (
+              <img
+                src={photoPreview}
+                alt="Preview"
+                className={css.photoPreview}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setPhoto(null);
+                  setPhotoPreview(null);
+                }}
+              />
+            ) : (
+              <Svg name="photo" styles={css.iconPhoto} />
+            )}
+          </div>
           <input
-            id="photoInput"
             type="file"
             accept="image/*"
-            onChange={handlePhotoChange}
-            className={styles.hiddenInput}
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={(event) => {
+              const file = event.target.files[0];
+              if (file) {
+                setPhoto(file);
+                setPhotoPreview(URL.createObjectURL(file));
+              }
+            }}
           />
+        </section>
+
+        <div className={css.globalContainer}>
+          <section className={css.sectionInformation}>
+            <h3 className={css.sectionTitle}>General Information</h3>
+            <div className={css.recipeParts}>
+              <div className={css.recipeTitle}>
+                <p className={css.titleText}> Recipe Title </p>
+                <input
+                  className={`${css.formInput} ${errors.title ? css.err : ""}`}
+                  type="text"
+                  placeholder="Enter the name of your recipe"
+                  {...register("title", {
+                    required: "Required field!",
+                  })}
+                />
+                {errors.title && (
+                  <span className={css.error}>{errors.title.message}</span>
+                )}
+              </div>
+              <div className={css.recipeDescription}>
+                <p className={css.titleText}>Recipe Description</p>
+                <textarea
+                  className={`${css.textarea} ${
+                    errors.description ? css.err : ""
+                  }`}
+                  placeholder="Enter a brief description of your recipe"
+                  {...register("description", {
+                    required: "Required field!!",
+                  })}
+                />
+                {errors.description && (
+                  <span className={css.error}>
+                    {errors.description.message}
+                  </span>
+                )}
+              </div>
+              <div className={css.recipeCooking}>
+                <p className={css.titleText}>Cooking time in minutes</p>
+                <input
+                  className={`${css.formInput} ${errors.time ? css.err : ""}`}
+                  type="number"
+                  placeholder="10"
+                  {...register("time", {
+                    required: "Required field!",
+                  })}
+                />
+                {errors.time && (
+                  <span className={css.error}>{errors.time.message}</span>
+                )}
+              </div>
+              <div className={css.recipeCalories}>
+                <div className={css.caloriesPart}>
+                  <p className={css.titleText}>Calories</p>
+                  <input
+                    className={css.formInput}
+                    type="number"
+                    placeholder="150 cals (optional)"
+                    {...register("calories")}
+                  />
+                </div>
+                <div className={css.categoryPart}>
+                  <p className={css.titleText}>Category</p>
+                  <select
+                    className={`${css.formInput} ${
+                      errors.category ? css.err : ""
+                    }`}
+                    {...register("category", {
+                      required: "Required field!",
+                    })}
+                  >
+                    <option value="">Select category</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.category && (
+                    <span className={css.error}>{errors.category.message}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className={css.sectionIngredients}>
+            <h3 className={css.sectionTitle}>Ingredients</h3>
+            <div className={css.titleParts}>
+              <div className={css.titlePartsItem}>
+                <div className={css.itemName}>
+                  <p className={css.titleText}>Name</p>
+                  <select
+                    className={`${css.formInput} ${
+                      ingredientNameError ? css.err : ""
+                    }`}
+                    value={ingredient}
+                    onChange={(e) => setIngredient(e.target.value)}
+                  >
+                    <option value="">Select ingredient</option>
+                    {ingredients.map((item) => (
+                      <option key={item._id} value={item._id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                  {ingredientNameError && (
+                    <span className={css.error}>{ingredientNameError}</span>
+                  )}
+                </div>
+                <div className={css.itemAmuont}>
+                  <p className={css.titleText}>Amount</p>
+                  <input
+                    className={`${css.formInput} ${
+                      ingredientAmountError ? css.err : ""
+                    }`}
+                    placeholder="100g"
+                    value={measure}
+                    onChange={(event) => setMeasure(event.target.value)}
+                  />
+                  {ingredientAmountError && (
+                    <span className={css.error}>{ingredientAmountError}</span>
+                  )}
+                </div>
+              </div>
+              <div className={css.addBtn}>
+                <button
+                  className={`${css.button} ${css.addButton}`}
+                  type="button"
+                  onClick={handleAddIngredient}
+                  disabled={isSubmitted}
+                >
+                  Add new ingredient
+                </button>
+              </div>
+              <div className={css.addFieldForm}>
+                <div
+                  className={
+                    ingredientFields.length > 0
+                      ? css.statusVisible
+                      : css.statusInvisible
+                  }
+                >
+                  <p className={css.spanIngredientItem}>Name:</p>
+                  <p className={css.spanMeasureItem}>Amount:</p>
+                </div>
+                {ingredientFields.map((field, index) => (
+                  <div key={field.id} className={css.ingredientRow}>
+                    <span className={css.spanIngredient}>{field.name}</span>
+                    <span className={css.spanMeasure}>{field.measure}</span>
+                    {!isSubmitted && (
+                      <Svg
+                        name={"trash"}
+                        styles={css.spanIcon}
+                        onClick={() => removeIngredient(index)}
+                      />
+                    )}
+                  </div>
+                ))}
+                {ingredientsError && (
+                  <span className={css.error}>{ingredientsError}</span>
+                )}
+              </div>
+            </div>
+          </section>
+
+          <section className={css.sectionInstructions}>
+            <div>
+              <h3 className={css.sectionTitle}>Instructions</h3>
+              <textarea
+                className={`${css.textarea} ${
+                  errors.instructions ? css.err : ""
+                }`}
+                placeholder="Enter instructions"
+                {...register("instructions", {
+                  required: "Required field!",
+                })}
+              />
+              {errors.instructions && (
+                <span className={css.error}>{errors.instructions.message}</span>
+              )}
+            </div>
+          </section>
+
+          <div className={css.bntContainer}>
+            <button className={css.button} type="submit" disabled={isSubmitted}>
+              {isSubmitted ? "Publishing..." : "Publish Recipe"}
+            </button>
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }
