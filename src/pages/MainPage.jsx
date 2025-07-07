@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import SearchBox from "../components/SearchBox/SearchBox";
 import Filters from "../components/Filters/Filters";
@@ -36,3 +37,4 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
