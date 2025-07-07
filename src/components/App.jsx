@@ -6,9 +6,17 @@ import { Routes, Route } from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import ListWrapper from "./ListWrapper/ListWrapper.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserInfo } from "../redux/auth/operations.js";
-import { selectUserData, selectIsLoggedIn } from "../redux/auth/selectors.js";
+import { getUserInfo, refreshUser } from "../redux/auth/operations.js";
+import {
+  selectUserData,
+  selectIsLoggedIn,
+  selectToken,
+} from "../redux/auth/selectors.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
+import TestFetches from "../../TestFetches/TestFetches.jsx";
+import { fetchCategories } from "../redux/categories/operations.js";
+import { fetchIngredients } from "../redux/ingredients/operations.js";
+import { fetchByPages } from "../redux/recipes/operations.js";
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
@@ -20,11 +28,28 @@ const PrivateRoute = lazy(() => import(`./PrivateRoute.jsx`));
 export default function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const token = useSelector(selectToken);
+
   useEffect(() => {
-    if (isLoggedIn) {
+    dispatch(fetchByPages({ page: 1 }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (token && !isLoggedIn) {
+      dispatch(refreshUser()).then((action) => {
+        if (refreshUser.fulfilled.match(action)) {
+          dispatch(getUserInfo());
+        }
+      });
+    } else if (isLoggedIn) {
       dispatch(getUserInfo());
     }
-  }, [dispatch, isLoggedIn]);
+  }, [dispatch, token, isLoggedIn]);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchIngredients());
+  }, [dispatch]);
   return (
     <>
       <Toaster
@@ -39,6 +64,7 @@ export default function App() {
           },
         }}
       />
+      <TestFetches></TestFetches>
       <div className={css.mainApp}>
         <Suspense fallback={<span className={css.loader}></span>}>
           <Routes>
