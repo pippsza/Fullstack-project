@@ -1,8 +1,9 @@
 import { useState } from "react";
 import SearchBox from "../components/SearchBox/SearchBox";
 import Filters from "../components/Filters/Filters";
-import RecipesList from "../components/RecipesList/RecipesList";
-import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
+import ListWrapper from "../components/ListWrapper/ListWrapper";
+// import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
+import Container from "../components/container/container";
 
 const MainPage = () => {
   const [filter, setFilter] = useState({
@@ -25,8 +26,11 @@ const MainPage = () => {
         setFilter={setFilter}
         setSearchQuery={setSearchQuery}
       />
-      <RecipesList />
-      <LoadMoreBtn filter={filter} setFilter={setFilter} />
+      <Container>
+        <ListWrapper filter={filter} setFilter={setFilter} />
+      </Container>
+
+      {/* <LoadMoreBtn filter={filter} setFilter={setFilter} /> */}
     </>
   );
 };

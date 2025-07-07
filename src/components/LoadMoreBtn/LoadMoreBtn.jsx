@@ -1,13 +1,10 @@
 import Container from "../container/container";
 import styles from "./LoadMoreBtn.module.css";
 
-export default function LoadMoreBtn({ filter, setFilter }) {
-  const handleLoadMoreClikck = () => {
-    setFilter({ ...filter, page: (filter.page += 1) });
-  };
+export default function LoadMoreBtn({ onClick }) {
   return (
     <Container>
-      <button className={styles.loadMoreBtn} onClick={handleLoadMoreClikck}>
+      <button className={styles.loadMoreBtn} onClick={onClick}>
         Load more
       </button>
     </Container>

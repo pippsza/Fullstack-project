@@ -329,7 +329,11 @@ const slice = createSlice({
       })
       .addCase(fetchByFilters.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload.message;
+        state.error =
+          (action.payload && action.payload.message) ||
+          (typeof action.payload === "string" && action.payload) ||
+          action.error?.message ||
+          "Something went wrong";
         state.items.filteredItems.items = [];
       });
     // .addCase(deleteRecipe.fulfilled, (state, action) => {

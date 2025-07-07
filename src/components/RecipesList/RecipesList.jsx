@@ -1,22 +1,18 @@
 import RecipeCard from "../RecipeCard/RecipeCard";
 import style from "./RecipesList.module.css";
-import { useSelector } from "react-redux";
-import { selectFilteredRecipes } from "../../redux/recipes/selectors";
-import Container from "../container/container";
 
-export default function RecipesList() {
-  const recipes = useSelector(selectFilteredRecipes);
-
+export default function RecipesList({ items }) {
   return (
-    <Container>
-      <ul className={style.list}>
-        {recipes &&
-          recipes.map((recipe) => (
-            <li className={style.item} key={recipe._id}>
-              <RecipeCard recipeCard={recipe} />
-            </li>
-          ))}
-      </ul>
-    </Container>
+    <ul className={style.list}>
+      {items &&
+        items.map((recipeCard) => (
+          <li
+            className={style.item}
+            key={recipeCard._id.$oid || recipeCard._id}
+          >
+            <RecipeCard recipeCard={recipeCard} />
+          </li>
+        ))}
+    </ul>
   );
 }
