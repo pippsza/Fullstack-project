@@ -1,6 +1,5 @@
 .formContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

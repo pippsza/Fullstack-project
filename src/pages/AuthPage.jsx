@@ -1,21 +1,18 @@
-import { useParams } from 'react-router-dom';
-import LoginForm from "../components/LoginForm/LoginForm.jsx";
-import RegistrationForm from "../components/RegistrationForm/RegistrationForm.jsx";
+import { useParams } from "react-router-dom";
+import LoginPage from "../pages/LoginPage/LoginPage";
+import RegistrationPage from "../pages/RegistrationPage/RegistrationPage";
 
 export default function AuthPage() {
   const { authType } = useParams();
 
-return authType === "login" ? <LoginForm /> : <RegistrationForm />;
+  if (authType === "login") {
+    return <LoginPage />;
+  }
 
+  if (authType === "register") {
+    return <RegistrationPage />;
+  }
 
-//   if (authType === 'login') {
-//     return <LoginForm />;
-//   }
-  
-//   if (authType === 'register') {
-//     return <RegistrationForm />;
-//   }
-
-//   // Якщо authType не login і не register
-//   return <div>Invalid auth type</div>;
+  //   // Якщо authType не login і не register
+  //   return <div>Invalid auth type</div>;
 }
