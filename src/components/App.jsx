@@ -16,6 +16,7 @@ import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 import TestFetches from "../../TestFetches/TestFetches.jsx";
 import { fetchCategories } from "../redux/categories/operations.js";
 import { fetchIngredients } from "../redux/ingredients/operations.js";
+import { fetchByPages } from "../redux/recipes/operations.js";
 
 
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
@@ -29,16 +30,23 @@ export default function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const token = useSelector(selectToken);
+
   useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(getUserInfo());
-    }
-  }, [dispatch, isLoggedIn]);
+    dispatch(fetchByPages({ page: 1 }));
+  }, [dispatch]);
+
   useEffect(() => {
     if (token && !isLoggedIn) {
-      dispatch(refreshUser());
+      dispatch(refreshUser()).then((action) => {
+        if (refreshUser.fulfilled.match(action)) {
+          dispatch(getUserInfo());
+        }
+      });
+    } else if (isLoggedIn) {
+      dispatch(getUserInfo());
     }
   }, [dispatch, token, isLoggedIn]);
+
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchIngredients());
