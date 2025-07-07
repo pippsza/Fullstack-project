@@ -73,6 +73,9 @@ export default function AddRecipeForm() {
     if (!measure.trim()) {
       setIngredientAmountError("Required field!");
       hasError = true;
+    } else if (measure.length > 64) {
+      setIngredientAmountError("Amount must be 64 characters or less!");
+      hasError = true;
     } else {
       setIngredientAmountError("");
     }
@@ -97,8 +100,10 @@ export default function AddRecipeForm() {
   };
 
   const onSubmit = async (data) => {
-    if (ingredientFields.length === 0) {
-      setIngredientsError("Required field !Add at least one ingredient!");
+    if (ingredientFields.length <= 1) {
+      setIngredientsError(
+        "Required field! There must be at least two ingredients!"
+      );
       return;
     } else {
       setIngredientsError("");
@@ -233,8 +238,13 @@ export default function AddRecipeForm() {
                   className={`${css.formInput} ${errors.title ? css.err : ""}`}
                   type="text"
                   placeholder="Enter the name of your recipe"
+                  maxLength="64"
                   {...register("title", {
                     required: "Required field!",
+                    maxLength: {
+                      value: 64,
+                      message: "Title must be 64 characters or less",
+                    },
                   })}
                 />
                 {errors.title && (
@@ -248,8 +258,13 @@ export default function AddRecipeForm() {
                     errors.description ? css.err : ""
                   }`}
                   placeholder="Enter a brief description of your recipe"
+                  maxLength="200"
                   {...register("description", {
-                    required: "Required field!!",
+                    required: "Required field!",
+                    maxLength: {
+                      value: 200,
+                      message: "Description must be 200 characters or less",
+                    },
                   })}
                 />
                 {errors.description && (
@@ -264,8 +279,13 @@ export default function AddRecipeForm() {
                   className={`${css.formInput} ${errors.time ? css.err : ""}`}
                   type="number"
                   placeholder="10"
+                  min="1"
                   {...register("time", {
                     required: "Required field!",
+                    min: {
+                      value: 1,
+                      message: "Time must be at least 1 minute",
+                    },
                   })}
                 />
                 {errors.time && (
@@ -276,11 +296,27 @@ export default function AddRecipeForm() {
                 <div className={css.caloriesPart}>
                   <p className={css.titleText}>Calories</p>
                   <input
-                    className={css.formInput}
+                    className={`${css.formInput} ${
+                      errors.calories ? css.err : ""
+                    }`}
                     type="number"
                     placeholder="150 cals (optional)"
-                    {...register("calories")}
+                    min="1"
+                    max="10000"
+                    {...register("calories", {
+                      min: {
+                        value: 1,
+                        message: "Calories must be at least 1",
+                      },
+                      max: {
+                        value: 10000,
+                        message: "Calories cannot exceed 10000",
+                      },
+                    })}
                   />
+                  {errors.calories && (
+                    <span className={css.error}>{errors.calories.message}</span>
+                  )}
                 </div>
                 <div className={css.categoryPart}>
                   <p className={css.titleText}>Category</p>
@@ -338,6 +374,7 @@ export default function AddRecipeForm() {
                       ingredientAmountError ? css.err : ""
                     }`}
                     placeholder="100g"
+                    maxLength="64"
                     value={measure}
                     onChange={(event) => setMeasure(event.target.value)}
                   />
@@ -395,8 +432,13 @@ export default function AddRecipeForm() {
                   errors.instructions ? css.err : ""
                 }`}
                 placeholder="Enter instructions"
+                maxLength="1200"
                 {...register("instructions", {
                   required: "Required field!",
+                  maxLength: {
+                    value: 1200,
+                    message: "Instructions must be 1200 characters or less",
+                  },
                 })}
               />
               {errors.instructions && (

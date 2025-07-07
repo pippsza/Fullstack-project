@@ -7,8 +7,7 @@ import clsx from "clsx";
 import { useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/auth/selectors.js";
 
-
-export default function AppBar() {
+export default function AppBar({ toggleModal }) {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
@@ -21,7 +20,7 @@ export default function AppBar() {
         </NavLink>
       </nav>
 
-      {isLoggedIn ? <UserMenu /> : <AuthNav />}
+      {isLoggedIn ? <UserMenu toggleModal={toggleModal} /> : <AuthNav />}
     </div>
   );
 }

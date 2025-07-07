@@ -7,7 +7,7 @@ import Container from "../container/container.jsx";
 import { selectIsLoggedIn } from "../../redux/auth/selectors.js";
 import { useSelector } from "react-redux";
 
-export default function MobileMenu({ openMobile }) {
+export default function MobileMenu({ openMobile, toggleModal }) {
   const getLinkStyles = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
@@ -20,7 +20,7 @@ export default function MobileMenu({ openMobile }) {
             Recipes
           </NavLink>
           {isLoggedIn ? (
-            <UserMenuMobile openMobile={openMobile} />
+            <UserMenuMobile toggleModal={toggleModal} openMobile={openMobile} />
           ) : (
             <AuthNavMobile openMobile={openMobile} />
           )}

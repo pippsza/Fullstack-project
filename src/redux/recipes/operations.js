@@ -136,8 +136,12 @@ export const addRecipe = createAsyncThunk(
       const res = await authInstance.post("/recipes", requestData, config);
       return res.data;
     } catch (error) {
-      console.error("addRecipe error:", error.response?.data || error.message);
-      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+      const errorMessage =
+        error.response?.data?.data ||
+        error.response?.data?.message ||
+        error.message;
+      console.error("addRecipe error:", errorMessage);
+      return thunkAPI.rejectWithValue(errorMessage);
     }
   }
 );
