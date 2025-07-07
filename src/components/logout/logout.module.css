@@ -8,6 +8,11 @@
     cursor: pointer;
   }
 }
+
+.svg:hover,
+.svg:active{
+  transform: scale(1.5);
+}
 .stick {
   width: 1px;
   height: 39px;

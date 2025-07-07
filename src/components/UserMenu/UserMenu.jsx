@@ -19,7 +19,7 @@ export default function UserMenu({ toggleModal }) {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/add-recipe" className={css.button}>
+            <NavLink to="/add-recipe" className={getLinkStyles}>
               Add Recepy
             </NavLink>
           </li>
