@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 import css from "./GeneralInfoRecipe.module.css";
+import Svg from "../Svg/svg";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
 import { deleteFavouriteRecipe } from "../../redux/recipes/operations";
 import { addFavouriteRecipe } from "../../redux/recipes/operations";
@@ -22,7 +23,7 @@ export default function GeneralInfoRecipe({
 
   const handleToggle = async () => {
     if (!isLoggedIn) {
-      toast.info("Please login to save recipes");
+      toast("Please login to save recipes");
       navigate("/login");
       return;
     }
@@ -31,7 +32,7 @@ export default function GeneralInfoRecipe({
     try {
       if (isFavourite) {
         await dispatch(deleteFavouriteRecipe(id)).unwrap();
-        toast.success("Recipe added to favorites");
+        toast.success("Recipe removed from favorites");
       } else {
         await dispatch(addFavouriteRecipe(id)).unwrap();
         toast.success("Recipe added to favorites");
@@ -64,6 +65,7 @@ export default function GeneralInfoRecipe({
       </div>
       <button className={css.saveBtn} onClick={handleToggle} disabled={loading}>
         {loading ? "Loading..." : isFavourite ? "Remove" : "Save"}
+        <Svg styles={css.icon} name="bookmark" />
       </button>
     </div>
   );

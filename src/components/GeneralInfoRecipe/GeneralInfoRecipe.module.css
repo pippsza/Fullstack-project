@@ -44,6 +44,21 @@
   color: var(--white);
   cursor: pointer;
 }
+.saveBtn:hover {
+  background-color: var(--brown);
+  transform: scale(0.95);
+  box-shadow: none;
+}
+.icon {
+  width: 25px;
+  height: 25px;
+  stroke-width: 1px;
+  stroke: var(--white);
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+  fill: none;
+}
 /* 768px styles */
 @media screen and (min-width: 768px) {
   .generalBox {
