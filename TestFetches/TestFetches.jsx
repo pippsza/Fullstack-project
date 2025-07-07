@@ -9,10 +9,14 @@ import {
   deleteFavouriteRecipe,
   addFavouriteRecipe,
 } from "../src/redux/recipes/operations.js";
-import { selectAllRecipes } from "../src/redux/recipes/selectors";
+import {
+  selectAllRecipes,
+  selectFilteredRecipes,
+} from "../src/redux/recipes/selectors";
 
 export default function TestFetches() {
   const [page, setPage] = useState(1);
+  const data = useSelector(selectFilteredRecipes);
   const dispatch = useDispatch();
   const allRecipes = useSelector(selectAllRecipes);
 
@@ -71,6 +75,9 @@ export default function TestFetches() {
       console.error("Ошибка при фильтрации:", err);
     }
   };
+  const hanfleLogFiltered = () => {
+    console.log("filtered data:", data);
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -81,6 +88,7 @@ export default function TestFetches() {
         <button onClick={handleFetchOwn}>Fetch own</button>
         <button onClick={handleFetchFavorite}>Fetch favorites</button>
         <button onClick={handleDeleteFavorite}>Delete favorite (test)</button>
+        <button onClick={hanfleLogFiltered}>Log filtered </button>
         <button onClick={handleFetchByFilters}>
           Fetch data by filters (test)
         </button>
