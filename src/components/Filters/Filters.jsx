@@ -7,27 +7,13 @@ import Svg from "../Svg/svg";
 import { selectCategories } from "../../redux/categories/selectors";
 import { selectIngredients } from "../../redux/ingredients/selectors";
 import { fetchByFilters } from "../../redux/recipes/operations.js";
-import { selectFilteredRecipes } from "../../redux/recipes/selectors.js";
+import { selectFilteredRecipesTotal } from "../../redux/recipes/selectors.js";
 
-const Filters = () => {
-  const data = useSelector(selectFilteredRecipes);
-  const [filter, setFilter] = useState({
-    category: "",
-    ingredient: "",
-    title: "",
-    page: 1,
-  });
-
+const Filters = ({ filter, setFilter, setSearchQuery }) => {
   const dispatch = useDispatch();
-
-  // dispatch(fetchByPages(initValuesDispatch));
+  const totalCountRecipes = useSelector(selectFilteredRecipesTotal);
   const categories = useSelector(selectCategories);
   const ingredients = useSelector(selectIngredients);
-
-  const [ingredientInput, setIngredientInput] = useState("");
-  const filteredIngredients = ingredients.filter((ingr) =>
-    ingr.name.toLowerCase().includes(ingredientInput.toLowerCase())
-  );
 
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
@@ -57,26 +43,27 @@ const Filters = () => {
     };
   }, []);
 
-  const handleCategoryChange = (e) => {
-    // dispatch(selectCategory(e.target.value));
+  const handleCategoryChange = (value) => {
+    setFilter({ ...filter, category: value.name, page: 1 });
   };
 
   const handleIngredientChange = (value) => {
-    console.log("value:", value);
-    setFilter({ ...filter, ingredient: value._id });
-    // dispatch(fetchByFilters(filter));
-
+    setFilter({ ...filter, ingredient: value._id, page: 1 });
     console.log("in", value._id);
   };
 
   useEffect(() => {
-    dispatch(fetchByFilters(filter))
-      .unwrap()
-      .then(console.log("unwrapped data: ", data));
+    dispatch(fetchByFilters(filter));
   }, [filter]);
+
   const handleReset = () => {
-    // dispatch(resetFilters());
-    setIngredientInput("");
+    setFilter({
+      category: "",
+      ingredient: "",
+      title: "",
+      page: 1,
+    });
+    setSearchQuery("");
     setOpen(false);
   };
 
@@ -86,7 +73,7 @@ const Filters = () => {
         <div className={css.container}>
           <h2 className={css.title}>Recepies</h2>
           <div className={css.divFilters}>
-            <p className={css.count}>96 recipes</p>
+            <p className={css.count}>{totalCountRecipes} recipes</p>
             {size > sizeDesktop ? (
               <div className={css.dropdown}>
                 <button onClick={handleReset} className={css.btnReset}>
@@ -96,44 +83,18 @@ const Filters = () => {
                   <CustomSelect
                     label="Category"
                     options={categories}
-                    selected={null}
+                    selected={filter.category}
                     onChange={handleCategoryChange}
                   />
                   <CustomSelect
                     label="Ingredient"
                     options={ingredients}
-                    selected={null}
+                    selected={
+                      ingredients.find((item) => item._id === filter.ingredient)
+                        ?.name || ""
+                    }
                     onChange={handleIngredientChange}
                   />
-                  <select
-                    id="category"
-                    className={css.selectFilter}
-                    value={null}
-                    onChange={handleCategoryChange}
-                  >
-                    <option value="" disabled hidden>
-                      Category
-                    </option>
-                    {categories.map((cat) => (
-                      <option key={cat._id} value={cat.name}>
-                        {cat.name}
-                      </option>
-                    ))}
-                  </select>
-                  <div>
-                    <input
-                      list="ingredients"
-                      className={css.selectFilter}
-                      placeholder="Ingredient"
-                      value={ingredientInput}
-                      onChange={handleIngredientChange}
-                    />
-                    <datalist id="ingredients">
-                      {filteredIngredients.map((ingr) => (
-                        <option key={ingr._id} value={ingr.name} />
-                      ))}
-                    </datalist>
-                  </div>
                 </div>
               </div>
             ) : (
@@ -155,44 +116,19 @@ const Filters = () => {
                       <CustomSelect
                         label="Category"
                         options={categories}
-                        selected={null}
+                        selected={filter.category}
                         onChange={handleCategoryChange}
                       />
                       <CustomSelect
                         label="Ingredient"
                         options={ingredients}
-                        selected={null}
+                        selected={
+                          ingredients.find(
+                            (item) => item._id === filter.ingredient
+                          )?.name || ""
+                        }
                         onChange={handleIngredientChange}
                       />
-                      <select
-                        id="category"
-                        className={css.selectFilter}
-                        value={null}
-                        onChange={handleCategoryChange}
-                      >
-                        <option value="" disabled hidden>
-                          Category
-                        </option>
-                        {categories.map((cat) => (
-                          <option key={cat._id} value={cat.name}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
-                      <div>
-                        <input
-                          list="ingredients"
-                          className={css.selectFilter}
-                          placeholder="Ingredient"
-                          value={ingredientInput}
-                          onChange={handleIngredientChange}
-                        />
-                        <datalist id="ingredients">
-                          {filteredIngredients.map((ingr) => (
-                            <option key={ingr._id} value={ingr.name} />
-                          ))}
-                        </datalist>
-                      </div>
                     </div>
                   </div>
                 )}

@@ -25,6 +25,7 @@
 .btnSpan1 {
   display: block;
   text-overflow: ellipsis;
+  overflow-x: hidden;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.55;
@@ -47,8 +48,9 @@
   z-index: 10;
   margin-top: 4px;
   max-height: 262px;
-  max-width: 288px;
+  width: 100%;
   overflow: auto;
+  overflow-x: hidden;
   border-radius: 12px;
   background-color: #fff;
   padding: 8px;
@@ -68,8 +70,9 @@
   user-select: none;
   border-radius: 4px;
   padding: 8px 8px 8px 12px;
-  max-width: 288px;
+  width: 100%;
   max-height: 80px;
+
   /* cursor-pointer select-none py-2 pl-4 pr-4  */
 }
 

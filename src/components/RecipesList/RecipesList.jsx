@@ -1,15 +1,12 @@
 import RecipeCard from "../RecipeCard/RecipeCard";
 import style from "./RecipesList.module.css";
 import { useSelector } from "react-redux";
-import { selectAllRecipes } from "../../redux/recipes/selectors";
+import { selectFilteredRecipes } from "../../redux/recipes/selectors";
 import Container from "../container/container";
 
 export default function RecipesList() {
-  const recipes = useSelector(selectAllRecipes);
+  const recipes = useSelector(selectFilteredRecipes);
 
-  setTimeout(() => {
-    console.log("good", recipes);
-  }, 2000);
   return (
     <Container>
       <ul className={style.list}>

@@ -1,8 +1,16 @@
-// import React from "react";
 import Container from "../container/container";
 import css from "./SearchBox.module.css";
 
-const SearchBox = () => {
+const SearchBox = ({ filter, setFilter, searchQuery, setSearchQuery }) => {
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchClick = () => {
+    setFilter({ ...filter, title: searchQuery, page: 1 });
+    console.log(searchQuery);
+  };
+
   return (
     <section className={css.section}>
       <Container>
@@ -11,10 +19,14 @@ const SearchBox = () => {
           <div className={css.inputDiv}>
             <input
               type="text"
+              value={searchQuery}
               className={css.input}
               placeholder="Search recipes"
+              onChange={handleSearchChange}
             />
-            <button className={css.btnSearch}>Search</button>
+            <button className={css.btnSearch} onClick={handleSearchClick}>
+              Search
+            </button>
           </div>
         </div>
       </Container>
