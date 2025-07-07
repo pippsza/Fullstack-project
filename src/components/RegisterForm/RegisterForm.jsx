@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
 import { register, getUserInfo, login } from "../../redux/auth/operations";
+import Loader from "../Loader/Loader";
 
 const UserSchema = Yup.object().shape({
   name: Yup.string()
@@ -37,12 +38,14 @@ const initialValues = {
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfimrPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
+    setIsLoading(true);
     const { confirmPassword, agree, ...filteredValues } = values;
     dispatch(register(filteredValues))
       .unwrap()
@@ -67,14 +70,22 @@ export default function RegisterForm() {
 
         if (typeof error === "string" && error.includes("409")) {
           toast.error("This email address is already registered.");
+          console.log(isLoading);
         } else {
           toast.error("OOPS... Failed to register user.");
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
+        actions.resetForm();
       });
-    actions.resetForm();
   };
 
-  return (
+  return isLoading ? (
+    <div className={css.loaderOverlay}>
+      <Loader />
+    </div>
+  ) : (
     <div className={css.regContainer}>
       <div className={css.formRegContainer}>
         <Formik
