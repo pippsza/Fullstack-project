@@ -3,9 +3,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-
 import { toast } from "react-hot-toast";
-
 import Svg from "../Svg/svg.jsx";
 
 import { login, getUserInfo } from "../../redux/auth/operations";
@@ -38,7 +36,7 @@ export default function LoginForm() {
         return dispatch(getUserInfo());
       })
       .then(() => {
-        toast.success("Login successful!");
+        toast.success("Login successful!👏");
         navigate("/");
       })
       .catch(() => {
