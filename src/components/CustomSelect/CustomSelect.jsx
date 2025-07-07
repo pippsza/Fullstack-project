@@ -40,14 +40,14 @@ export const CustomSelect = ({ label, options, selected, onChange }) => {
               <div className={css.searchWrapper}>
                 <input
                   type="text"
-                  placeholder="Пошук..."
+                  placeholder="Search..."
                   className={css.searchInput}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                 />
               </div>
               {filteredOptions.length === 0 ? (
-                <div className={css.option}>Нічого не знайдено</div>
+                <div className={css.option}>Nothing found</div>
               ) : (
                 filteredOptions.map((option) => (
                   <Listbox.Option

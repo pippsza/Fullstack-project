@@ -1,6 +1,6 @@
 import RecipesList from "../RecipesList/RecipesList";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
-import style from "./ListWrapper.module.css";
+import Filters from "../Filters/Filters";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,7 +27,12 @@ import {
 } from "../../redux/recipes/selectors";
 import Loader from "../Loader/Loader";
 
-export default function ListWrapper({ filter, setFilter }) {
+export default function ListWrapper({
+  filter,
+  setFilter,
+  setSearchQuery,
+  isSearched,
+}) {
   const location = useLocation();
   const dispatch = useDispatch();
   const { recipeType } = useParams();
@@ -100,7 +105,13 @@ export default function ListWrapper({ filter, setFilter }) {
     <>
       {isFirstLoad && <Loader />}
       {isError && <b>Whoops, there was an error pls reload...</b>}
-      <p className={style.totalRecipes}>{total || 0} recipes</p>
+      <Filters
+        filter={filter}
+        setFilter={setFilter}
+        setSearchQuery={setSearchQuery}
+        total={total}
+        isSearched={isSearched}
+      />
       {items && <RecipesList items={items} />}
       {isLoading && <Loader />}
       {hasNextPage && !isLoading && <LoadMoreBtn onClick={handleLoadMore} />}

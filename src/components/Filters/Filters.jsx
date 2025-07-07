@@ -1,19 +1,19 @@
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import css from "./Filters.module.css";
-import Container from "../container/container";
 import { CustomSelect } from "../CustomSelect/CustomSelect";
 import Svg from "../Svg/svg";
 import { selectCategories } from "../../redux/categories/selectors";
 import { selectIngredients } from "../../redux/ingredients/selectors";
 import { fetchByFilters } from "../../redux/recipes/operations.js";
-import { selectFilteredRecipesTotal } from "../../redux/recipes/selectors.js";
 
-const Filters = ({ filter, setFilter, setSearchQuery }) => {
+const Filters = ({ filter, setFilter, setSearchQuery, total, isSearched }) => {
   const dispatch = useDispatch();
-  const totalCountRecipes = useSelector(selectFilteredRecipesTotal);
   const categories = useSelector(selectCategories);
   const ingredients = useSelector(selectIngredients);
+  const location = useLocation();
+  const isMainPage = location.pathname === "/";
 
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
@@ -69,14 +69,26 @@ const Filters = ({ filter, setFilter, setSearchQuery }) => {
 
   return (
     <section>
-      <Container>
-        <div className={css.container}>
-          <h2 className={css.title}>Recepies</h2>
-          <div className={css.divFilters}>
-            <p className={css.count}>{totalCountRecipes} recipes</p>
-            {size > sizeDesktop ? (
+      <div className={css.container}>
+        {isMainPage && (
+          <h2 className={css.title}>
+            {isSearched && filter.title.trim()
+              ? `Search Results for “${filter.title.trim()}”`
+              : "Recepies"}
+          </h2>
+        )}
+        <div className={css.divFilters}>
+          <p className={css.count}>{total || 0} recipes</p>
+          {isMainPage &&
+            (size > sizeDesktop ? (
               <div className={css.dropdown}>
-                <button onClick={handleReset} className={css.btnReset}>
+                <button
+                  onClick={handleReset}
+                  className={css.btnReset}
+                  disabled={
+                    !filter.category && !filter.ingredient && !filter.title
+                  }
+                >
                   Reset filters
                 </button>
                 <div className={css.divSelect}>
@@ -109,7 +121,13 @@ const Filters = ({ filter, setFilter, setSearchQuery }) => {
 
                 {open && (
                   <div className={css.dropdown}>
-                    <button onClick={handleReset} className={css.btnReset}>
+                    <button
+                      onClick={handleReset}
+                      className={css.btnReset}
+                      disabled={
+                        !filter.category && !filter.ingredient && !filter.title
+                      }
+                    >
                       Reset filters
                     </button>
                     <div className={css.divSelect}>
@@ -133,10 +151,9 @@ const Filters = ({ filter, setFilter, setSearchQuery }) => {
                   </div>
                 )}
               </div>
-            )}
-          </div>
+            ))}
         </div>
-      </Container>
+      </div>
     </section>
   );
 };

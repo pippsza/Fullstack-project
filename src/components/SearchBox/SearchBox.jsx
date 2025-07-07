@@ -1,14 +1,20 @@
 import Container from "../container/container";
 import css from "./SearchBox.module.css";
 
-const SearchBox = ({ filter, setFilter, searchQuery, setSearchQuery }) => {
+const SearchBox = ({
+  filter,
+  setFilter,
+  searchQuery,
+  setSearchQuery,
+  setIsSearched,
+}) => {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
   const handleSearchClick = () => {
     setFilter({ ...filter, title: searchQuery, page: 1 });
-    console.log(searchQuery);
+    setIsSearched(true);
   };
 
   return (

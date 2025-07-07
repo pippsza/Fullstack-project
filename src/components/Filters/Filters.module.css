@@ -1,7 +1,6 @@
 .container {
   margin-left: auto;
   margin-right: auto;
-  padding-top: 48px;
   background-color: #fbfcf8;
   display: flex;
   flex-direction: column;
@@ -77,6 +76,11 @@
   height: 1px;
   bottom: 0;
   background-color: #000;
+}
+
+.btnReset:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .selectFilter {

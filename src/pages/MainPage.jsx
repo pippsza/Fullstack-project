@@ -1,9 +1,7 @@
-
 import { useState } from "react";
 import SearchBox from "../components/SearchBox/SearchBox";
-import Filters from "../components/Filters/Filters";
+import ModalErrorWhileSaving from "../components/ModalErrorWhileSaving/ModalErrorWhileSaving";
 import ListWrapper from "../components/ListWrapper/ListWrapper";
-// import LoadMoreBtn from "../components/LoadMoreBtn/LoadMoreBtn";
 import Container from "../components/container/container";
 
 const MainPage = () => {
@@ -14,6 +12,7 @@ const MainPage = () => {
     page: 1,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearched, setIsSearched] = useState(false);
   return (
     <>
       <SearchBox
@@ -21,20 +20,21 @@ const MainPage = () => {
         setFilter={setFilter}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        setIsSearched={setIsSearched}
       />
-      <Filters
-        filter={filter}
-        setFilter={setFilter}
-        setSearchQuery={setSearchQuery}
-      />
+      {isModalOpen && (
+        <ModalErrorWhileSaving onClose={onClose} isModalOpen={isModalOpen} />
+      )}
       <Container>
-        <ListWrapper filter={filter} setFilter={setFilter} />
+        <ListWrapper
+          filter={filter}
+          setFilter={setFilter}
+          setSearchQuery={setSearchQuery}
+          isSearched={isSearched}
+        />
       </Container>
-
-      {/* <LoadMoreBtn filter={filter} setFilter={setFilter} /> */}
     </>
   );
 };
 
 export default MainPage;
-
