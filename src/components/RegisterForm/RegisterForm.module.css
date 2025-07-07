@@ -87,7 +87,8 @@
   background: #fff;
 }
 
-.regField:focus {
+.regField:focus,
+.regField:hover {
   border: 1.5px solid #9b6c43;
   box-shadow: 0 0 0 4px rgba(78, 70, 180, 0.2);
   background: #fff;
@@ -213,6 +214,8 @@
 
 .regButton:hover {
   background: #6d554b;
+  transform: scale(0.95);
+  box-shadow: none;
 }
 
 .regButton:focus {
