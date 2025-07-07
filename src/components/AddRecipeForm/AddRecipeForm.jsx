@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import css from "./AddRecipeForm.module.css";
 import Svg from "../Svg/svg.jsx";
+import defaultImage from "../../img/default.jpg";
 
 import { fetchCategories } from "../../redux/categories/operations";
 import { selectCategories } from "../../redux/categories/selectors";
@@ -123,6 +124,21 @@ export default function AddRecipeForm() {
       calories: data.calories ? Number(data.calories) : null,
     };
 
+    if (photo) {
+      recipeData.thumb = photo;
+    } else {
+      try {
+        const response = await fetch(defaultImage);
+        const blob = await response.blob();
+        const defaultFile = new File([blob], "default.jpg", {
+          type: "image/jpeg",
+        });
+        recipeData.thumb = defaultFile;
+      } catch (error) {
+        console.warn("Could not load default image:", error);
+      }
+    }
+
     try {
       const result = await dispatch(addRecipe(recipeData));
 
@@ -175,12 +191,33 @@ export default function AddRecipeForm() {
           </div>
           <input
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/jpg,image/png,image/webp"
             ref={fileInputRef}
             style={{ display: "none" }}
             onChange={(event) => {
               const file = event.target.files[0];
               if (file) {
+                // Перевіряємо тип файлу
+                const allowedTypes = [
+                  "image/jpeg",
+                  "image/jpg",
+                  "image/png",
+                  "image/webp",
+                ];
+                if (!allowedTypes.includes(file.type)) {
+                  toast.error("Only JPG, PNG, or WEBP images are allowed.");
+                  event.target.value = "";
+                  return;
+                }
+
+                // Перевіряємо розмір файлу (максимум 2MB)
+                const maxSize = 2 * 1024 * 1024; // 2MB в байтах
+                if (file.size > maxSize) {
+                  toast.error("Image size must be less than 2MB.");
+                  event.target.value = "";
+                  return;
+                }
+
                 setPhoto(file);
                 setPhotoPreview(URL.createObjectURL(file));
               }

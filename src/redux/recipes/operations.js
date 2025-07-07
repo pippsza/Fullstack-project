@@ -107,13 +107,40 @@ export const addRecipe = createAsyncThunk(
     try {
       const state = thunkAPI.getState();
       const persistedToken = state.auth.token;
-      console.log("adding recipe");
       setAuthHeader(persistedToken);
-      const res = await authInstance.post("/recipes", payload);
-      console.log(res.data);
+
+      let requestData;
+      let config = {};
+
+      if (payload.thumb && payload.thumb instanceof File) {
+        // Якщо є фото, відправляємо як FormData
+        const formData = new FormData();
+        formData.append("title", payload.title);
+        formData.append("category", payload.category);
+        formData.append("instructions", payload.instructions);
+        formData.append("description", payload.description);
+        formData.append("time", payload.time);
+        formData.append("ingredients", JSON.stringify(payload.ingredients));
+        if (payload.calories) {
+          formData.append("calories", payload.calories);
+        }
+        formData.append("thumb", payload.thumb);
+
+        requestData = formData;
+        // Не встановлюємо Content-Type - axios зробить це автоматично для FormData
+      } else {
+        // Якщо немає фото, відправляємо як JSON
+        requestData = payload;
+        config.headers = {
+          "Content-Type": "application/json",
+        };
+      }
+
+      const res = await authInstance.post("/recipes", requestData, config);
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      console.error("addRecipe error:", error.response?.data || error.message);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   }
 );
