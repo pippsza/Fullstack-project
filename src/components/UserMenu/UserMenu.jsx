@@ -1,10 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { logOut } from "../../redux/auth/operations";
-
 import css from "./UserMenu.module.css";
-import { selectUser } from "../../redux/auth/selectors";
-
 import clsx from "clsx";
 import Logout from "../logout/logout.jsx";
 
@@ -12,13 +8,7 @@ const getLinkStyles = ({ isActive }) => {
   return clsx(css.link, isActive && css.active);
 };
 
-export default function UserMenu() {
-
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
-
-  const handlelogout = () => dispatch(logOut());
-
+export default function UserMenu({ toggleModal }) {
   return (
     <>
       <nav>
@@ -36,7 +26,7 @@ export default function UserMenu() {
         </ul>
       </nav>
 
-      <Logout />
+      <Logout toggleModal={toggleModal} />
     </>
   );
 }

@@ -9,12 +9,14 @@ import ScrollHeader from "../ScrollHeader/ScrollHeader.jsx";
 
 // import RefreshToken from '../RefreshToken/RefrehsToken.jsx'
 
-export default function Header({ toggleModal }) {
+export default function Header({
+  toggleModal,
+  mobileMenuHandler,
+  isMobileMenuOpened,
+  setIsMobileMenuOpened,
+}) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
-  const mobileMenuHandler = () => {
-    setIsMobileMenuOpened(!isMobileMenuOpened);
-  };
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
     const handleResize = () => {
@@ -43,13 +45,16 @@ export default function Header({ toggleModal }) {
                   openMobile={mobileMenuHandler}
                 />
               ) : (
-                <AppBar />
+                <AppBar toggleModal={toggleModal} />
               )}
             </div>
           </Container>
         </header>
         {isMobileMenuOpened ? (
-          <MobileMenu openMobile={mobileMenuHandler} />
+          <MobileMenu
+            toggleModal={toggleModal}
+            openMobile={mobileMenuHandler}
+          />
         ) : null}
       </ScrollHeader>
     </>

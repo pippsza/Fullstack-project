@@ -290,14 +290,14 @@ const slice = createSlice({
         const hasPreviousPage = payload.hasPreviousPage || false;
         state.items.filteredItems.totalItems = payload.totalItems || 0;
 
-        // Получаем текущие фильтры из action
+  
         const currentFilters = {
           category: action.meta.arg.category || "",
           ingredient: action.meta.arg.ingredient || "",
           title: action.meta.arg.title || "",
         };
 
-        // Проверяем, изменились ли фильтры
+     
         const filtersChanged =
           currentFilters.category !==
             state.items.filteredItems.lastFilters.category ||
@@ -306,12 +306,11 @@ const slice = createSlice({
           currentFilters.title !== state.items.filteredItems.lastFilters.title;
 
         if (page === 1 || filtersChanged) {
-          // Если первая страница или фильтры изменились - перезаписываем массив
+       
           state.items.filteredItems.items = newItems;
           state.items.filteredItems.lastFilters = currentFilters;
         } else {
-          // Если та же страница и те же фильтры - дополняем массив
-          const existingIds = new Set(
+                  const existingIds = new Set(
             state.items.filteredItems.items.map((item) => item._id)
           );
           const uniqueNewItems = newItems.filter(
