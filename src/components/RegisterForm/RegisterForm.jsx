@@ -45,6 +45,8 @@ export default function RegisterForm() {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
+    console.log();
+
     setIsLoading(true);
     const { confirmPassword, agree, ...filteredValues } = values;
     dispatch(register(filteredValues))
