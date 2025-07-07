@@ -1,13 +1,14 @@
 import RecipesList from "../RecipesList/RecipesList";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import style from "./ListWrapper.module.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchFavouriteRecipes,
   fetchOwnRecipes,
+  fetchByFilters,
 } from "../../redux/recipes/operations";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   selectRecipesError,
   selectRecipesLoading,
@@ -19,65 +20,79 @@ import {
   selectFavoriteRecipesPage,
   selectOwnRecipesTotal,
   selectFavoriteRecipesTotal,
+  selectFilteredRecipes,
+  selectFilteredRecipesHasNextPage,
+  selectFilteredRecipesPage,
+  selectFilteredRecipesTotal,
 } from "../../redux/recipes/selectors";
 import Loader from "../Loader/Loader";
 
-export default function ListWrapper() {
-  const { recipeType } = useParams();
+export default function ListWrapper({ filter, setFilter }) {
+  const location = useLocation();
   const dispatch = useDispatch();
+  const { recipeType } = useParams();
 
-  const total =
-    recipeType === "own"
-      ? useSelector(selectOwnRecipesTotal)
-      : useSelector(selectFavoriteRecipesTotal);
+  const isMainPage = location.pathname === "/";
 
-  const items =
-    recipeType === "own"
-      ? useSelector(selectOwnRecipes)
-      : useSelector(selectFavoriteRecipes);
+  // Витягуємо дані з Redux для кожного типу
+  const items = useSelector(
+    isMainPage
+      ? selectFilteredRecipes
+      : recipeType === "own"
+      ? selectOwnRecipes
+      : selectFavoriteRecipes
+  );
 
-  const hasNextPage =
-    recipeType === "own"
-      ? useSelector(selectOwnRecipesHasNextPage)
-      : useSelector(selectFavoriteRecipesHasNextPage);
+  const total = useSelector(
+    isMainPage
+      ? selectFilteredRecipesTotal
+      : recipeType === "own"
+      ? selectOwnRecipesTotal
+      : selectFavoriteRecipesTotal
+  );
 
-  const page =
-    recipeType === "own"
-      ? useSelector(selectOwnRecipesPage)
-      : useSelector(selectFavoriteRecipesPage);
+  const page = useSelector(
+    isMainPage
+      ? selectFilteredRecipesPage
+      : recipeType === "own"
+      ? selectOwnRecipesPage
+      : selectFavoriteRecipesPage
+  );
+
+  const hasNextPage = useSelector(
+    isMainPage
+      ? selectFilteredRecipesHasNextPage
+      : recipeType === "own"
+      ? selectOwnRecipesHasNextPage
+      : selectFavoriteRecipesHasNextPage
+  );
 
   const isLoading = useSelector(selectRecipesLoading);
   const isError = useSelector(selectRecipesError);
   const isFirstLoad = isLoading && page === 1;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (page === 1) {
-          if (recipeType === "own") {
-            await dispatch(fetchOwnRecipes({ page })).unwrap();
-          } else if (recipeType === "favourites") {
-            await dispatch(fetchFavouriteRecipes({ page })).unwrap();
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching recipes:", error);
-      }
-    };
-
-    fetchData();
-  }, [page, recipeType, dispatch]);
-
-  const handleLoadMore = async () => {
-    const nextPage = page + 1;
-    try {
+    if (isMainPage) {
+      dispatch(fetchByFilters(filter));
+    } else {
       if (recipeType === "own") {
-        await dispatch(fetchOwnRecipes({ page: nextPage })).unwrap();
-      } else {
-        await dispatch(fetchFavouriteRecipes({ page: nextPage })).unwrap();
+        dispatch(fetchOwnRecipes({ page }));
+      } else if (recipeType === "favourites") {
+        dispatch(fetchFavouriteRecipes({ page }));
       }
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
+    }
+  }, [dispatch, filter, page, isMainPage, recipeType]);
+
+  const handleLoadMore = () => {
+    if (isMainPage) {
+      setFilter({ ...filter, page: filter.page + 1 });
+    } else {
+      const nextPage = page + 1;
+      if (recipeType === "own") {
+        dispatch(fetchOwnRecipes({ page: nextPage }));
+      } else {
+        dispatch(fetchFavouriteRecipes({ page: nextPage }));
+      }
     }
   };
 

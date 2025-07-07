@@ -63,3 +63,17 @@ export const selectCurrentRecipe = (state) => state.recipes.currentRecipe;
 export const selectOwnRecipesObject = (state) => state.recipes.items.ownItems;
 
 export const selectAllRecipesObject = (state) => state.recipes.items.allItems;
+
+// Селекторы для filteredItems
+export const selectFilteredRecipes = (state) =>
+  state.recipes.items.filteredItems.items;
+export const selectFilteredRecipesPage = (state) =>
+  state.recipes.items.filteredItems.page;
+export const selectFilteredRecipesHasNextPage = (state) =>
+  state.recipes.items.filteredItems.hasNextPage;
+export const selectFilteredRecipesHasPreviousPage = (state) =>
+  state.recipes.items.filteredItems.hasPreviousPage;
+export const selectFilteredRecipesTotal = (state) =>
+  state.recipes.items.filteredItems.totalItems;
+export const selectLastFilters = (state) =>
+  state.recipes.items.filteredItems.lastFilters;

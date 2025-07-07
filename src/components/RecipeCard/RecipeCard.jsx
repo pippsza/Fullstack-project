@@ -3,7 +3,10 @@ import { toast } from "react-hot-toast";
 import Svg from "../Svg/svg";
 import style from "./RecipeCard.module.css";
 import { useDispatch } from "react-redux";
-import { deleteFavouriteRecipe } from "../../redux/recipes/operations";
+import {
+  deleteFavouriteRecipe,
+  addFavouriteRecipe,
+} from "../../redux/recipes/operations";
 
 export default function RecipeCard({ recipeCard }) {
   const dispatch = useDispatch();
@@ -14,6 +17,17 @@ export default function RecipeCard({ recipeCard }) {
     try {
       if (recipeCard._id) {
         await dispatch(deleteFavouriteRecipe(recipeCard._id)).unwrap();
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
+  const handleAddFavourite = async () => {
+    console.log("ID to Add:", recipeCard._id);
+    try {
+      if (recipeCard._id) {
+        await dispatch(addFavouriteRecipe(recipeCard._id)).unwrap();
       }
     } catch (error) {
       toast.error("Something went wrong");
@@ -54,7 +68,11 @@ export default function RecipeCard({ recipeCard }) {
           </div>
         ) : (
           <div className={style.svg1Wrapper}>
-            <Svg styles={style.svg1} name="bookmark" onClick={null} />
+            <Svg
+              styles={style.svg1}
+              name="bookmark"
+              onClick={handleAddFavourite}
+            />
           </div>
         )}
       </div>
