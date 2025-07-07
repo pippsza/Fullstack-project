@@ -1,3 +1,9 @@
+import AddRecipeForm from "../components/AddRecipeForm/AddRecipeForm.jsx";
+
 export default function AddRecipePage() {
-  return <h1>Add recipe page!</h1>;
+  return (
+    <div>
+      <AddRecipeForm />
+    </div>
+  );
 }
