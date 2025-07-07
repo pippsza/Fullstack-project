@@ -72,7 +72,7 @@
 }
 .list li:last-child .link {
   border-radius: 8px;
-  background: var(--light-brown);
+  background: var(--brown);
   color: var(--white);
   border: none;
 }
@@ -83,21 +83,28 @@
 
 .link:hover {
   cursor: pointer;
-  background: var(--light-gray);
+  background: var(--light-brown);
+  transform: scale(0.95);
+  color:var(--white);
+  border: none;
 }
 
 .link:focus {
   box-shadow: 0 0 0 2px var(--white);
-  background: var(--light-gray);
+  background: var(--light-brown);
   outline: var(--white);
+  transform: scale(0.95);
+  border: none;
 }
 
 .list li .link:hover {
   border: none;
+  transform: scale(0.95)
 }
 
 .list li .link:focus {
   border: var(--white);
+  transform: scale(0.95)
 }
 
 .list li:last-child .link {
@@ -146,7 +153,9 @@
 
 .link:first-child {
   background-color: var(--red);
+  border: none;
   &:hover {
-    background-color: var(--light-gray);
+    transform: scale(0.95)
   }
 }
+
