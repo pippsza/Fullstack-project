@@ -9,7 +9,7 @@ import ScrollHeader from "../ScrollHeader/ScrollHeader.jsx";
 
 // import RefreshToken from '../RefreshToken/RefrehsToken.jsx'
 
-export default function Header() {
+export default function Header({ toggleModal }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMobileMenuOpened, setIsMobileMenuOpened] = useState(false);
   const mobileMenuHandler = () => {
@@ -37,14 +37,13 @@ export default function Header() {
           <Container>
             <div className={css.container}>
               <Logo />
-                {isMobile ? (
+              {isMobile ? (
                 <Burger
                   isOpened={isMobileMenuOpened}
                   openMobile={mobileMenuHandler}
                 />
               ) : (
-                <AppBar /> 
-            
+                <AppBar />
               )}
             </div>
           </Container>
