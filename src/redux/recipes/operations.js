@@ -113,7 +113,6 @@ export const addRecipe = createAsyncThunk(
       let config = {};
 
       if (payload.thumb && payload.thumb instanceof File) {
-        // Якщо є фото, відправляємо як FormData
         const formData = new FormData();
         formData.append("title", payload.title);
         formData.append("category", payload.category);
@@ -127,9 +126,7 @@ export const addRecipe = createAsyncThunk(
         formData.append("thumb", payload.thumb);
 
         requestData = formData;
-        // Не встановлюємо Content-Type - axios зробить це автоматично для FormData
       } else {
-        // Якщо немає фото, відправляємо як JSON
         requestData = payload;
         config.headers = {
           "Content-Type": "application/json",

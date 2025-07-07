@@ -197,7 +197,6 @@ export default function AddRecipeForm() {
             onChange={(event) => {
               const file = event.target.files[0];
               if (file) {
-                // Перевіряємо тип файлу
                 const allowedTypes = [
                   "image/jpeg",
                   "image/jpg",
@@ -210,8 +209,7 @@ export default function AddRecipeForm() {
                   return;
                 }
 
-                // Перевіряємо розмір файлу (максимум 2MB)
-                const maxSize = 2 * 1024 * 1024; // 2MB в байтах
+                const maxSize = 2 * 1024 * 1024;
                 if (file.size > maxSize) {
                   toast.error("Image size must be less than 2MB.");
                   event.target.value = "";
