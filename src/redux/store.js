@@ -13,9 +13,8 @@ import storage from "redux-persist/lib/storage";
 import { authReducer } from "./auth/slice";
 import filtersReducer from "./filters/slice";
 import recipesReducer from "./recipes/slice";
-
-
-
+import categoriesReducer from "./categories/slice.js";
+import ingredientsReducer from "./ingredients/slice.js";
 
 const persistedAuthReducer = persistReducer(
   {
@@ -31,6 +30,8 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     recipes: recipesReducer,
     filters: filtersReducer,
+    categories: categoriesReducer,
+    ingredients: ingredientsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -40,6 +41,6 @@ export const store = configureStore({
     }),
 });
 store.subscribe(() => {
-  console.log('GLOBAL STATE:', store.getState());
+  console.log("GLOBAL STATE:", store.getState());
 });
 export const persistor = persistStore(store);

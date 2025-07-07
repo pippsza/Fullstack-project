@@ -1,17 +1,17 @@
 import { useSelector } from "react-redux";
 
 import css from "./RecipeIngredientsList.module.css";
-//import { fetchIngredients } from "../../redux/ingredients/operations";
+import { selectIngredients } from "../../redux/ingredients/selectors.js";
 
 export default function RecipeIngredientsList({ ingredients }) {
-  const allIngredients = useSelector(ingredients); //змінити після стягнення змін
+  const allIngredients = useSelector(selectIngredients);
   return (
     <div className={css.ingredientsBox}>
       <h3 className={css.ingredientsTitle}>Ingredients:</h3>
       <ul className={css.ingredientsList}>
         {ingredients.map(({ id, measure }) => {
           const found = allIngredients.find(
-            (ingredient) => ingredient.id === id
+            (ingredient) => ingredient._id === id
           );
           return (
             <li className={css.ingredientsItem} key={id}>
