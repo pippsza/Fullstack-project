@@ -90,7 +90,7 @@ export const getUserInfo = createAsyncThunk(
     try {
       setAuthHeader(persistedToken);
       console.log("GetUserInfo operation - making request to /users");
-      const { data } = await authInstance.get("/users");
+      const { data } = await authInstance.get("/users/current");
       console.log("GetUserInfo operation - received response:", data);
       return data;
     } catch (error) {
