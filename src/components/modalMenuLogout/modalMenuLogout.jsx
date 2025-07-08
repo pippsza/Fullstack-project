@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+
 import { useEffect } from "react";
 import Svg from "../Svg/svg";
 import style from "./modalMenuLogout.module.css";
@@ -23,7 +23,7 @@ export default function ModalMenuLogout({ isModalOpen, onClose }) {
       await dispatch(logOut()).unwrap();
       onClose();
       toast.success("Logout successful! 👋");
-    } catch (e) {
+    } catch  {
       toast.error("Logout failed. Try again.");
     }
   };

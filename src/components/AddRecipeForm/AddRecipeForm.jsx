@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import css from "./AddRecipeForm.module.css";
 import Svg from "../Svg/svg.jsx";
+import defaultImage from "../../img/default.jpg";
 
 import { fetchCategories } from "../../redux/categories/operations";
 import { selectCategories } from "../../redux/categories/selectors";
@@ -130,6 +131,17 @@ export default function AddRecipeForm() {
 
     if (photo) {
       recipeData.thumb = photo;
+    } else {
+      try {
+        const response = await fetch(defaultImage);
+        const blob = await response.blob();
+        const defaultFile = new File([blob], "default.jpg", {
+          type: "image/jpeg",
+        });
+        recipeData.thumb = defaultFile;
+      } catch (error) {
+        console.warn("Could not load default image:", error);
+      }
     }
 
     try {

@@ -1,3 +1,39 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
+import RecipeDetails from "../components/RecipeDetails/RecipeDetails";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import Loader from "../components/Loader/Loader";
+
+import { fetchById } from "../redux/recipes/operations";
+import {
+  selectCurrentRecipe,
+  selectRecipesLoading,
+  selectRecipesError,
+} from "../redux/recipes/selectors";
+
 export default function RecipeViewPage() {
-  return <h1>RECIPE INGO PAGE</h1>;
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  const recipe = useSelector(selectCurrentRecipe);
+  const isLoading = useSelector(selectRecipesLoading);
+  const error = useSelector(selectRecipesError);
+
+  useEffect(() => {
+    if (id) dispatch(fetchById(id));
+  }, [dispatch, id]);
+
+  // if (isLoading) return <Loader />;
+  // if (error || !recipe) return <NotFoundPage />;
+  // return <RecipeDetails recipe={recipe} />;
+  // ЗРОБИТИ ТЕРНАРНИЙ БУДЬ ЛАСОЧКА. || подвійний тернарний не дуже добре, можна лоадер прибрати взагалі(по тз нема), чи все ж таки на if. Залишу закомічений, щоб вибрати кращій варіант(і той і той працює)
+  return isLoading ? (
+    <Loader />
+  ) : error || !recipe ? (
+    <NotFoundPage />
+  ) : (
+    <RecipeDetails recipe={recipe} />
+  );
 }
