@@ -25,10 +25,6 @@ export default function RecipeViewPage() {
     if (id) dispatch(fetchById(id));
   }, [dispatch, id]);
 
-  // if (isLoading) return <Loader />;
-  // if (error || !recipe) return <NotFoundPage />;
-  // return <RecipeDetails recipe={recipe} />;
-  // ЗРОБИТИ ТЕРНАРНИЙ БУДЬ ЛАСОЧКА. || подвійний тернарний не дуже добре, можна лоадер прибрати взагалі(по тз нема), чи все ж таки на if. Залишу закомічений, щоб вибрати кращій варіант(і той і той працює)
   return isLoading ? (
     <Loader />
   ) : error || !recipe ? (
