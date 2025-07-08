@@ -12,6 +12,7 @@
   font-weight: 600;
   font-size: 32px;
   color: #000;
+  margin-top: 48px;
 }
 
 .divFilters {
@@ -58,6 +59,13 @@
   gap: 4px;
 }
 
+.svg {
+  width: 24px;
+  height: 24px;
+  stroke: #000;
+  fill: #fbfcf8;
+}
+
 .btnReset {
   position: relative;
   font-weight: 600;
@@ -83,6 +91,14 @@
   cursor: default;
 }
 
+.btnNone {
+  color: #fbfcf8;
+}
+
+.svgNone {
+  stroke: #fbfcf8;
+}
+
 .selectFilter {
   border: 1px solid var(--light-gray);
   border-radius: 4px;
@@ -102,13 +118,6 @@
   color: var(--black);
 }
 
-.svg {
-  width: 24px;
-  height: 24px;
-  stroke: #000;
-  fill: #fbfcf8;
-}
-
 @media (min-width: 768px) {
   .container {
     max-width: 704px;
@@ -122,6 +131,10 @@
     justify-content: flex-start;
     gap: 208px;
   }
+
+  /* .dropdown {
+    align-items: center;
+  } */
 }
 
 @media (min-width: 1440px) {

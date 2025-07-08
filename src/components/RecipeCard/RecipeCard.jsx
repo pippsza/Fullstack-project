@@ -2,14 +2,16 @@ import { NavLink, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Svg from "../Svg/svg";
 import style from "./RecipeCard.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteFavouriteRecipe,
   addFavouriteRecipe,
 } from "../../redux/recipes/operations";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
-export default function RecipeCard({ recipeCard }) {
+export default function RecipeCard({ recipeCard, isModalOpen }) {
   const dispatch = useDispatch();
+  const idLoggedIn = useSelector(selectIsLoggedIn);
   const { recipeType } = useParams();
 
   const handleDeleteFavourite = async () => {
@@ -24,6 +26,10 @@ export default function RecipeCard({ recipeCard }) {
   };
 
   const handleAddFavourite = async () => {
+    if (!idLoggedIn) {
+      isModalOpen(true);
+      return;
+    }
     console.log("ID to Add:", recipeCard._id);
     try {
       if (recipeCard._id) {
@@ -54,7 +60,7 @@ export default function RecipeCard({ recipeCard }) {
       <div className={style.btnWrapper}>
         <NavLink
           className={style.learnMoreBtn}
-          to={`/recipes/${recipeCard._id.$oid}`}
+          to={`/recipes/${recipeCard._id}`}
         >
           Learn more
         </NavLink>

@@ -113,10 +113,13 @@ const Filters = ({ filter, setFilter, setSearchQuery, total, isSearched }) => {
               <div className={css.divDropdown} ref={containerRef}>
                 <button
                   onClick={() => setOpen(!open)}
-                  className={css.btnDropdown}
+                  className={`${css.btnDropdown} ${open ? css.btnNone : ""}`}
                 >
                   Filters
-                  <Svg styles={css.svg} name={"filter"} />
+                  <Svg
+                    styles={`${css.svg} ${open ? css.svgNone : ""}`}
+                    name={"filter"}
+                  />
                 </button>
 
                 {open && (

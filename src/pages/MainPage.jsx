@@ -13,6 +13,10 @@ const MainPage = () => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearched, setIsSearched] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const onClose = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
       <SearchBox
@@ -27,6 +31,7 @@ const MainPage = () => {
       )}
       <Container>
         <ListWrapper
+          isModalOpen={setIsModalOpen}
           filter={filter}
           setFilter={setFilter}
           setSearchQuery={setSearchQuery}

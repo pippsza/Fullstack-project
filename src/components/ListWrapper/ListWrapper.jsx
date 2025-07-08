@@ -1,6 +1,7 @@
 import RecipesList from "../RecipesList/RecipesList";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Filters from "../Filters/Filters";
+import css from "./ListWrapper.module.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -32,6 +33,7 @@ export default function ListWrapper({
   setFilter,
   setSearchQuery,
   isSearched,
+  isModalOpen,
 }) {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -74,7 +76,8 @@ export default function ListWrapper({
 
   const isLoading = useSelector(selectRecipesLoading);
   const isError = useSelector(selectRecipesError);
-  const isFirstLoad = isLoading && page === 1;
+  const isFirstPage = page === 1;
+  // const isFirstLoad = isLoading && page === 1;
 
   useEffect(() => {
     if (isMainPage) {
@@ -103,7 +106,7 @@ export default function ListWrapper({
 
   return (
     <>
-      {isFirstLoad && <Loader />}
+      {/* {isFirstLoad && <Loader />} */}
       {isError && <b>Whoops, there was an error pls reload...</b>}
       <Filters
         filter={filter}
@@ -112,9 +115,28 @@ export default function ListWrapper({
         total={total}
         isSearched={isSearched}
       />
-      {items && <RecipesList items={items} />}
-      {isLoading && <Loader />}
-      {hasNextPage && !isLoading && <LoadMoreBtn onClick={handleLoadMore} />}
+      {isFirstPage && isLoading ? (
+        <div style={{ paddingTop: "200px", paddingBottom: "200px" }}>
+          <Loader />
+        </div>
+      ) : items && items.length > 0 ? (
+        <>
+          <RecipesList isModalOpen={isModalOpen} items={items} />
+
+          {hasNextPage && (
+            <>
+              {isLoading && (
+                <div style={{ marginBottom: "40px" }}>
+                  <Loader />
+                </div>
+              )}
+              {!isLoading && <LoadMoreBtn onClick={handleLoadMore} />}
+            </>
+          )}
+        </>
+      ) : (
+        <p className={css.notFound}> Any recipes was found.</p>
+      )}
     </>
   );
 }

@@ -7,10 +7,15 @@ export const CustomSelect = ({ label, options, selected, onChange }) => {
   const [query, setQuery] = useState("");
 
   const filteredOptions = useMemo(() => {
-    if (!query) return options;
-    return options.filter((option) =>
-      option.name.toLowerCase().includes(query.toLowerCase())
-    );
+    if (!query) {
+      return [...options].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return options
+      .filter((option) =>
+        option.name.toLowerCase().includes(query.toLowerCase())
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [query, options]);
 
   return (
