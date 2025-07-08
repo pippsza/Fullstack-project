@@ -16,9 +16,9 @@
   line-height: 1.5;
   color: var(--black);
 }
-.resipeImage {
+.recipeImage {
   width: 100%;
-  object-fit: cover;
+  object-fit: fill;
   max-height: 276px;
 }
 .flexBox {
@@ -40,12 +40,12 @@
     font-size: 48px;
     line-height: 1.1;
   }
-  .resipeImage {
+  .recipeImage {
     max-height: 624px;
   }
 }
-/* 1280px styles */
-@media screen and (min-width: 1280px) {
+/* 1440px styles */
+@media screen and (min-width: 1440px) {
   .flexBox {
     display: flex;
     flex-direction: row-reverse;

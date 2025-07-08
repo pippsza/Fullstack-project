@@ -54,7 +54,7 @@ export default function RecipeCard({ recipeCard }) {
       <div className={style.btnWrapper}>
         <NavLink
           className={style.learnMoreBtn}
-          to={`/recipes/${recipeCard._id.$oid}`}
+          to={`/recipes/${recipeCard._id}`}
         >
           Learn more
         </NavLink>
