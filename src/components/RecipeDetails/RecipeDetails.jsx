@@ -4,6 +4,8 @@ import AboutRecipe from "../AboutRecipe/AboutRecipe";
 import PreparationRecipe from "../PreparationRecipe/PreparationRecipe";
 import RecipeIngredientsList from "../RecipeIngredientsList/RecipeIngredientsList";
 import Container from "../container/container";
+import { useSelector } from "react-redux";
+import { selectUserData } from "../../redux/auth/selectors";
 
 export default function RecipeDetails({ recipe }) {
   const {
@@ -15,7 +17,13 @@ export default function RecipeDetails({ recipe }) {
     description,
     ingredients,
     instructions,
+    _id,
+    favorites = [],
   } = recipe;
+
+  const user = useSelector(selectUserData);
+
+  const isFavourite = user && favorites.includes(user._id);
 
   return (
     <section className={css.section}>
@@ -34,6 +42,8 @@ export default function RecipeDetails({ recipe }) {
               category={category}
               time={time}
               calories={calories}
+              id={_id}
+              isFavourite={isFavourite}
             />
             <div className={css.aboutBox}>
               <AboutRecipe description={description} />

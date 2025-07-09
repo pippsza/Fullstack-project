@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -6,20 +6,27 @@ import toast from "react-hot-toast";
 import css from "./GeneralInfoRecipe.module.css";
 import Svg from "../Svg/svg";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
-import { deleteFavouriteRecipe } from "../../redux/recipes/operations";
-import { addFavouriteRecipe } from "../../redux/recipes/operations";
+import {
+  deleteFavouriteRecipe,
+  addFavouriteRecipe,
+} from "../../redux/recipes/operations";
 
 export default function GeneralInfoRecipe({
   category,
   time,
   calories,
   id,
-  isFavourite,
+  isFavourite = false,
 }) {
   const [loading, setLoading] = useState(false);
+  const [isFav, setIsFav] = useState(isFavourite);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+
+  useEffect(() => {
+    setIsFav(isFavourite);
+  }, [isFavourite]);
 
   const handleToggle = async () => {
     if (!isLoggedIn) {
@@ -30,12 +37,14 @@ export default function GeneralInfoRecipe({
     setLoading(true);
 
     try {
-      if (isFavourite) {
+      if (isFav) {
         await dispatch(deleteFavouriteRecipe(id)).unwrap();
         toast.success("Recipe removed from favorites");
+        setIsFav(false);
       } else {
         await dispatch(addFavouriteRecipe(id)).unwrap();
         toast.success("Recipe added to favorites");
+        setIsFav(true);
       }
     } catch (err) {
       toast.error(err?.message || "Something went wrong");
@@ -64,7 +73,7 @@ export default function GeneralInfoRecipe({
         </p>
       </div>
       <button className={css.saveBtn} onClick={handleToggle} disabled={loading}>
-        {loading ? "Loading..." : isFavourite ? "Remove" : "Save"}
+        {loading ? "Loading..." : isFav ? "Remove" : "Save"}
         <Svg styles={css.icon} name="bookmark" />
       </button>
     </div>
