@@ -3,12 +3,22 @@
   flex-direction: column;
   gap: 16px;
 }
+.imgWrapper {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  max-height: 230px;
+  border-radius: 16px;
+}
 .img {
   display: block;
   background-color: var(--brown);
   width: 100%;
-  height: 230px;
-  border-radius: 16px;
+  object-fit: cover;
+  height: auto;
 }
 .titleWrapper {
   display: flex;
@@ -158,7 +168,7 @@
   stroke: var(--light-gray);
 }
 @media (min-width: 768px) {
-  .img {
+  .imgWrapper {
     width: 315px;
     border-radius: 8px;
   }
@@ -167,9 +177,9 @@
   }
 }
 @media (min-width: 1440px) {
-  .img {
+  .imgWrapper {
     width: 264px;
-    height: 178px;
+    max-height: 178px;
   }
   .text {
     max-width: 264px;

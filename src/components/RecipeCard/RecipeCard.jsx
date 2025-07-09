@@ -61,7 +61,9 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
   };
   return (
     <div className={style.recipeCardWrapper}>
-      <img className={style.img} src={recipeCard.thumb} alt="recipe" />
+      <div className={style.imgWrapper}>
+        <img className={style.img} src={recipeCard.thumb} alt="recipe" />
+      </div>
       <div className={style.titleWrapper}>
         <h2 className={style.title}>{recipeCard.title}</h2>
         <div className={style.svgWrapper}>
