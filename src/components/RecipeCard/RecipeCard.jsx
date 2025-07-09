@@ -2,21 +2,40 @@ import { NavLink, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Svg from "../Svg/svg";
 import style from "./RecipeCard.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   deleteFavouriteRecipe,
   addFavouriteRecipe,
 } from "../../redux/recipes/operations";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { useEffect, useState } from "react";
 
-export default function RecipeCard({ recipeCard }) {
+export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
   const dispatch = useDispatch();
+  const idLoggedIn = useSelector(selectIsLoggedIn);
   const { recipeType } = useParams();
+  console.log("PAAAAAAAAAAAAGE", recipeType);
+  const [isFavouriteState, setIsFavouriteState] = useState();
+
+  const isFavourite = favourites?.some((fav) => fav === recipeCard._id);
+
+  useEffect(() => {
+    isFavourite && setIsFavouriteState(true);
+  }, [isFavourite]);
 
   const handleDeleteFavourite = async () => {
     console.log("ID to delete:", recipeCard._id);
+    toast.error("Deleting");
     try {
       if (recipeCard._id) {
-        await dispatch(deleteFavouriteRecipe(recipeCard._id)).unwrap();
+        await dispatch(deleteFavouriteRecipe(recipeCard._id))
+          .unwrap()
+          .catch((err) => {})
+          .then(() => {
+            setIsFavouriteState(false);
+          });
+        toast.success("Removed from favourites");
       }
     } catch (error) {
       toast.error("Something went wrong");
@@ -24,10 +43,20 @@ export default function RecipeCard({ recipeCard }) {
   };
 
   const handleAddFavourite = async () => {
+    if (!idLoggedIn) {
+      isModalOpen(true);
+      return;
+    }
+    toast.success("Adding");
     console.log("ID to Add:", recipeCard._id);
     try {
       if (recipeCard._id) {
-        await dispatch(addFavouriteRecipe(recipeCard._id)).unwrap();
+        await dispatch(addFavouriteRecipe(recipeCard._id))
+          .unwrap()
+          .then(() => {
+            setIsFavouriteState(true);
+          });
+        toast.success("Added to favourites");
       }
     } catch (error) {
       toast.error("Something went wrong");
@@ -58,21 +87,16 @@ export default function RecipeCard({ recipeCard }) {
         >
           Learn more
         </NavLink>
-        {recipeType === "own" ? null : recipeType === "favourites" ? (
-          <div className={style.svg1WrapperActive}>
-            <Svg
-              styles={style.svg1Active}
-              name="bookmark"
-              onClick={handleDeleteFavourite}
-            />
+        {recipeType === "own" ? null : isFavouriteState ? (
+          <div
+            onClick={handleDeleteFavourite}
+            className={style.svg1WrapperActive}
+          >
+            <Svg styles={style.svg1Active} name="bookmark" />
           </div>
         ) : (
-          <div className={style.svg1Wrapper}>
-            <Svg
-              styles={style.svg1}
-              name="bookmark"
-              onClick={handleAddFavourite}
-            />
+          <div onClick={handleAddFavourite} className={style.svg1Wrapper}>
+            <Svg styles={style.svg1} name="bookmark" />
           </div>
         )}
       </div>

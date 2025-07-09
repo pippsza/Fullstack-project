@@ -1,7 +1,6 @@
 .container {
   margin-left: auto;
   margin-right: auto;
-  padding-top: 48px;
   background-color: #fbfcf8;
   display: flex;
   flex-direction: column;
@@ -13,6 +12,7 @@
   font-weight: 600;
   font-size: 32px;
   color: #000;
+  margin-top: 48px;
 }
 
 .divFilters {
@@ -59,6 +59,13 @@
   gap: 4px;
 }
 
+.svg {
+  width: 24px;
+  height: 24px;
+  stroke: #000;
+  fill: #fbfcf8;
+}
+
 .btnReset {
   position: relative;
   font-weight: 600;
@@ -77,6 +84,19 @@
   height: 1px;
   bottom: 0;
   background-color: #000;
+}
+
+.btnReset:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btnNone {
+  color: #fbfcf8;
+}
+
+.svgNone {
+  stroke: #fbfcf8;
 }
 
 .selectFilter {
@@ -98,13 +118,6 @@
   color: var(--black);
 }
 
-.svg {
-  width: 24px;
-  height: 24px;
-  stroke: #000;
-  fill: #fbfcf8;
-}
-
 @media (min-width: 768px) {
   .container {
     max-width: 704px;
@@ -118,6 +131,10 @@
     justify-content: flex-start;
     gap: 208px;
   }
+
+  /* .dropdown {
+    align-items: center;
+  } */
 }
 
 @media (min-width: 1440px) {

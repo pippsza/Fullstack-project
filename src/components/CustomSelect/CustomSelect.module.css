@@ -16,6 +16,10 @@
   padding: 4px 40px 4px 8px;
   text-align: left;
   text-decoration: #595d62;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0px 0px 4px 0px rgba(66, 68, 90, 1);
 }
 
 .listboxButton:focus {
@@ -55,7 +59,6 @@
   background-color: #fff;
   padding: 8px;
   outline: none;
-  /* text-sm; */
 }
 
 .svg {
@@ -78,4 +81,18 @@
 
 .option:hover {
   background-color: #d3d3d3;
+}
+
+.searchInput {
+  padding: 6px 4px 6px 12px;
+  border: 1px solid #d3d3d3;
+  border-radius: 4px;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+@media (min-width: 1440px) {
+  .listboxButton {
+    box-shadow: none;
+  }
 }

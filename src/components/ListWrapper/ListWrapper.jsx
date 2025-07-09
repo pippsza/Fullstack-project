@@ -1,7 +1,8 @@
 import RecipesList from "../RecipesList/RecipesList";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
-import style from "./ListWrapper.module.css";
-import { useEffect } from "react";
+import Filters from "../Filters/Filters";
+import css from "./ListWrapper.module.css";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchFavouriteRecipes,
@@ -26,15 +27,30 @@ import {
   selectFilteredRecipesTotal,
 } from "../../redux/recipes/selectors";
 import Loader from "../Loader/Loader";
+import { selectUserData } from "../../redux/auth/selectors";
+import { getUserInfo } from "../../redux/auth/operations";
 
-export default function ListWrapper({ filter, setFilter }) {
+export default function ListWrapper({
+  filter,
+  setFilter,
+  isSearched,
+  isModalOpen,
+  setSearchQuery,
+}) {
+  const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
+
+  const data = useSelector(selectUserData);
+  const favourites = data.favorites;
   const location = useLocation();
-  const dispatch = useDispatch();
   const { recipeType } = useParams();
-
   const isMainPage = location.pathname === "/";
 
-  // Витягуємо дані з Redux для кожного типу
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, [dispatch]);
+
   const items = useSelector(
     isMainPage
       ? selectFilteredRecipes
@@ -69,41 +85,85 @@ export default function ListWrapper({ filter, setFilter }) {
 
   const isLoading = useSelector(selectRecipesLoading);
   const isError = useSelector(selectRecipesError);
-  const isFirstLoad = isLoading && page === 1;
+
+  const isInitialLoad = isMainPage
+    ? isLoading && filter.page === 1
+    : isLoading && page === 1 && items.length === 0;
+
+  const isLoadMore = isMainPage
+    ? isLoading && filter.page > 1
+    : isLoadMoreLoading;
 
   useEffect(() => {
-    if (isMainPage) {
-      dispatch(fetchByFilters(filter));
-    } else {
-      if (recipeType === "own") {
-        dispatch(fetchOwnRecipes({ page }));
-      } else if (recipeType === "favourites") {
-        dispatch(fetchFavouriteRecipes({ page }));
+    const fetch = async () => {
+      if (isMainPage) {
+        dispatch(fetchByFilters(filter));
+      } else {
+        if (recipeType === "own") {
+          await dispatch(fetchOwnRecipes({ page }));
+        } else if (recipeType === "favourites") {
+          await dispatch(fetchFavouriteRecipes({ page }));
+        }
       }
-    }
+    };
+    fetch();
   }, [dispatch, filter, page, isMainPage, recipeType]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = async () => {
     if (isMainPage) {
       setFilter({ ...filter, page: filter.page + 1 });
     } else {
       const nextPage = page + 1;
+      setIsLoadMoreLoading(true);
+
       if (recipeType === "own") {
-        dispatch(fetchOwnRecipes({ page: nextPage }));
-      } else {
-        dispatch(fetchFavouriteRecipes({ page: nextPage }));
+        await dispatch(fetchOwnRecipes({ page: nextPage }));
+      } else if (recipeType === "favourites") {
+        await dispatch(fetchFavouriteRecipes({ page: nextPage }));
       }
+
+      setIsLoadMoreLoading(false);
     }
   };
 
   return (
     <>
-      {isFirstLoad && <Loader />}
-      {isError && <b>Whoops, there was an error pls reload...</b>}
-      <p className={style.totalRecipes}>{total || 0} recipes</p>
-      {items && <RecipesList items={items} />}
-      {isLoading && <Loader />}
-      {hasNextPage && !isLoading && <LoadMoreBtn onClick={handleLoadMore} />}
+      {isError && <b>Whoops, there was an error. Please reload...</b>}
+
+      <Filters
+        filter={filter}
+        setFilter={setFilter}
+        total={total}
+        isSearched={isSearched}
+        setSearchQuery={setSearchQuery}
+      />
+
+      {isInitialLoad ? (
+        <div style={{ paddingTop: "200px", paddingBottom: "200px" }}>
+          <Loader />
+        </div>
+      ) : items && items.length > 0 ? (
+        <>
+          <RecipesList
+            favourites={favourites}
+            isModalOpen={isModalOpen}
+            items={items}
+          />
+
+          {hasNextPage && (
+            <>
+              {isLoadMore && (
+                <div style={{ marginBottom: "40px" }}>
+                  <Loader />
+                </div>
+              )}
+              {!isLoadMore && <LoadMoreBtn onClick={handleLoadMore} />}
+            </>
+          )}
+        </>
+      ) : (
+        <p className={css.notFound}>Any recipes were found.</p>
+      )}
     </>
   );
 }
