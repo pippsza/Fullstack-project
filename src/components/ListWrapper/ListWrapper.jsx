@@ -2,7 +2,7 @@ import RecipesList from "../RecipesList/RecipesList";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import Filters from "../Filters/Filters";
 import css from "./ListWrapper.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchFavouriteRecipes,
@@ -37,25 +37,20 @@ export default function ListWrapper({
   isModalOpen,
   setSearchQuery,
 }) {
+  const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
+
   const data = useSelector(selectUserData);
   const favourites = data.favorites;
   const location = useLocation();
   const { recipeType } = useParams();
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        dispatch(getUserInfo());
-      } catch (error) {
-        console.error("Ошибка получения пользователя:", error);
-      }
-    };
-    fetch();
-  }, [dispatch]);
   const isMainPage = location.pathname === "/";
 
-  // Витягуємо дані з Redux для кожного типу
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, [dispatch]);
+
   const items = useSelector(
     isMainPage
       ? selectFilteredRecipes
@@ -90,44 +85,51 @@ export default function ListWrapper({
 
   const isLoading = useSelector(selectRecipesLoading);
   const isError = useSelector(selectRecipesError);
+
   const isInitialLoad = isMainPage
     ? isLoading && filter.page === 1
-    : isLoading && page === 1;
+    : isLoading && page === 1 && items.length === 0;
 
   const isLoadMore = isMainPage
     ? isLoading && filter.page > 1
-    : isLoading && page > 1;
-  // const isFirstLoad = isLoading && page === 1;
+    : isLoadMoreLoading;
 
   useEffect(() => {
-    if (isMainPage) {
-      dispatch(fetchByFilters(filter));
-    } else {
-      if (recipeType === "own") {
-        dispatch(fetchOwnRecipes({ page }));
-      } else if (recipeType === "favourites") {
-        dispatch(fetchFavouriteRecipes({ page }));
+    const fetch = async () => {
+      if (isMainPage) {
+        dispatch(fetchByFilters(filter));
+      } else {
+        if (recipeType === "own") {
+          await dispatch(fetchOwnRecipes({ page }));
+        } else if (recipeType === "favourites") {
+          await dispatch(fetchFavouriteRecipes({ page }));
+        }
       }
-    }
+    };
+    fetch();
   }, [dispatch, filter, page, isMainPage, recipeType]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = async () => {
     if (isMainPage) {
       setFilter({ ...filter, page: filter.page + 1 });
     } else {
       const nextPage = page + 1;
+      setIsLoadMoreLoading(true);
+
       if (recipeType === "own") {
-        dispatch(fetchOwnRecipes({ page: nextPage }));
-      } else {
-        dispatch(fetchFavouriteRecipes({ page: nextPage }));
+        await dispatch(fetchOwnRecipes({ page: nextPage }));
+      } else if (recipeType === "favourites") {
+        await dispatch(fetchFavouriteRecipes({ page: nextPage }));
       }
+
+      setIsLoadMoreLoading(false);
     }
   };
 
   return (
     <>
-      {/* {isFirstLoad && <Loader />} */}
-      {isError && <b>Whoops, there was an error pls reload...</b>}
+      {isError && <b>Whoops, there was an error. Please reload...</b>}
+
       <Filters
         filter={filter}
         setFilter={setFilter}
@@ -135,6 +137,7 @@ export default function ListWrapper({
         isSearched={isSearched}
         setSearchQuery={setSearchQuery}
       />
+
       {isInitialLoad ? (
         <div style={{ paddingTop: "200px", paddingBottom: "200px" }}>
           <Loader />
@@ -154,12 +157,12 @@ export default function ListWrapper({
                   <Loader />
                 </div>
               )}
-              {!isLoading && <LoadMoreBtn onClick={handleLoadMore} />}
+              {!isLoadMore && <LoadMoreBtn onClick={handleLoadMore} />}
             </>
           )}
         </>
       ) : (
-        <p className={css.notFound}> Any recipes was found.</p>
+        <p className={css.notFound}>Any recipes were found.</p>
       )}
     </>
   );

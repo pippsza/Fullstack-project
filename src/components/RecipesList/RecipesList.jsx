@@ -6,10 +6,7 @@ export default function RecipesList({ items, isModalOpen, favourites }) {
     <ul className={style.list}>
       {items &&
         items.map((recipeCard) => (
-          <li
-            className={style.item}
-            key={recipeCard._id.$oid || recipeCard._id}
-          >
+          <li className={style.item} key={recipeCard._id}>
             <RecipeCard
               favourites={favourites}
               isModalOpen={isModalOpen}

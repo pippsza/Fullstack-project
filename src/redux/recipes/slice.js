@@ -189,7 +189,7 @@ const slice = createSlice({
         state.items.favoriteItems.hasPreviousPage = hasPreviousPage;
       })
       .addCase(fetchFavouriteRecipes.rejected, (state, action) => {
-        // state.loading = false;
+        state.loading = false;
         state.error = action.payload.message;
         state.items.favoriteItems.items = [];
       })
