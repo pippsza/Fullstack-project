@@ -35,6 +35,7 @@ export default function ListWrapper({
   setFilter,
   isSearched,
   isModalOpen,
+  setSearchQuery,
 }) {
   const data = useSelector(selectUserData);
   const favourites = data.favorites;
@@ -132,6 +133,7 @@ export default function ListWrapper({
         setFilter={setFilter}
         total={total}
         isSearched={isSearched}
+        setSearchQuery={setSearchQuery}
       />
       {isInitialLoad ? (
         <div style={{ paddingTop: "200px", paddingBottom: "200px" }}>

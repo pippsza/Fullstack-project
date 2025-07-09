@@ -35,6 +35,7 @@ const MainPage = () => {
           filter={filter}
           setFilter={setFilter}
           isSearched={isSearched}
+          setSearchQuery={setSearchQuery}
         />
       </Container>
     </>

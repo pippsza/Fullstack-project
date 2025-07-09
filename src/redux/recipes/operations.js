@@ -166,9 +166,9 @@ export const addFavouriteRecipe = createAsyncThunk(
     try {
       const res = await authInstance.post(`/recipes/favorite`, { recipeId });
       console.log("addFavouriteRecipe: response", res);
-      const state = thunkAPI.getState();
-      const page = state.recipes.items.favoriteItems.page || 1;
-      thunkAPI.dispatch(fetchFavouriteRecipes({ page }));
+      // const state = thunkAPI.getState();
+      // const page = state.recipes.items.favoriteItems.page || 1;
+      // thunkAPI.dispatch(fetchFavouriteRecipes({ page }));
       return res.data;
     } catch (error) {
       console.error("addFavouriteRecipe: error", error);
@@ -184,9 +184,9 @@ export const deleteFavouriteRecipe = createAsyncThunk(
     try {
       const res = await authInstance.delete(`/recipes/favorite/${recipeId}`);
       console.log("deleteFavouriteRecipe: response", res);
-      const state = thunkAPI.getState();
-      const page = state.recipes.items.favoriteItems.page || 1;
-      thunkAPI.dispatch(fetchFavouriteRecipes({ page }));
+      // const state = thunkAPI.getState();
+      // const page = state.recipes.items.favoriteItems.page || 1;
+      // thunkAPI.dispatch(fetchFavouriteRecipes({ page }));
       return res.data;
     } catch (error) {
       console.error("deleteFavouriteRecipe: error", error);

@@ -26,6 +26,7 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
 
   const handleDeleteFavourite = async () => {
     console.log("ID to delete:", recipeCard._id);
+    toast.error("Deleting");
     try {
       if (recipeCard._id) {
         await dispatch(deleteFavouriteRecipe(recipeCard._id))
@@ -46,6 +47,7 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
       isModalOpen(true);
       return;
     }
+    toast.success("Adding");
     console.log("ID to Add:", recipeCard._id);
     try {
       if (recipeCard._id) {
@@ -86,20 +88,15 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
           Learn more
         </NavLink>
         {recipeType === "own" ? null : isFavouriteState ? (
-          <div className={style.svg1WrapperActive}>
-            <Svg
-              styles={style.svg1Active}
-              name="bookmark"
-              onClick={handleDeleteFavourite}
-            />
+          <div
+            onClick={handleDeleteFavourite}
+            className={style.svg1WrapperActive}
+          >
+            <Svg styles={style.svg1Active} name="bookmark" />
           </div>
         ) : (
-          <div className={style.svg1Wrapper}>
-            <Svg
-              styles={style.svg1}
-              name="bookmark"
-              onClick={handleAddFavourite}
-            />
+          <div onClick={handleAddFavourite} className={style.svg1Wrapper}>
+            <Svg styles={style.svg1} name="bookmark" />
           </div>
         )}
       </div>
