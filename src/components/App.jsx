@@ -13,7 +13,6 @@ import {
   selectToken,
 } from "../redux/auth/selectors.js";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
-import TestFetches from "../../TestFetches/TestFetches.jsx";
 import { fetchCategories } from "../redux/categories/operations.js";
 import { fetchIngredients } from "../redux/ingredients/operations.js";
 import { fetchByPages } from "../redux/recipes/operations.js";
