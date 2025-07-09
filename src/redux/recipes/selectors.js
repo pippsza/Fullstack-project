@@ -5,6 +5,10 @@ export const selectRecipes = (state) => state.recipes.items;
 
 export const selectRecipesLoading = (state) => state.recipes.loading;
 
+export const selectCurrentRecipeLoading = (state) =>
+  state.recipes.currentRecipeLoading;
+export const selectFavoriteLoading = (state) => state.recipes.favoriteLoading;
+
 export const selectRecipesError = (state) => state.recipes.error;
 
 export const selectOwnRecipes = (state) => state.recipes.items.ownItems.items;

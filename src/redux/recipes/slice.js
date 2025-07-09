@@ -52,6 +52,8 @@ const slice = createSlice({
     currentRecipe: null,
     loading: false,
     error: null,
+    currentRecipeLoading: false,
+    favoriteLoading: false,
   },
   extraReducers: (builder) => {
     builder
@@ -99,18 +101,18 @@ const slice = createSlice({
         state.error = action.payload.message;
       })
       .addCase(fetchById.pending, (state) => {
-        state.loading = true;
+        state.currentRecipeLoading = true;
         state.error = false;
         state.currentRecipe = null;
       })
       .addCase(fetchById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.currentRecipeLoading = false;
         state.error = false;
         state.currentRecipe = action.payload.data;
       })
       .addCase(fetchById.rejected, (state, action) => {
         state.currentRecipe = null;
-        state.loading = false;
+        state.currentRecipeLoading = false;
         state.error = action.payload.message;
       })
       .addCase(fetchOwnRecipes.pending, (state) => {
@@ -155,11 +157,11 @@ const slice = createSlice({
         state.items.ownItems.items = [];
       })
       .addCase(fetchFavouriteRecipes.pending, (state) => {
-        state.loading = true;
+        state.favoriteLoading = true;
         state.error = false;
       })
       .addCase(fetchFavouriteRecipes.fulfilled, (state, action) => {
-        state.loading = false;
+        state.favoriteLoading = false;
         state.error = false;
         const payload =
           action.payload && action.payload.data ? action.payload.data : {};
@@ -189,7 +191,7 @@ const slice = createSlice({
         state.items.favoriteItems.hasPreviousPage = hasPreviousPage;
       })
       .addCase(fetchFavouriteRecipes.rejected, (state, action) => {
-        state.loading = false;
+        state.favoriteLoading = false;
         state.error = action.payload.message;
         state.items.favoriteItems.items = [];
       })
@@ -198,9 +200,9 @@ const slice = createSlice({
         // state.loading = true;
         state.error = false;
       })
+
       .addCase(addFavouriteRecipe.fulfilled, (state, action) => {
-        console.log("addFavouriteRecipe.fulfilled", action.payload);
-        // state.loading = false;
+        state.favoriteLoading = false;
         state.error = false;
         // const exists = state.items.favoriteItems.items.some(
         //   (item) => item._id === action.payload._id
@@ -214,6 +216,7 @@ const slice = createSlice({
       .addCase(addFavouriteRecipe.rejected, (state, action) => {
         console.log("addFavouriteRecipe.rejected", action.payload);
         // state.loading = false;
+        state.favoriteLoading = false;
         state.error = action.payload;
       })
       .addCase(deleteFavouriteRecipe.fulfilled, (state, action) => {
@@ -237,9 +240,9 @@ const slice = createSlice({
         );
         // state.loading = false;
       })
+
       .addCase(deleteFavouriteRecipe.pending, (state) => {
-        console.log("deleteFavouriteRecipe.pending");
-        // state.loading = true;
+        state.favoriteLoading = true;
         state.error = false;
       })
       .addCase(logOut.fulfilled, (state) => {
