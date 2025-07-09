@@ -18,12 +18,7 @@ export default function RecipeDetails({ recipe }) {
     ingredients,
     instructions,
     _id,
-    favorites = [],
   } = recipe;
-
-  const user = useSelector(selectUserData);
-
-  const isFavourite = user && favorites.includes(user._id);
 
   return (
     <section className={css.section}>
@@ -43,7 +38,6 @@ export default function RecipeDetails({ recipe }) {
               time={time}
               calories={calories}
               id={_id}
-              isFavourite={isFavourite}
             />
             <div className={css.aboutBox}>
               <AboutRecipe description={description} />

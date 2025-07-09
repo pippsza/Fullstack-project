@@ -9,7 +9,7 @@ import Loader from "../components/Loader/Loader";
 import { fetchById } from "../redux/recipes/operations";
 import {
   selectCurrentRecipe,
-  selectRecipesLoading,
+  selectCurrentRecipeLoading,
   selectRecipesError,
 } from "../redux/recipes/selectors";
 
@@ -18,7 +18,7 @@ export default function RecipeViewPage() {
   const dispatch = useDispatch();
 
   const recipe = useSelector(selectCurrentRecipe);
-  const isLoading = useSelector(selectRecipesLoading);
+  const isLoading = useSelector(selectCurrentRecipeLoading);
   const error = useSelector(selectRecipesError);
 
   useEffect(() => {

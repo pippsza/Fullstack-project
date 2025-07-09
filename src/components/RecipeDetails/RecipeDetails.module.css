@@ -4,6 +4,9 @@
   flex-direction: column;
   gap: 32px;
 }
+.section {
+  padding: 48px 0;
+}
 
 .imageBox {
   display: flex;

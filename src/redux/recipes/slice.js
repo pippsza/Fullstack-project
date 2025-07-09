@@ -52,6 +52,8 @@ const slice = createSlice({
     currentRecipe: null,
     loading: false,
     error: null,
+    currentRecipeLoading: false,
+    favoriteLoading: false,
   },
   extraReducers: (builder) => {
     builder
@@ -99,18 +101,18 @@ const slice = createSlice({
         state.error = action.payload.message;
       })
       .addCase(fetchById.pending, (state) => {
-        state.loading = true;
+        state.currentRecipeLoading = true;
         state.error = false;
         state.currentRecipe = null;
       })
       .addCase(fetchById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.currentRecipeLoading = false;
         state.error = false;
         state.currentRecipe = action.payload.data;
       })
       .addCase(fetchById.rejected, (state, action) => {
         state.currentRecipe = null;
-        state.loading = false;
+        state.currentRecipeLoading = false;
         state.error = action.payload.message;
       })
       .addCase(fetchOwnRecipes.pending, (state) => {
@@ -155,11 +157,11 @@ const slice = createSlice({
         state.items.ownItems.items = [];
       })
       .addCase(fetchFavouriteRecipes.pending, (state) => {
-        state.loading = true;
+        state.favoriteLoading = true;
         state.error = false;
       })
       .addCase(fetchFavouriteRecipes.fulfilled, (state, action) => {
-        state.loading = false;
+        state.favoriteLoading = false;
         state.error = false;
         const payload =
           action.payload && action.payload.data ? action.payload.data : {};
@@ -189,18 +191,16 @@ const slice = createSlice({
         state.items.favoriteItems.hasPreviousPage = hasPreviousPage;
       })
       .addCase(fetchFavouriteRecipes.rejected, (state, action) => {
-        state.loading = false;
+        state.favoriteLoading = false;
         state.error = action.payload.message;
         state.items.favoriteItems.items = [];
       })
       .addCase(addFavouriteRecipe.pending, (state) => {
-        console.log("addFavouriteRecipe.pending");
-        state.loading = true;
+        state.favoriteLoading = true;
         state.error = false;
       })
       .addCase(addFavouriteRecipe.fulfilled, (state, action) => {
-        console.log("addFavouriteRecipe.fulfilled", action.payload);
-        state.loading = false;
+        state.favoriteLoading = false;
         state.error = false;
         const exists = state.items.favoriteItems.items.some(
           (item) => item._id === action.payload._id
@@ -212,8 +212,7 @@ const slice = createSlice({
         }
       })
       .addCase(addFavouriteRecipe.rejected, (state, action) => {
-        console.log("addFavouriteRecipe.rejected", action.payload);
-        state.loading = false;
+        state.favoriteLoading = false;
         state.error = action.payload;
       })
       .addCase(deleteFavouriteRecipe.fulfilled, (state, action) => {
@@ -235,11 +234,10 @@ const slice = createSlice({
           0,
           state.items.favoriteItems.totalItems - 1
         );
-        state.loading = false;
+        state.favoriteLoading = false;
       })
       .addCase(deleteFavouriteRecipe.pending, (state) => {
-        console.log("deleteFavouriteRecipe.pending");
-        state.loading = true;
+        state.favoriteLoading = true;
         state.error = false;
       })
       .addCase(logOut.fulfilled, (state) => {
@@ -290,14 +288,12 @@ const slice = createSlice({
         const hasPreviousPage = payload.hasPreviousPage || false;
         state.items.filteredItems.totalItems = payload.totalItems || 0;
 
-  
         const currentFilters = {
           category: action.meta.arg.category || "",
           ingredient: action.meta.arg.ingredient || "",
           title: action.meta.arg.title || "",
         };
 
-     
         const filtersChanged =
           currentFilters.category !==
             state.items.filteredItems.lastFilters.category ||
@@ -306,11 +302,10 @@ const slice = createSlice({
           currentFilters.title !== state.items.filteredItems.lastFilters.title;
 
         if (page === 1 || filtersChanged) {
-       
           state.items.filteredItems.items = newItems;
           state.items.filteredItems.lastFilters = currentFilters;
         } else {
-                  const existingIds = new Set(
+          const existingIds = new Set(
             state.items.filteredItems.items.map((item) => item._id)
           );
           const uniqueNewItems = newItems.filter(
