@@ -49,7 +49,6 @@ const Filters = ({ filter, setFilter, total, isSearched, setSearchQuery }) => {
 
   const handleIngredientChange = (value) => {
     setFilter({ ...filter, ingredient: value._id, page: 1 });
-    console.log("in", value._id);
   };
 
   useEffect(() => {

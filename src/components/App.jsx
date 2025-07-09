@@ -18,7 +18,6 @@ import { fetchCategories } from "../redux/categories/operations.js";
 import { fetchIngredients } from "../redux/ingredients/operations.js";
 import { fetchByPages } from "../redux/recipes/operations.js";
 
-
 const AuthPage = lazy(() => import(`../pages/AuthPage.jsx`));
 const AddRecipePage = lazy(() => import(`../pages/AddRecipePage.jsx`));
 const ProfilePage = lazy(() => import(`../pages/ProfilePage/ProfilePage.jsx`));
@@ -65,7 +64,6 @@ export default function App() {
           },
         }}
       />
-      <TestFetches></TestFetches>
       <div className={css.mainApp}>
         <Suspense fallback={<span className={css.loader}></span>}>
           <Routes>
@@ -107,7 +105,6 @@ export default function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
-          
         </Suspense>
       </div>
     </>

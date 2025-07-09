@@ -1,4 +1,3 @@
-// import { useSelector } from "react-redux";
 import css from "./AppBar.module.css";
 import UserMenu from "../UserMenu/UserMenu.jsx";
 import AuthNav from "../AuthNav/AuthNav.jsx";

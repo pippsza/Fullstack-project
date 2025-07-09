@@ -30,13 +30,3 @@ export default function UserMenu({ toggleModal }) {
     </>
   );
 }
-
-// import css from "./UserMenu.module.css";
-
-// export default function UserMenu() {
-//   const getLinkStyles = ({ isActive }) => {
-//     return clsx(css.link, isActive && css.active);
-//   };
-//   return (
-//   );
-// }

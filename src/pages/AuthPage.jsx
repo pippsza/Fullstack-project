@@ -13,6 +13,5 @@ export default function AuthPage() {
     return <RegistrationPage />;
   }
 
-  //   // Якщо authType не login і не register
-  //   return <div>Invalid auth type</div>;
+  return null;
 }

@@ -6,10 +6,7 @@ import toast from "react-hot-toast";
 import css from "./GeneralInfoRecipe.module.css";
 import Svg from "../Svg/svg";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
-import {
-  selectFavoriteRecipes,
-  selectFavoriteLoading,
-} from "../../redux/recipes/selectors";
+import { selectFavoriteRecipes } from "../../redux/recipes/selectors";
 import {
   deleteFavouriteRecipe,
   addFavouriteRecipe,
@@ -23,7 +20,6 @@ export default function GeneralInfoRecipe({ category, time, calories, id }) {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const favoriteRecipes = useSelector(selectFavoriteRecipes);
-  const favLoading = useSelector(selectFavoriteLoading);
 
   // Fetch favorites on mount if logged in
   useEffect(() => {
@@ -90,9 +86,9 @@ export default function GeneralInfoRecipe({ category, time, calories, id }) {
         className={css.saveBtn}
         onClick={handleToggle}
         type="button"
-        disabled={loading || favLoading}
+        disabled={loading}
       >
-        {loading || favLoading ? "Loading..." : isFav ? "Remove" : "Save"}
+        {loading ? "Loading..." : isFav ? "Remove" : "Save"}
         <Svg styles={css.icon} name="bookmark" />
       </button>
     </div>

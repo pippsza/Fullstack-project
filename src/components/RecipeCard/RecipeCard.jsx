@@ -15,7 +15,6 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
   const dispatch = useDispatch();
   const idLoggedIn = useSelector(selectIsLoggedIn);
   const { recipeType } = useParams();
-  console.log("PAAAAAAAAAAAAGE", recipeType);
   const [isFavouriteState, setIsFavouriteState] = useState();
 
   const isFavourite = favourites?.some((fav) => fav === recipeCard._id);
@@ -25,7 +24,6 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
   }, [isFavourite]);
 
   const handleDeleteFavourite = async () => {
-    console.log("ID to delete:", recipeCard._id);
     toast.error("Deleting");
     try {
       if (recipeCard._id) {
@@ -48,7 +46,6 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
       return;
     }
     toast.success("Adding");
-    console.log("ID to Add:", recipeCard._id);
     try {
       if (recipeCard._id) {
         await dispatch(addFavouriteRecipe(recipeCard._id))

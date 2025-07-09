@@ -27,11 +27,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        console.log("Register fulfilled - payload:", action.payload);
         state.user = action.payload.data;
         state.isLoading = false;
         state.error = null;
-        console.log("State after register:", state);
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -42,13 +40,11 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
-        console.log("Login fulfilled - payload:", action.payload);
         state.token = action.payload.data.accessToken;
         setAuthHeader(action.payload.data.accessToken);
         state.isLoggedIn = true;
         state.isLoading = false;
         state.error = null;
-        console.log("State after login:", state);
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -76,7 +72,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
-        console.log("REFRESH USER PAYLOAD", action.payload);
         state.user = action.payload.data.user;
         state.isLoggedIn = true;
         state.isLoading = false;
@@ -92,11 +87,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(getUserInfo.fulfilled, (state, action) => {
-        console.log("GetUserInfo fulfilled - payload:", action.payload);
         state.user = action.payload.data;
         state.isLoading = false;
         state.error = null;
-        console.log("State after getUserInfo:", state);
       })
       .addCase(getUserInfo.rejected, (state, action) => {
         state.isLoading = false;

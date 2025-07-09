@@ -196,51 +196,27 @@ const slice = createSlice({
         state.items.favoriteItems.items = [];
       })
       .addCase(addFavouriteRecipe.pending, (state) => {
-        console.log("addFavouriteRecipe.pending");
-        // state.loading = true;
         state.error = false;
       })
-
       .addCase(addFavouriteRecipe.fulfilled, (state, action) => {
         state.favoriteLoading = false;
         state.error = false;
-        // const exists = state.items.favoriteItems.items.some(
-        //   (item) => item._id === action.payload._id
-        // );
-        // if (!exists) {
-        //   state.items.favoriteItems.items.push(action.payload);
-        //   state.items.favoriteItems.totalItems =
-        //     (state.items.favoriteItems.totalItems || 0) + 1;
-        // }
       })
       .addCase(addFavouriteRecipe.rejected, (state, action) => {
-        console.log("addFavouriteRecipe.rejected", action.payload);
-        // state.loading = false;
         state.favoriteLoading = false;
         state.error = action.payload;
       })
       .addCase(deleteFavouriteRecipe.fulfilled, (state, action) => {
         const deletedId = action.meta.arg;
-        console.log("deleteFavouriteRecipe.fulfilled, deletedId:", deletedId);
-        console.log(
-          "favoriteItems.items before:",
-          state.items.favoriteItems.items
-        );
         state.items.favoriteItems.items =
           state.items.favoriteItems.items.filter(
             (recipe) => recipe._id !== deletedId
           );
-        console.log(
-          "favoriteItems.items after:",
-          state.items.favoriteItems.items
-        );
         state.items.favoriteItems.totalItems = Math.max(
           0,
           state.items.favoriteItems.totalItems - 1
         );
-        // state.loading = false;
       })
-
       .addCase(deleteFavouriteRecipe.pending, (state) => {
         state.favoriteLoading = true;
         state.error = false;

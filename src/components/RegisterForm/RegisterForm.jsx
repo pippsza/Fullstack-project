@@ -45,8 +45,6 @@ export default function RegisterForm() {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    console.log();
-
     setIsLoading(true);
     const { confirmPassword, agree, ...filteredValues } = values;
     dispatch(register(filteredValues))
@@ -68,11 +66,8 @@ export default function RegisterForm() {
       })
 
       .catch((error) => {
-        console.log("Register error:", error);
-
         if (typeof error === "string" && error.includes("409")) {
           toast.error("This email address is already registered.");
-          console.log(isLoading);
         } else {
           toast.error("OOPS... Failed to register user.");
         }
