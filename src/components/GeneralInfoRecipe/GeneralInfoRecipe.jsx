@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -6,39 +6,62 @@ import toast from "react-hot-toast";
 import css from "./GeneralInfoRecipe.module.css";
 import Svg from "../Svg/svg";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
-import { deleteFavouriteRecipe } from "../../redux/recipes/operations";
-import { addFavouriteRecipe } from "../../redux/recipes/operations";
+import {
+  selectFavoriteRecipes,
+  selectFavoriteLoading,
+} from "../../redux/recipes/selectors";
+import {
+  deleteFavouriteRecipe,
+  addFavouriteRecipe,
+  fetchFavouriteRecipes,
+} from "../../redux/recipes/operations";
 
-export default function GeneralInfoRecipe({
-  category,
-  time,
-  calories,
-  id,
-  isFavourite,
-}) {
+export default function GeneralInfoRecipe({ category, time, calories, id }) {
   const [loading, setLoading] = useState(false);
+  const [optimisticFav, setOptimisticFav] = useState(null); // null = sync with redux, true/false = override
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const favoriteRecipes = useSelector(selectFavoriteRecipes);
+  const favLoading = useSelector(selectFavoriteLoading);
 
-  const handleToggle = async () => {
+  // Fetch favorites on mount if logged in
+  useEffect(() => {
+    if (isLoggedIn && favoriteRecipes.length === 0) {
+      dispatch(fetchFavouriteRecipes({ page: 1 }));
+    }
+  }, [dispatch, isLoggedIn]);
+
+  // Determine if this recipe is in favorites
+  const isFavRedux = favoriteRecipes.some((item) => item._id === id);
+  const isFav = optimisticFav === null ? isFavRedux : optimisticFav;
+
+  // Sync optimisticFav with redux when redux changes
+  useEffect(() => {
+    setOptimisticFav(null);
+  }, [isFavRedux]);
+
+  const handleToggle = async (e) => {
+    if (e) e.preventDefault();
     if (!isLoggedIn) {
       toast("Please login to save recipes");
-      navigate("/login");
+      navigate("/auth/login");
       return;
     }
     setLoading(true);
-
     try {
-      if (isFavourite) {
+      if (isFav) {
+        setOptimisticFav(false);
         await dispatch(deleteFavouriteRecipe(id)).unwrap();
         toast.success("Recipe removed from favorites");
       } else {
+        setOptimisticFav(true);
         await dispatch(addFavouriteRecipe(id)).unwrap();
         toast.success("Recipe added to favorites");
       }
     } catch (err) {
       toast.error(err?.message || "Something went wrong");
+      setOptimisticFav(null); // сбросить optimisticFav при ошибке
     } finally {
       setLoading(false);
     }
@@ -63,8 +86,13 @@ export default function GeneralInfoRecipe({
           </span>
         </p>
       </div>
-      <button className={css.saveBtn} onClick={handleToggle} disabled={loading}>
-        {loading ? "Loading..." : isFavourite ? "Remove" : "Save"}
+      <button
+        className={css.saveBtn}
+        onClick={handleToggle}
+        type="button"
+        disabled={loading || favLoading}
+      >
+        {loading || favLoading ? "Loading..." : isFav ? "Remove" : "Save"}
         <Svg styles={css.icon} name="bookmark" />
       </button>
     </div>

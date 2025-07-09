@@ -9,7 +9,7 @@ import Loader from "../components/Loader/Loader";
 import { fetchById } from "../redux/recipes/operations";
 import {
   selectCurrentRecipe,
-  selectRecipesLoading,
+  selectCurrentRecipeLoading,
   selectRecipesError,
 } from "../redux/recipes/selectors";
 
@@ -18,17 +18,13 @@ export default function RecipeViewPage() {
   const dispatch = useDispatch();
 
   const recipe = useSelector(selectCurrentRecipe);
-  const isLoading = useSelector(selectRecipesLoading);
+  const isLoading = useSelector(selectCurrentRecipeLoading);
   const error = useSelector(selectRecipesError);
 
   useEffect(() => {
     if (id) dispatch(fetchById(id));
   }, [dispatch, id]);
 
-  // if (isLoading) return <Loader />;
-  // if (error || !recipe) return <NotFoundPage />;
-  // return <RecipeDetails recipe={recipe} />;
-  // ЗРОБИТИ ТЕРНАРНИЙ БУДЬ ЛАСОЧКА. || подвійний тернарний не дуже добре, можна лоадер прибрати взагалі(по тз нема), чи все ж таки на if. Залишу закомічений, щоб вибрати кращій варіант(і той і той працює)
   return isLoading ? (
     <Loader />
   ) : error || !recipe ? (
