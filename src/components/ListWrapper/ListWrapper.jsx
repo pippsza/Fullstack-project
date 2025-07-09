@@ -27,18 +27,31 @@ import {
   selectFilteredRecipesTotal,
 } from "../../redux/recipes/selectors";
 import Loader from "../Loader/Loader";
+import { selectUserData } from "../../redux/auth/selectors";
+import { getUserInfo } from "../../redux/auth/operations";
 
 export default function ListWrapper({
   filter,
   setFilter,
-  setSearchQuery,
   isSearched,
   isModalOpen,
 }) {
+  const data = useSelector(selectUserData);
+  const favourites = data.favorites;
   const location = useLocation();
-  const dispatch = useDispatch();
   const { recipeType } = useParams();
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        dispatch(getUserInfo());
+      } catch (error) {
+        console.error("Ошибка получения пользователя:", error);
+      }
+    };
+    fetch();
+  }, [dispatch]);
   const isMainPage = location.pathname === "/";
 
   // Витягуємо дані з Redux для кожного типу
@@ -76,7 +89,13 @@ export default function ListWrapper({
 
   const isLoading = useSelector(selectRecipesLoading);
   const isError = useSelector(selectRecipesError);
-  const isFirstPage = page === 1;
+  const isInitialLoad = isMainPage
+    ? isLoading && filter.page === 1
+    : isLoading && page === 1;
+
+  const isLoadMore = isMainPage
+    ? isLoading && filter.page > 1
+    : isLoading && page > 1;
   // const isFirstLoad = isLoading && page === 1;
 
   useEffect(() => {
@@ -111,21 +130,24 @@ export default function ListWrapper({
       <Filters
         filter={filter}
         setFilter={setFilter}
-        setSearchQuery={setSearchQuery}
         total={total}
         isSearched={isSearched}
       />
-      {isFirstPage && isLoading ? (
+      {isInitialLoad ? (
         <div style={{ paddingTop: "200px", paddingBottom: "200px" }}>
           <Loader />
         </div>
       ) : items && items.length > 0 ? (
         <>
-          <RecipesList isModalOpen={isModalOpen} items={items} />
+          <RecipesList
+            favourites={favourites}
+            isModalOpen={isModalOpen}
+            items={items}
+          />
 
           {hasNextPage && (
             <>
-              {isLoading && (
+              {isLoadMore && (
                 <div style={{ marginBottom: "40px" }}>
                   <Loader />
                 </div>

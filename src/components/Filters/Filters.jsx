@@ -8,7 +8,7 @@ import { selectCategories } from "../../redux/categories/selectors";
 import { selectIngredients } from "../../redux/ingredients/selectors";
 import { fetchByFilters } from "../../redux/recipes/operations.js";
 
-const Filters = ({ filter, setFilter, setSearchQuery, total, isSearched }) => {
+const Filters = ({ filter, setFilter, total, isSearched }) => {
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
   const ingredients = useSelector(selectIngredients);
@@ -57,13 +57,12 @@ const Filters = ({ filter, setFilter, setSearchQuery, total, isSearched }) => {
   }, [filter]);
 
   const handleReset = () => {
-    setFilter({
+    setFilter((prev) => ({
+      ...prev,
       category: "",
       ingredient: "",
-      title: "",
       page: 1,
-    });
-    setSearchQuery("");
+    }));
     setOpen(false);
   };
 
@@ -85,9 +84,7 @@ const Filters = ({ filter, setFilter, setSearchQuery, total, isSearched }) => {
                 <button
                   onClick={handleReset}
                   className={css.btnReset}
-                  disabled={
-                    !filter.category && !filter.ingredient && !filter.title
-                  }
+                  disabled={!filter.category && !filter.ingredient}
                 >
                   Reset filters
                 </button>

@@ -1,24 +1,27 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Svg from "../Svg/svg";
 import style from "./RecipeCard.module.css";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   deleteFavouriteRecipe,
   addFavouriteRecipe,
 } from "../../redux/recipes/operations";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
-export default function RecipeCard({ recipeCard, isModalOpen }) {
+export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
   const dispatch = useDispatch();
   const idLoggedIn = useSelector(selectIsLoggedIn);
-  const { recipeType } = useParams();
+
+  const isFavourite = favourites?.some((fav) => fav === recipeCard._id);
 
   const handleDeleteFavourite = async () => {
     console.log("ID to delete:", recipeCard._id);
     try {
       if (recipeCard._id) {
         await dispatch(deleteFavouriteRecipe(recipeCard._id)).unwrap();
+        toast.success("Removed from favourites");
       }
     } catch (error) {
       toast.error("Something went wrong");
@@ -34,6 +37,7 @@ export default function RecipeCard({ recipeCard, isModalOpen }) {
     try {
       if (recipeCard._id) {
         await dispatch(addFavouriteRecipe(recipeCard._id)).unwrap();
+        toast.success("Added to favourites");
       }
     } catch (error) {
       toast.error("Something went wrong");
@@ -64,7 +68,7 @@ export default function RecipeCard({ recipeCard, isModalOpen }) {
         >
           Learn more
         </NavLink>
-        {recipeType === "own" ? null : recipeType === "favourites" ? (
+        {isFavourite ? (
           <div className={style.svg1WrapperActive}>
             <Svg
               styles={style.svg1Active}

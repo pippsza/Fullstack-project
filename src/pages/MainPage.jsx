@@ -3,7 +3,6 @@ import SearchBox from "../components/SearchBox/SearchBox";
 import ModalErrorWhileSaving from "../components/ModalErrorWhileSaving/ModalErrorWhileSaving";
 import ListWrapper from "../components/ListWrapper/ListWrapper";
 import Container from "../components/container/container";
-
 const MainPage = () => {
   const [filter, setFilter] = useState({
     category: "",
@@ -17,6 +16,7 @@ const MainPage = () => {
   const onClose = () => {
     setIsModalOpen(false);
   };
+
   return (
     <>
       <SearchBox
@@ -34,7 +34,6 @@ const MainPage = () => {
           isModalOpen={setIsModalOpen}
           filter={filter}
           setFilter={setFilter}
-          setSearchQuery={setSearchQuery}
           isSearched={isSearched}
         />
       </Container>
