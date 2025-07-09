@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Svg from "../Svg/svg";
 import style from "./RecipeCard.module.css";
@@ -9,18 +9,31 @@ import {
   addFavouriteRecipe,
 } from "../../redux/recipes/operations";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { useEffect, useState } from "react";
 
 export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
   const dispatch = useDispatch();
   const idLoggedIn = useSelector(selectIsLoggedIn);
+  const { recipeType } = useParams();
+  console.log("PAAAAAAAAAAAAGE", recipeType);
+  const [isFavouriteState, setIsFavouriteState] = useState();
 
   const isFavourite = favourites?.some((fav) => fav === recipeCard._id);
+
+  useEffect(() => {
+    isFavourite && setIsFavouriteState(true);
+  }, [isFavourite]);
 
   const handleDeleteFavourite = async () => {
     console.log("ID to delete:", recipeCard._id);
     try {
       if (recipeCard._id) {
-        await dispatch(deleteFavouriteRecipe(recipeCard._id)).unwrap();
+        await dispatch(deleteFavouriteRecipe(recipeCard._id))
+          .unwrap()
+          .catch((err) => {})
+          .then(() => {
+            setIsFavouriteState(false);
+          });
         toast.success("Removed from favourites");
       }
     } catch (error) {
@@ -36,7 +49,11 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
     console.log("ID to Add:", recipeCard._id);
     try {
       if (recipeCard._id) {
-        await dispatch(addFavouriteRecipe(recipeCard._id)).unwrap();
+        await dispatch(addFavouriteRecipe(recipeCard._id))
+          .unwrap()
+          .then(() => {
+            setIsFavouriteState(true);
+          });
         toast.success("Added to favourites");
       }
     } catch (error) {
@@ -68,7 +85,7 @@ export default function RecipeCard({ recipeCard, isModalOpen, favourites }) {
         >
           Learn more
         </NavLink>
-        {isFavourite ? (
+        {recipeType === "own" ? null : isFavouriteState ? (
           <div className={style.svg1WrapperActive}>
             <Svg
               styles={style.svg1Active}
