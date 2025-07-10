@@ -24,6 +24,7 @@
   object-fit: cover;
   max-height: 276px;
   max-width: 360px;
+  border-radius: 8px;
 }
 .flexBox {
   display: flex;
