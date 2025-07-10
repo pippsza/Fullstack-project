@@ -19,8 +19,8 @@
 
 /* 768px styles repeat 320px */
 
-/* 1280px styles */
-@media screen and (min-width: 1280px) {
+/* 1440px styles */
+@media screen and (min-width: 1440px) {
   .aboutInfo {
     display: flex;
     flex-direction: column;
