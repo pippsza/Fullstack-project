@@ -13,6 +13,7 @@
   flex-direction: column-reverse;
   gap: 32px;
 }
+
 .mainRecipeTitle {
   font-weight: 600;
   font-size: 40px;
@@ -23,6 +24,7 @@
   width: 100%;
   object-fit: cover;
   max-height: 276px;
+  border-radius: 8px;
 }
 .flexBox {
   display: flex;

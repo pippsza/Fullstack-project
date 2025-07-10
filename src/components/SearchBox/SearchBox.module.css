@@ -1,4 +1,4 @@
-.section {
+/* .section {
   padding-top: 128px;
   padding-bottom: 98px;
   position: relative;
@@ -14,7 +14,21 @@
   background-size: cover;
   background-position: center left 40%;
   background-repeat: no-repeat;
-}
+} */
+
+.section {
+  padding-top: 128px;
+  padding-bottom: 98px;
+  position: relative;
+  width: 100%;
+
+  background-color: #2e2f42;
+  background-image:
+  url("./src/img/background-hero.jpg");
+  background-size: cover;
+  background-position: center left 40%;
+  background-repeat: no-repeat;
+} 
 
 .searchDiv {
   margin-left: auto;
