@@ -4,8 +4,6 @@ import AboutRecipe from "../AboutRecipe/AboutRecipe";
 import PreparationRecipe from "../PreparationRecipe/PreparationRecipe";
 import RecipeIngredientsList from "../RecipeIngredientsList/RecipeIngredientsList";
 import Container from "../container/container";
-import { useSelector } from "react-redux";
-import { selectUserData } from "../../redux/auth/selectors";
 
 export default function RecipeDetails({ recipe }) {
   const {

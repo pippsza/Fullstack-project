@@ -23,6 +23,7 @@
   width: 100%;
   object-fit: cover;
   max-height: 276px;
+  max-width: 360px;
 }
 .flexBox {
   display: flex;
@@ -45,6 +46,7 @@
   }
   .recipeImage {
     max-height: 624px;
+    max-width: 704px;
   }
 }
 /* 1440px styles */
@@ -58,5 +60,9 @@
     display: flex;
     flex-direction: column;
     gap: 40px;
+  }
+  .recipeImage {
+    max-height: 624px;
+    max-width: 1226px;
   }
 }
