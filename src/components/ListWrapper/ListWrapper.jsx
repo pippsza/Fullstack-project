@@ -29,6 +29,7 @@ import {
 import Loader from "../Loader/Loader";
 import { selectUserData } from "../../redux/auth/selectors";
 import { getUserInfo } from "../../redux/auth/operations";
+import { toast } from "react-hot-toast";
 
 export default function ListWrapper({
   filter,
@@ -108,6 +109,18 @@ export default function ListWrapper({
     };
     fetch();
   }, [dispatch, filter, page, isMainPage, recipeType]);
+
+  // Показываем тост, если после клика на LoadMoreBtn больше нет страниц
+  useEffect(() => {
+    if (
+      !hasNextPage &&
+      items &&
+      items.length > 0 &&
+      (filter.page > 1 || page > 1)
+    ) {
+      toast("No more recipes");
+    }
+  }, [hasNextPage]);
 
   const handleLoadMore = async () => {
     if (isMainPage) {
