@@ -10,7 +10,7 @@
       rgba(0, 0, 0, 0.9),
       rgba(0, 0, 0, 0.3)
     ),
-    url("/img/background-hero.jpg");
+    url("/images/background-hero.jpg");
   background-size: cover;
   background-position: center left 40%;
   background-repeat: no-repeat;
