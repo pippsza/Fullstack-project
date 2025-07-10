@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,6 +50,7 @@ export default function AddRecipeForm() {
   const [photoPreview, setPhotoPreview] = useState();
   const fileInputRef = useRef(null);
   const [ingredientsError, setIngredientsError] = useState("");
+  const navigate = useNavigate(); 
 
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
@@ -149,6 +151,19 @@ export default function AddRecipeForm() {
 
       if (result.meta.requestStatus === "fulfilled") {
         toast.success("Recipe created successfully! 🎉");
+        const recipeId =
+          result.payload?.data?.id ||
+          result.payload?.recipe?.id ||
+          result.payload?.id ||
+          result.payload?._id ||
+          result.payload?.data?._id ||
+          result.payload?.recipe?._id;
+        
+        if (recipeId) {
+          navigate(`/recipes/${recipeId}`);
+        } else {
+          navigate("/recipes");
+        }
 
         reset();
         replaceIngredients([]);
