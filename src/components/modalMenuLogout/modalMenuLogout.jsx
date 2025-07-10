@@ -1,10 +1,12 @@
-
 import { useEffect } from "react";
 import Svg from "../Svg/svg";
 import style from "./modalMenuLogout.module.css";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../redux/auth/operations.js";
 import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
+import Loader from "../Loader/Loader.jsx";
+import { selectIsLoading } from "../../redux/auth/selectors.js";
 
 export default function ModalMenuLogout({ isModalOpen, onClose }) {
   useEffect(() => {
@@ -23,10 +25,11 @@ export default function ModalMenuLogout({ isModalOpen, onClose }) {
       await dispatch(logOut()).unwrap();
       onClose();
       toast.success("Logout successful! 👋");
-    } catch  {
+    } catch {
       toast.error("Logout failed. Try again.");
     }
   };
+  const isLoading = useSelector(selectIsLoading);
 
   return (
     <>
@@ -35,14 +38,18 @@ export default function ModalMenuLogout({ isModalOpen, onClose }) {
           <Svg styles={style.svg} onClick={onClose} name="cross" />
           <h2 className={style.title}>Are you shure?</h2>
           <p className={style.text}>We will miss you!</p>
-          <ul className={style.list}>
-            <li className={style.link} onClick={logoutHandler}>
-              Log out
-            </li>
-            <li className={style.link} onClick={onClose}>
-              Cancel
-            </li>
-          </ul>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <ul className={style.list}>
+              <li className={style.link} onClick={logoutHandler}>
+                Log out
+              </li>
+              <li className={style.link} onClick={onClose}>
+                Cancel
+              </li>
+            </ul>
+          )}
         </div>
       </div>
     </>

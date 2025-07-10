@@ -51,10 +51,24 @@ export default function Header({
           </Container>
         </header>
         {isMobileMenuOpened ? (
-          <MobileMenu
-            toggleModal={toggleModal}
-            openMobile={mobileMenuHandler}
-          />
+          <>
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                background: "rgba(0,0,0,0.3)",
+                zIndex: 998,
+              }}
+              onClick={() => setIsMobileMenuOpened(false)}
+            />
+            <MobileMenu
+              toggleModal={toggleModal}
+              openMobile={mobileMenuHandler}
+            />
+          </>
         ) : null}
       </ScrollHeader>
     </>
